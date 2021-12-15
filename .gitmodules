@@ -1,0 +1,3 @@
+[submodule "shogi-pieces"]
+	path = shogi-pieces
+	url = https://github.com/Ka-hu/shogi-pieces
