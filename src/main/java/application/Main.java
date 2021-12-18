@@ -1,7 +1,11 @@
 package application;
 
+import com.google.inject.Inject;
 import java.io.File;
+import java.util.Map;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -13,8 +17,14 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javax.inject.Named;
+import model.Pawn;
+import model.Piece;
+import model.PieceName;
+
 
 public class Main extends Application {
 
@@ -64,7 +74,29 @@ public class Main extends Application {
                 board.add(rect, i, j);
             }
         }
+
+        Rectangle test = (Rectangle) getNodeByRowColumnIndex(1,1, board);
+        test.setFill(new ImagePattern((new Pawn()).getImage()));
+
         return board;
+    }
+
+    private void placePiece(final Piece piece) {
+
+    }
+
+    public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+        Node result = null;
+        ObservableList<Node> childrens = gridPane.getChildren();
+
+        for (Node node : childrens) {
+            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+                result = node;
+                break;
+            }
+        }
+
+        return result;
     }
 
     public static void main(String[] args) {
