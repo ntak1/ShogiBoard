@@ -13,7 +13,7 @@ public class Rook extends Piece {
         return null;
     }
 
-    public Coord getPosition() {
+    public Coord getCoord() {
         return null;
     }
 

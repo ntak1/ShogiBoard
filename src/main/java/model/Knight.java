@@ -14,7 +14,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public Coord getPosition() {
+    public Coord getCoord() {
         return null;
     }
 

@@ -160,6 +160,8 @@ public class Board {
             return;
         }
         node.setFill(businessBoard[row][column].getImage());
+        node.setOnMouseClicked(x -> System.out.println("I was clicked!"));
+        businessBoard[row][column].setCoord(Coord.builder().height(row).width(column).build());
     }
 
     private Node getNodeByRowColumnIndex(int row, int column) {

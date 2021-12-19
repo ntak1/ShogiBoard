@@ -12,7 +12,7 @@ public class Lance extends Piece {
         return null;
     }
 
-    public Coord getPosition() {
+    public Coord getCoord() {
         return null;
     }
 
