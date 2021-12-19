@@ -23,6 +23,7 @@ public class Main extends Application {
         System.out.println("Board " + board);
         Scene scene = board.placeInitialSetup();
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Shogi Board");
         primaryStage.show();
     }
 

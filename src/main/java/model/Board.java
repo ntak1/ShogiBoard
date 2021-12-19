@@ -6,9 +6,14 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -19,6 +24,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Rectangle;
+import org.w3c.dom.css.Rect;
+
+import javax.crypto.spec.RC2ParameterSpec;
 
 public class Board {
     private static final int N_COLUMNS = 9;
@@ -154,13 +162,24 @@ public class Board {
 
     }
 
+    public void highlightCells(List<Coord> cordList) {
+        for(Coord coord: cordList) {
+            Rectangle cell = (Rectangle) getNodeByRowColumnIndex(coord.height, coord.width);
+            Rectangle canvas = new Rectangle(cell.getHeight(), cell.getWidth());
+            canvas.setFill(new javafx.scene.paint.Color(0, 0.1, 1, 0.5));
+            uiBoard.add(canvas, coord.width+1, coord.height+1);
+        }
+    }
+
     private void placePieceByIndex(int row, int column) {
         Rectangle node = (Rectangle) getNodeByRowColumnIndex(row, column);
         if (node == null) {
             return;
         }
         node.setFill(businessBoard[row][column].getImage());
-        node.setOnMouseClicked(x -> System.out.println("I was clicked!"));
+        List<Coord> cordList = new ArrayList<>();
+        cordList.add(Coord.builder().height(2).width(0).build());
+        node.setOnMouseClicked(x -> highlightCells(cordList));
         businessBoard[row][column].setCoord(Coord.builder().height(row).width(column).build());
     }
 

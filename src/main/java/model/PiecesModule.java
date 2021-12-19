@@ -18,61 +18,61 @@ public class PiecesModule extends AbstractModule {
     protected void configure() {
         PieceImageLoader pieceImageLoader = new PieceImageLoader(colorPieceCombinationStringMap);
         // PAWNS
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.PAWN), "shogi-pieces/kanji_light/png/1FU.png");
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.PAWN), "shogi-pieces/kanji_light/png/0FU.png");
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.PAWN), "scripts/png/1FU.png");
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.PAWN), "scripts/png/0FU.png");
         bind(Pawn.class).annotatedWith(Names.named("WHITE")).toProvider(() -> new Pawn(Color.WHITE, pieceImageLoader));
         bind(Pawn.class).annotatedWith(Names.named("BLACK")).toProvider(() -> new Pawn(Color.BLACK, pieceImageLoader));
 
         // LANCE
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.LANCE), "shogi-pieces/kanji_light/png/1KY.png");
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.LANCE), "shogi-pieces/kanji_light/png/0KY.png");
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.LANCE), "scripts/png/1KY.png");
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.LANCE), "scripts/png/0KY.png");
         bind(Lance.class).annotatedWith(Names.named("WHITE")).toProvider(() -> new Lance(Color.WHITE, pieceImageLoader));
         bind(Lance.class).annotatedWith(Names.named("BLACK")).toProvider(() -> new Lance(Color.BLACK, pieceImageLoader));
 
         // KNIGHT
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.KNIGHT), "shogi-pieces/kanji_light/png/1KE" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.KNIGHT), "scripts/png/1KE" +
                 ".png");
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.KNIGHT), "shogi-pieces/kanji_light/png/0KE" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.KNIGHT), "scripts/png/0KE" +
                 ".png");
         bind(Knight.class).annotatedWith(Names.named("WHITE")).toProvider(() -> new Knight(Color.WHITE, pieceImageLoader));
         bind(Knight.class).annotatedWith(Names.named("BLACK")).toProvider(() -> new Knight(Color.BLACK, pieceImageLoader));
 
         // SILVER
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.SILVER), "shogi-pieces/kanji_light/png/1GI" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.SILVER), "scripts/png/1GI" +
                 ".png");
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.SILVER), "shogi-pieces/kanji_light/png/0GI" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.SILVER), "scripts/png/0GI" +
                 ".png");
         bind(Silver.class).annotatedWith(Names.named("WHITE")).toProvider(() -> new Silver(Color.WHITE, pieceImageLoader));
         bind(Silver.class).annotatedWith(Names.named("BLACK")).toProvider(() -> new Silver(Color.BLACK, pieceImageLoader));
 
         // GOLD
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.GOLD), "shogi-pieces/kanji_light/png/1KI" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.GOLD), "scripts/png/1KI" +
                 ".png");
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.GOLD), "shogi-pieces/kanji_light/png/0KI" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.GOLD), "scripts/png/0KI" +
                 ".png");
         bind(Gold.class).annotatedWith(Names.named("WHITE")).toProvider(() -> new Gold(Color.WHITE, pieceImageLoader));
         bind(Gold.class).annotatedWith(Names.named("BLACK")).toProvider(() -> new Gold(Color.BLACK, pieceImageLoader));
 
         // KING
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.KING), "shogi-pieces/kanji_light/png/1OU" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.KING), "scripts/png/1OU" +
                 ".png");
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.KING), "shogi-pieces/kanji_light/png/0OU" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.KING), "scripts/png/0OU" +
                 ".png");
         bind(King.class).annotatedWith(Names.named("WHITE")).toProvider(() -> new King(Color.WHITE, pieceImageLoader));
         bind(King.class).annotatedWith(Names.named("BLACK")).toProvider(() -> new King(Color.BLACK, pieceImageLoader));
 
         // BISHOP
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.BISHOP), "shogi-pieces/kanji_light/png/1KA" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.BISHOP), "scripts/png/1KA" +
                 ".png");
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.BISHOP), "shogi-pieces/kanji_light/png/0KA" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.BISHOP), "scripts/png/0KA" +
                 ".png");
         bind(Bishop.class).annotatedWith(Names.named("WHITE")).toProvider(() -> new Bishop(Color.WHITE, pieceImageLoader));
         bind(Bishop.class).annotatedWith(Names.named("BLACK")).toProvider(() -> new Bishop(Color.BLACK, pieceImageLoader));
 
         // ROOK
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.ROOK), "shogi-pieces/kanji_light/png/1HI" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.WHITE, PieceName.ROOK), "scripts/png/1HI" +
                 ".png");
-        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.ROOK), "shogi-pieces/kanji_light/png/0HI" +
+        colorPieceCombinationStringMap.put(new ColorPieceCombination(Color.BLACK, PieceName.ROOK), "scripts/png/0HI" +
                 ".png");
         bind(Rook.class).annotatedWith(Names.named("WHITE")).toProvider(() -> new Rook(Color.WHITE, pieceImageLoader));
         bind(Rook.class).annotatedWith(Names.named("BLACK")).toProvider(() -> new Rook(Color.BLACK, pieceImageLoader));
