@@ -1,24 +1,14 @@
 package model;
 
-import java.io.File;
 import java.util.List;
-import javafx.scene.image.Image;
-import javafx.scene.shape.SVGPath;
+import javafx.scene.paint.ImagePattern;
 
 public class Pawn extends Piece {
-    private Image image;
-    private Color color;
-    private Coord coord;
 
-    public Pawn() {
-        loadImage();
+    public Pawn(Color color, PieceImageLoader pieceImageLoader) {
+        super(color, pieceImageLoader);
     }
 
-    public Pawn(Color color, Coord coord) {
-        loadImage();
-        this.color = color;
-        this.coord = coord;
-    }
 
     public List<Coord> getPossibleMovements() {
         return null;
@@ -32,12 +22,9 @@ public class Pawn extends Piece {
 
     }
 
-    public Image getImage() {
-        return image;
+    @Override
+    public ImagePattern getImage() {
+        return pieceImageLoader.getImagePattern(PieceName.PAWN, color);
     }
 
-    private void loadImage() {
-        final File tileFile = new File("shogi-pieces/kanji_light/test.png");
-        image = new Image(tileFile.toURI().toString());
-    }
 }

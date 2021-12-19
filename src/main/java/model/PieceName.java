@@ -1,5 +1,5 @@
 package model;
 
 public enum PieceName {
-    PAWN;
+    PAWN, LANCE, KNIGHT, SILVER, GOLD, KING, BISHOP, ROOK
 }

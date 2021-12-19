@@ -1,9 +1,13 @@
 package model;
 
 import java.util.List;
+import javafx.scene.paint.ImagePattern;
 
 public class King extends Piece {
 
+    public King(Color color, PieceImageLoader pieceImageLoader) {
+        super(color, pieceImageLoader);
+    }
 
     public List<Coord> getPossibleMovements() {
         return null;
@@ -15,5 +19,10 @@ public class King extends Piece {
 
     public void move(Coord coord) {
 
+    }
+
+    @Override
+    public ImagePattern getImage() {
+        return pieceImageLoader.getImagePattern(PieceName.KING, color);
     }
 }

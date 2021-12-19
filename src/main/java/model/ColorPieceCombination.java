@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class Coord {
-    public int height;
-    public int width;
+public class ColorPieceCombination {
+    private Color color;
+    private PieceName pieceName;
 }
