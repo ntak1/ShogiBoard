@@ -5,7 +5,7 @@ import javafx.scene.paint.ImagePattern;
 
 public class King extends Piece {
 
-    public King(Color color, PieceImageLoader pieceImageLoader) {
+    public King(PieceColor color, PieceImageLoader pieceImageLoader) {
         super(color, pieceImageLoader);
     }
 
@@ -17,7 +17,7 @@ public class King extends Piece {
         return null;
     }
 
-    public void move(Coord coord) {
+    public void move(Coord newCoord, Piece[][] businessBoard) {
 
     }
 

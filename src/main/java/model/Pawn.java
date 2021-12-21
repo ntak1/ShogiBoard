@@ -6,7 +6,7 @@ import javafx.scene.paint.ImagePattern;
 
 public class Pawn extends Piece {
 
-    public Pawn(Color color, PieceImageLoader pieceImageLoader) {
+    public Pawn(PieceColor color, PieceImageLoader pieceImageLoader) {
         super(color, pieceImageLoader);
     }
 
@@ -17,7 +17,7 @@ public class Pawn extends Piece {
 
         } else {
             Coord newCoord;
-            if (color == Color.WHITE) {
+            if (color == PieceColor.WHITE) {
                 newCoord = Coord.builder()
                                       .height(coord.height + 1)
                                       .width(coord.width)
@@ -37,8 +37,12 @@ public class Pawn extends Piece {
         return coord;
     }
 
-    public void move(Coord coord) {
-
+    public void move(Coord newCoord, Piece[][] businessBoard) {
+        businessBoard[newCoord.height][newCoord.width] = this;
+        if (this.coord != null) {
+            businessBoard[this.coord.height][this.coord.width] = null;
+        }
+        this.coord = newCoord;
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.util.List;
 import javafx.scene.paint.ImagePattern;
 
 public class Gold extends Piece {
-    public Gold(Color color, PieceImageLoader pieceImageLoader) {
+    public Gold(PieceColor color, PieceImageLoader pieceImageLoader) {
         super(color, pieceImageLoader);
     }
 
@@ -19,7 +19,7 @@ public class Gold extends Piece {
     }
 
     @Override
-    public void move(Coord coord) {
+    public void move(Coord newCoord, Piece[][] businessBoard) {
 
     }
 

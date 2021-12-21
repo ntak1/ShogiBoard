@@ -9,6 +9,6 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class ColorPieceCombination {
-    private Color color;
+    private PieceColor color;
     private PieceName pieceName;
 }

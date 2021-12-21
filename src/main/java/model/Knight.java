@@ -4,7 +4,7 @@ import java.util.List;
 import javafx.scene.paint.ImagePattern;
 
 public class Knight extends Piece {
-    public Knight(Color color, PieceImageLoader pieceImageLoader) {
+    public Knight(PieceColor color, PieceImageLoader pieceImageLoader) {
         super(color, pieceImageLoader);
     }
 
@@ -19,7 +19,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public void move(Coord coord) {
+    public void move(Coord newCoord, Piece[][] businessBoard) {
 
     }
 

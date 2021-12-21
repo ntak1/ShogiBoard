@@ -4,7 +4,7 @@ import java.util.List;
 import javafx.scene.paint.ImagePattern;
 
 public class Lance extends Piece {
-    public Lance(Color color, PieceImageLoader pieceImageLoader) {
+    public Lance(PieceColor color, PieceImageLoader pieceImageLoader) {
         super(color, pieceImageLoader);
     }
 
@@ -16,7 +16,7 @@ public class Lance extends Piece {
         return null;
     }
 
-    public void move(Coord coord) {
+    public void move(Coord newCoord, Piece[][] businessBoard) {
 
     }
 

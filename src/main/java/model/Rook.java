@@ -5,7 +5,7 @@ import javafx.scene.paint.ImagePattern;
 
 public class Rook extends Piece {
 
-    public Rook(Color color, PieceImageLoader pieceImageLoader) {
+    public Rook(PieceColor color, PieceImageLoader pieceImageLoader) {
         super(color, pieceImageLoader);
     }
 
@@ -17,7 +17,7 @@ public class Rook extends Piece {
         return null;
     }
 
-    public void move(Coord coord) {
+    public void move(Coord newCoord, Piece[][] businessBoard) {
 
     }
 
