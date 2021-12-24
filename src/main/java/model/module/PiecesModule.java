@@ -1,16 +1,18 @@
-package model;
+package model.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.multibindings.ProvidesIntoMap;
 import com.google.inject.name.Names;
+import javafx.scene.layout.GridPane;
+import model.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class PiecesModule extends AbstractModule {
-    private static final int N_COLUMNS = 9;
-    private static final int N_ROWS = 9;
     private Map<ColorPieceCombination, String> colorPieceCombinationStringMap = new HashMap<>();
 
 
@@ -76,17 +78,6 @@ public class PiecesModule extends AbstractModule {
                 ".png");
         bind(Rook.class).annotatedWith(Names.named("WHITE")).toProvider(() -> new Rook(PieceColor.WHITE, pieceImageLoader));
         bind(Rook.class).annotatedWith(Names.named("BLACK")).toProvider(() -> new Rook(PieceColor.BLACK, pieceImageLoader));
-    }
-
-
-    @Provides
-    public Piece[][] providedBusinessBoard() {
-        return new Piece[N_ROWS][N_COLUMNS];
-    }
-
-    @Provides
-    public Board providesBoard(Piece[][] businessBoard) {
-        return new Board(businessBoard);
     }
 
     @Provides

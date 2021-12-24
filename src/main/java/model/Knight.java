@@ -9,11 +9,10 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<Coord> getPossibleMovements() {
+    public List<Coord> getPossibleMovements(Coord coord) {
         return null;
     }
 
-    @Override
     public Coord getCoord() {
         return null;
     }

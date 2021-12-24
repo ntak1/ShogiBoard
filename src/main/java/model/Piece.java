@@ -12,7 +12,6 @@ public abstract class Piece {
 
     @Getter
     @Setter
-    protected Coord coord;
     protected PieceImageLoader pieceImageLoader;
 
     public Piece(PieceColor color, PieceImageLoader pieceImageLoader) {
@@ -20,7 +19,7 @@ public abstract class Piece {
         this.pieceImageLoader = pieceImageLoader;
     }
 
-    public abstract List<Coord> getPossibleMovements();
+    public abstract List<Coord> getPossibleMovements(Coord coord);
     
     public abstract void move(Coord newCoord, Piece[][] businessBoard);
 

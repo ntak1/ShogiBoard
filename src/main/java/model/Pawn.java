@@ -11,7 +11,7 @@ public class Pawn extends Piece {
     }
 
 
-    public List<Coord> getPossibleMovements() {
+    public List<Coord> getPossibleMovements(Coord coord) {
         List<Coord> possibleMovements = new ArrayList<>();
         if (coord == null) { // TODO: case when the pawn is outside the board
 
@@ -33,16 +33,17 @@ public class Pawn extends Piece {
         return possibleMovements;
     }
 
-    public Coord getCoord() {
-        return coord;
+    @Override
+    public void move(Coord newCoord, Piece[][] businessBoard) {
+
     }
 
-    public void move(Coord newCoord, Piece[][] businessBoard) {
+    public void move(Coord coord, Coord newCoord, Piece[][] businessBoard) {
         businessBoard[newCoord.height][newCoord.width] = this;
-        if (this.coord != null) {
-            businessBoard[this.coord.height][this.coord.width] = null;
+        if (coord != null) {
+            businessBoard[coord.height][coord.width] = null;
         }
-        this.coord = newCoord;
+        coord = newCoord;
     }
 
     @Override

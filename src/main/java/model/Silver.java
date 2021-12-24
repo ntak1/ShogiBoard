@@ -9,6 +9,11 @@ public class Silver extends Piece {
         super(color, pieceImageLoader);
     }
 
+    @Override
+    public List<Coord> getPossibleMovements(Coord coord) {
+        return null;
+    }
+
     public List<Coord> getPossibleMovements() {
         return null;
     }

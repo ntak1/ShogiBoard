@@ -9,9 +9,11 @@ public class Bishop extends Piece {
         super(color, pieceImageLoader);
     }
 
-    public List<Coord> getPossibleMovements() {
+    @Override
+    public List<Coord> getPossibleMovements(Coord coord) {
         return null;
     }
+
 
     public Coord getCoord() {
         return null;
