@@ -66,8 +66,6 @@ public class Board {
         return scene;
     }
 
-
-
     private void placePieces() {
         // PAWN
         for (int i=0; i < N_COLUMNS; i++) {
@@ -129,4 +127,9 @@ public class Board {
         }
     }
 
+    public void move(final Cell source, final Cell destination) {
+        final Piece piece = source.getPiece();
+        source.removePiece();
+        destination.setPiece(piece);
+    }
 }

@@ -32,28 +32,31 @@ public class Game implements HandleOnClick {
 
     public void handleOnClick(Cell cell) {
         System.out.println("I was clicked!");
-        if(isValidMove(cell)) {
-            nextTurn();
-            undoMovements = Collections.emptyList();
-            currentlySelectedCell = null;
-        } else if (!cell.isEmpty() && cell.getPiece() != null) {
+        if (cell.getPiece() != null) {
             final Piece piece = cell.getPiece();
             final List<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
             board.highlightCells(cordList);
 
             if (currentlySelectedCell != null) {
-                board.removeHighlightOnCells(currentlySelectedCell.getPiece().getPossibleMovements(currentlySelectedCell.getCoord()));
+                board.removeHighlightOnCells(getCordList(currentlySelectedCell));
             }
             currentlySelectedCell = cell;
+        } else if (currentlySelectedCell != null && cell.isEmpty() || isOppositeColor(cell)) {
+            board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+            board.move(currentlySelectedCell, cell);
+            currentlySelectedCell = null;
         }
     }
 
-    private boolean isValidMove(Cell cell) {
-        if (!cell.isEmpty() || currentlySelectedCell == null || cell.getPiece() == null) {
-            return false;
+    private List<Coord> getCordList(Cell cell) {
+        if (currentlySelectedCell == null) {
+            return Collections.emptyList();
         }
-        List<Coord> possibleMovements = currentlySelectedCell.getPiece().getPossibleMovements(cell.getCoord());
-        return (possibleMovements.contains(cell.getCoord()));
+        return cell.getPiece().getPossibleMovements(cell.getCoord());
+    }
+
+    private boolean isOppositeColor(final Cell cell) {
+        return cell.getPiece() != null && cell.getPiece().getColor() != currentTurn;
     }
 
     private void nextTurn() {

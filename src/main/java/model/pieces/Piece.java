@@ -9,12 +9,11 @@ import model.Coord;
 import model.PieceColor;
 import model.PieceImageLoader;
 
+@Getter
+@Setter
 public abstract class Piece {
 
     protected PieceColor color;
-
-    @Getter
-    @Setter
     protected PieceImageLoader pieceImageLoader;
 
     public Piece(PieceColor color, PieceImageLoader pieceImageLoader) {

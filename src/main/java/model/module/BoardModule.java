@@ -10,7 +10,10 @@ import javafx.scene.shape.Rectangle;
 import model.Board;
 import model.Cell;
 import model.Coord;
-import model.Helper;
+
+import static model.UiConfig.PADDING;
+import static model.UiConfig.SQUARE_SIZE;
+
 
 public class BoardModule extends AbstractModule {
     private static final int N_COLUMNS = 9;
@@ -19,20 +22,18 @@ public class BoardModule extends AbstractModule {
     @Provides
     @Singleton
     public GridPane providesGridPane() {
-        int squareSize = 60;
-        int padding = 35;
         GridPane uiBoard = new GridPane();
-        uiBoard.getRowConstraints().add(new RowConstraints(padding));
-        uiBoard.getColumnConstraints().add(new ColumnConstraints(padding));
+        uiBoard.getRowConstraints().add(new RowConstraints(PADDING));
+        uiBoard.getColumnConstraints().add(new ColumnConstraints(PADDING));
         for (int i = 0; i < 8; i++) {
-            uiBoard.getColumnConstraints().add(new ColumnConstraints(squareSize));
-            uiBoard.getRowConstraints().add(new RowConstraints(squareSize));
+            uiBoard.getColumnConstraints().add(new ColumnConstraints(SQUARE_SIZE));
+            uiBoard.getRowConstraints().add(new RowConstraints(SQUARE_SIZE));
         }
         for (int i = 1; i < 10; i++) {
             for (int j = 1; j < 10; j++) {
                 Rectangle rect = new Rectangle();
-                rect.setWidth(squareSize);
-                rect.setHeight(squareSize);
+                rect.setWidth(SQUARE_SIZE);
+                rect.setHeight(SQUARE_SIZE);
                 rect.setStroke(javafx.scene.paint.Color.BLACK);
                 rect.setStrokeWidth(3);
                 rect.setFill(javafx.scene.paint.Color.TRANSPARENT);
