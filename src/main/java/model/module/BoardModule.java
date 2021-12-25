@@ -3,10 +3,6 @@ package model.module;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import controller.Game;
-import controller.HandleOnClick;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -14,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import model.Board;
 import model.Cell;
 import model.Coord;
+import model.Helper;
 
 public class BoardModule extends AbstractModule {
     private static final int N_COLUMNS = 9;
@@ -52,26 +49,11 @@ public class BoardModule extends AbstractModule {
         for (int i = 0; i < N_ROWS; i++) {
             for (int j = 0; j < N_COLUMNS; j++) {
                 cellBoard[i][j] = new Cell();
+                cellBoard[i][j].setGridPane(uiBoard);
                 cellBoard[i][j].setCoord(new Coord(i, j));
-                cellBoard[i][j].setUiNode((Rectangle) getNodeByRowColumnIndex(i, j, uiBoard));
             }
         }
         return cellBoard;
-    }
-
-    private Node getNodeByRowColumnIndex(int row, int column, GridPane gridPane) {
-        row = row + 1;
-        column = column + 1;
-        Node result = null;
-        ObservableList<Node> children = gridPane.getChildren();
-
-        for (Node node : children) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
-            }
-        }
-        return result;
     }
 
     @Provides

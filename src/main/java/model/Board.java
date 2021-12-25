@@ -115,43 +115,18 @@ public class Board {
 
     public void highlightCells(List<Coord> cordList) {
         for(Coord coord: cordList) {
-            Rectangle cell = (Rectangle) getNodeByRowColumnIndex(coord.height, coord.width);
+            Rectangle cell = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
             Rectangle rectangle = new Rectangle(cell.getHeight(), cell.getWidth());
             rectangle.setStroke(javafx.scene.paint.Color.BLACK);
             rectangle.setFill(new javafx.scene.paint.Color(0.1, 0.1, 1, 0.25));
-            gridPane.add(rectangle, coord.width+1, coord.height+1);
+            cellBoard[coord.height][coord.width].addLayer(rectangle);
         }
     }
 
     public void removeHighlightOnCells(List<Coord> cordList) {
         for(Coord coord: cordList) {
-            Rectangle cell = (Rectangle) getNodeByRowColumnIndex(coord.height, coord.width);
-            if (cell == null) {
-                System.out.println("Cell " + cell);
-                return;
-            }
-            final boolean status = gridPane.getChildren().remove(cell);
-            final Rectangle oldRectangle = (Rectangle) getNodeByRowColumnIndex(coord.height, coord.width);
-            oldRectangle.setFill(Color.TRANSPARENT);
-            oldRectangle.setStroke(Color.BLACK);
-            oldRectangle.setStrokeWidth(3);
-            System.out.println("Remove status = " + status);
+            cellBoard[coord.height][coord.width].popLayer();
         }
-    }
-
-   private Node getNodeByRowColumnIndex(int row, int column) {
-        row = row +1;
-        column = column +1;
-        Node result = null;
-        ObservableList<Node> children = gridPane.getChildren();
-
-        for (Node node : children) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
-            }
-        }
-        return result;
     }
 
 }
