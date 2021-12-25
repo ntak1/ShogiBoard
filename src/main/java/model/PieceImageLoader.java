@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 public class PieceImageLoader {
     private Map<ColorPieceCombination, String> colorPieceCombinationStringMap;
 
-    ImagePattern getImagePattern(PieceName pieceName, PieceColor color) {
+    public ImagePattern getImagePattern(PieceName pieceName, PieceColor color) {
         final ColorPieceCombination colorPieceCombination = new ColorPieceCombination(color, pieceName);
         final String file = colorPieceCombinationStringMap.get(colorPieceCombination);
         final File tileFile = new File(file);

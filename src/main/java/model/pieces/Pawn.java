@@ -1,8 +1,12 @@
-package model;
+package model.pieces;
 
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
+import model.Coord;
+import model.PieceColor;
+import model.PieceImageLoader;
+import model.PieceName;
 
 public class Pawn extends Piece {
 

@@ -3,10 +3,9 @@ package model.module;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.google.inject.multibindings.ProvidesIntoMap;
 import com.google.inject.name.Names;
-import javafx.scene.layout.GridPane;
 import model.*;
+import model.pieces.*;
 
 import java.util.HashMap;
 import java.util.Map;

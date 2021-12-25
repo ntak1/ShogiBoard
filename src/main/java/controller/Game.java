@@ -2,6 +2,7 @@ package controller;
 
 import javafx.scene.Scene;
 import model.*;
+import model.pieces.Piece;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class Game implements HandleOnClick {
     private PieceColor currentTurn = PieceColor.WHITE;
-    private Piece currentlySelectedPiece;
+    private Cell currentlySelectedCell;
     private List<Coord> undoMovements;
     private State state = State.MOVING;
     private Board board;
@@ -34,19 +35,24 @@ public class Game implements HandleOnClick {
         if(isValidMove(cell)) {
             nextTurn();
             undoMovements = Collections.emptyList();
-            currentlySelectedPiece = null;
-        } else if (!cell.isEmpty() && currentlySelectedPiece == null && cell.getPiece() != null) {
+            currentlySelectedCell = null;
+        } else if (!cell.isEmpty() && cell.getPiece() != null) {
             final Piece piece = cell.getPiece();
             final List<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
             board.highlightCells(cordList);
+
+            if (currentlySelectedCell != null) {
+                board.removeHighlightOnCells(currentlySelectedCell.getPiece().getPossibleMovements(currentlySelectedCell.getCoord()));
+            }
+            currentlySelectedCell = cell;
         }
     }
 
     private boolean isValidMove(Cell cell) {
-        if (!cell.isEmpty() || currentlySelectedPiece == null || cell.getPiece() == null) {
+        if (!cell.isEmpty() || currentlySelectedCell == null || cell.getPiece() == null) {
             return false;
         }
-        List<Coord> possibleMovements = currentlySelectedPiece.getPossibleMovements(cell.getCoord());
+        List<Coord> possibleMovements = currentlySelectedCell.getPiece().getPossibleMovements(cell.getCoord());
         return (possibleMovements.contains(cell.getCoord()));
     }
 

@@ -1,11 +1,14 @@
-package model;
+package model.pieces;
 
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
+import model.Coord;
+import model.PieceColor;
+import model.PieceImageLoader;
+import model.PieceName;
 
-public class Bishop extends Piece {
-
-    public Bishop(PieceColor color, PieceImageLoader pieceImageLoader) {
+public class Lance extends Piece {
+    public Lance(PieceColor color, PieceImageLoader pieceImageLoader) {
         super(color, pieceImageLoader);
     }
 
@@ -14,6 +17,9 @@ public class Bishop extends Piece {
         return null;
     }
 
+    public List<Coord> getPossibleMovements() {
+        return null;
+    }
 
     public Coord getCoord() {
         return null;
@@ -25,6 +31,6 @@ public class Bishop extends Piece {
 
     @Override
     public ImagePattern getImage() {
-        return pieceImageLoader.getImagePattern(PieceName.BISHOP, color);
+        return pieceImageLoader.getImagePattern(PieceName.LANCE, color);
     }
 }

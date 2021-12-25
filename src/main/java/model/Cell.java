@@ -1,13 +1,10 @@
 package model;
 
-import controller.Game;
 import controller.HandleOnClick;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.annotation.Nonnull;
-import javax.inject.Inject;
+import model.pieces.Piece;
 
 public class Cell {
 

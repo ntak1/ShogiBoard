@@ -1,10 +1,13 @@
-package model;
+package model.pieces;
 
 
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
+import model.Coord;
+import model.PieceColor;
+import model.PieceImageLoader;
 
 public abstract class Piece {
 

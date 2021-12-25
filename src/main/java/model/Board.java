@@ -5,7 +5,6 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
 
 import controller.Game;
@@ -19,9 +18,10 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import lombok.Setter;
 import model.module.PiecesModule;
+import model.pieces.*;
 
 public class Board {
     private static final int N_COLUMNS = 9;
@@ -46,7 +46,6 @@ public class Board {
     }
 
     public Scene placeInitialSetup() {
-        placePieces();
         int HEIGHT = 600;
         int WIDTH = 600;
         final Scene scene = new Scene(gridPane, WIDTH, HEIGHT);
@@ -63,6 +62,7 @@ public class Board {
 
         Background bGround = new Background(bImg);
         gridPane.setBackground(bGround);
+        placePieces();
         return scene;
     }
 
@@ -126,11 +126,16 @@ public class Board {
     public void removeHighlightOnCells(List<Coord> cordList) {
         for(Coord coord: cordList) {
             Rectangle cell = (Rectangle) getNodeByRowColumnIndex(coord.height, coord.width);
-            if (cell == null || cell.getFill() == javafx.scene.paint.Color.TRANSPARENT) {
+            if (cell == null) {
                 System.out.println("Cell " + cell);
                 return;
             }
-            gridPane.getChildren().remove(cell);
+            final boolean status = gridPane.getChildren().remove(cell);
+            final Rectangle oldRectangle = (Rectangle) getNodeByRowColumnIndex(coord.height, coord.width);
+            oldRectangle.setFill(Color.TRANSPARENT);
+            oldRectangle.setStroke(Color.BLACK);
+            oldRectangle.setStrokeWidth(3);
+            System.out.println("Remove status = " + status);
         }
     }
 

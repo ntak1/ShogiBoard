@@ -1,11 +1,12 @@
-package model;
+package model.pieces;
 
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
+import model.*;
 
-public class Rook extends Piece {
+public class Bishop extends Piece {
 
-    public Rook(PieceColor color, PieceImageLoader pieceImageLoader) {
+    public Bishop(PieceColor color, PieceImageLoader pieceImageLoader) {
         super(color, pieceImageLoader);
     }
 
@@ -14,9 +15,6 @@ public class Rook extends Piece {
         return null;
     }
 
-    public List<Coord> getPossibleMovements() {
-        return null;
-    }
 
     public Coord getCoord() {
         return null;
@@ -28,6 +26,6 @@ public class Rook extends Piece {
 
     @Override
     public ImagePattern getImage() {
-        return pieceImageLoader.getImagePattern(PieceName.ROOK, color);
+        return pieceImageLoader.getImagePattern(PieceName.BISHOP, color);
     }
 }
