@@ -1,7 +1,6 @@
 package model;
 
 import controller.HandleOnClick;
-import javafx.event.Event;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -37,11 +36,7 @@ public class Cell {
         rect.setHeight(UiConfig.SQUARE_SIZE);
         rect.setStroke(javafx.scene.paint.Color.BLACK);
         rect.setStrokeWidth(3);
-        if (piece == null) {
-            rect.setFill(Color.TRANSPARENT);
-        } else {
-            rect.setFill(piece.getImage());
-        }
+        rect.setFill(piece.getImage());
         addLayer(rect);
     }
 

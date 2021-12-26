@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
+import model.Board;
 import model.Coord;
 import model.PieceColor;
 import model.PieceImageLoader;
@@ -13,6 +14,7 @@ import model.PieceImageLoader;
 @Setter
 public abstract class Piece {
 
+    protected Board board;
     protected PieceColor color;
     protected PieceImageLoader pieceImageLoader;
 

@@ -63,6 +63,7 @@ public class Board {
         Background bGround = new Background(bImg);
         gridPane.setBackground(bGround);
         placePieces();
+        bindPiecesToBoard();
         return scene;
     }
 
@@ -108,7 +109,16 @@ public class Board {
         // ROOK
         cellBoard[1][1].setPiece(injector.getInstance(Key.get(Rook.class, Names.named(PieceColor.WHITE.toString()))));
         cellBoard[7][7].setPiece(injector.getInstance(Key.get(Rook.class, Names.named(PieceColor.BLACK.toString()))));
+    }
 
+    private void bindPiecesToBoard() {
+        for (int i = 0; i < N_ROWS; i++) {
+            for (int j = 0; j < N_COLUMNS; j++) {
+                if(cellBoard[i][j].getPiece() != null) {
+                    cellBoard[i][j].getPiece().setBoard(this);
+                }
+            }
+        }
     }
 
     public void highlightCells(List<Coord> cordList) {
@@ -130,6 +140,9 @@ public class Board {
     public void move(final Cell source, final Cell destination) {
         final Piece piece = source.getPiece();
         source.removePiece();
+        if (!destination.isEmpty()) {
+            destination.removePiece();
+        }
         destination.setPiece(piece);
     }
 }

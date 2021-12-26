@@ -12,10 +12,10 @@ public class Game implements HandleOnClick {
     private PieceColor currentTurn = PieceColor.WHITE;
     private Cell currentlySelectedCell;
     private List<Coord> undoMovements;
-    private State state = State.MOVING;
+    private State state = State.CHOOSE_PIECE;
     private Board board;
 
-    public Game(){
+    public Game() {
     }
 
     public Scene start() {
@@ -33,18 +33,26 @@ public class Game implements HandleOnClick {
     public void handleOnClick(Cell cell) {
         System.out.println("I was clicked!");
         if (cell.getPiece() != null) {
-            final Piece piece = cell.getPiece();
-            final List<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
-            board.highlightCells(cordList);
-
-            if (currentlySelectedCell != null) {
+            if (state == State.CHOOSE_PIECE) {
+                final Piece piece = cell.getPiece();
+                final List<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
+                board.highlightCells(cordList);
+                if (currentlySelectedCell != null) {
+                    board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+                }
+                currentlySelectedCell = cell;
+                state = State.WAIT_NEW_PLACE;
+            } else if (currentlySelectedCell != null && currentlySelectedCell.getPiece() != null) {
                 board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+                board.move(currentlySelectedCell, cell);
+                currentlySelectedCell = null;
+                state = State.CHOOSE_PIECE;
             }
-            currentlySelectedCell = cell;
-        } else if (currentlySelectedCell != null && cell.isEmpty() || isOppositeColor(cell)) {
+        } else if (currentlySelectedCell != null && (cell.isEmpty() || isOppositeColor(cell))) {
             board.removeHighlightOnCells(getCordList(currentlySelectedCell));
             board.move(currentlySelectedCell, cell);
             currentlySelectedCell = null;
+            state = State.CHOOSE_PIECE;
         }
     }
 
@@ -56,7 +64,13 @@ public class Game implements HandleOnClick {
     }
 
     private boolean isOppositeColor(final Cell cell) {
-        return cell.getPiece() != null && cell.getPiece().getColor() != currentTurn;
+        if (currentlySelectedCell == null) {
+            return true;
+        }
+        if (currentlySelectedCell.getPiece() != null && cell.getPiece() != null) {
+            return currentlySelectedCell.getPiece().getColor() != cell.getPiece().getColor();
+        }
+        return true;
     }
 
     private void nextTurn() {
