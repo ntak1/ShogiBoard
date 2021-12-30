@@ -24,8 +24,8 @@ import model.module.PiecesModule;
 import model.pieces.*;
 
 public class Board {
-    private static final int N_COLUMNS = 9;
-    private static final int N_ROWS = 9;
+    public static final int N_COLUMNS = 9;
+    public static final int N_ROWS = 9;
 
     private final Cell[][] cellBoard;
     private final GridPane gridPane;
@@ -144,5 +144,9 @@ public class Board {
             destination.removePiece();
         }
         destination.setPiece(piece);
+    }
+
+    public Cell getCell(Coord coord) {
+        return cellBoard[coord.height][coord.width];
     }
 }

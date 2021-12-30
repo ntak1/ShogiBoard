@@ -1,12 +1,11 @@
 package model.pieces;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 import javafx.scene.paint.ImagePattern;
-import model.Coord;
-import model.PieceColor;
-import model.PieceImageLoader;
-import model.PieceName;
+import model.*;
 
 public class Pawn extends Piece {
 
@@ -19,35 +18,41 @@ public class Pawn extends Piece {
         List<Coord> possibleMovements = new ArrayList<>();
         if (coord == null) { // TODO: case when the pawn is outside the board
 
+        } else if (isInTheEdgeOfBoard(coord)) {
+            return Collections.emptyList();
         } else {
-            Coord newCoord;
-            if (color == PieceColor.WHITE) {
-                newCoord = Coord.builder()
-                                      .height(coord.height + 1)
-                                      .width(coord.width)
-                                      .build();
-            } else {
-                newCoord = Coord.builder()
-                                      .height(coord.height - 1)
-                                      .width(coord.width)
-                                      .build();
+            Coord newCoord = getNewCoord(coord);
+
+            if (isValidCell(board.getCell(newCoord))) {
+                possibleMovements.add(newCoord);
             }
-            possibleMovements.add(newCoord);
         }
         return possibleMovements;
     }
 
-    @Override
-    public void move(Coord newCoord, Piece[][] businessBoard) {
-
+    private boolean isValidCell(final Cell cell) {
+        if (cell.isEmpty()) {
+            return true;
+        }
+        return cell.getPiece().getColor() != this.color;
     }
 
-    public void move(Coord coord, Coord newCoord, Piece[][] businessBoard) {
-        businessBoard[newCoord.height][newCoord.width] = this;
-        if (coord != null) {
-            businessBoard[coord.height][coord.width] = null;
+    private Coord getNewCoord(Coord coord) {
+        final Coord newCoord;
+        final int direction = color == PieceColor.WHITE ? 1 : -1;
+        newCoord = Coord.builder()
+                              .height(coord.height + direction)
+                              .width(coord.width)
+                              .build();
+        return newCoord;
+    }
+
+    private boolean isInTheEdgeOfBoard(final Coord coord) {
+        System.out.println("coord.height = "  + coord.height);
+        if (coord.height == 0 && color == PieceColor.BLACK) {
+            return true;
         }
-        coord = newCoord;
+        return coord.height == Board.N_ROWS - 1 && color == PieceColor.WHITE;
     }
 
     @Override

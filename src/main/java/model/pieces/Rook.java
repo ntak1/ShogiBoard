@@ -27,10 +27,6 @@ public class Rook extends Piece {
         return null;
     }
 
-    public void move(Coord newCoord, Piece[][] businessBoard) {
-
-    }
-
     @Override
     public ImagePattern getImage() {
         return pieceImageLoader.getImagePattern(PieceName.ROOK, color);

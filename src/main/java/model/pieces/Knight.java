@@ -22,11 +22,6 @@ public class Knight extends Piece {
     }
 
     @Override
-    public void move(Coord newCoord, Piece[][] businessBoard) {
-
-    }
-
-    @Override
     public ImagePattern getImage() {
         return pieceImageLoader.getImagePattern(PieceName.KNIGHT, color);
     }

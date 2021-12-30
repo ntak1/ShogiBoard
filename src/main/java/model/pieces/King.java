@@ -1,5 +1,7 @@
 package model.pieces;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import model.Coord;
@@ -15,15 +17,29 @@ public class King extends Piece {
 
     @Override
     public List<Coord> getPossibleMovements(Coord coord) {
-        return null;
+        if (coord == null) {
+            return Collections.emptyList();
+        }
+        return getStandardMovements(coord);
+    }
+
+    private List<Coord> getStandardMovements(Coord coord) {
+        final List<Coord> possibleMovements = new ArrayList<>();
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <=1 ; j++) {
+                if (isValidCoord(coord.height + i, coord.width + j)) {
+                    final Coord newCoord = new Coord(coord.height + i, coord.width + j);
+                    if (isValidMovement(newCoord)) {
+                        possibleMovements.add(newCoord);
+                    }
+                }
+            }
+        }
+        return possibleMovements;
     }
 
     public Coord getCoord() {
         return null;
-    }
-
-    public void move(Coord newCoord, Piece[][] businessBoard) {
-
     }
 
     @Override

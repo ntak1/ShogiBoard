@@ -5,10 +5,7 @@ import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
-import model.Board;
-import model.Coord;
-import model.PieceColor;
-import model.PieceImageLoader;
+import model.*;
 
 @Getter
 @Setter
@@ -24,8 +21,16 @@ public abstract class Piece {
     }
 
     public abstract List<Coord> getPossibleMovements(Coord coord);
-    
-    public abstract void move(Coord newCoord, Piece[][] businessBoard);
+
+    protected boolean isValidCoord(int newPossibleHeight, int newPossibleWidth) {
+        return !(newPossibleHeight < 0 || newPossibleWidth < 0
+                || newPossibleHeight >= Board.N_ROWS || newPossibleWidth >= Board.N_COLUMNS);
+    }
+
+    protected boolean isValidMovement(Coord newCoord) {
+        return board.getCell(newCoord).isEmpty() ||
+                board.getCell(newCoord).getPiece().getColor() != color;
+    }
 
     public abstract ImagePattern getImage();
 

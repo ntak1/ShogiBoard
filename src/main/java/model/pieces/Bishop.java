@@ -20,10 +20,6 @@ public class Bishop extends Piece {
         return null;
     }
 
-    public void move(Coord newCoord, Piece[][] businessBoard) {
-
-    }
-
     @Override
     public ImagePattern getImage() {
         return pieceImageLoader.getImagePattern(PieceName.BISHOP, color);
