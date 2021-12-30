@@ -138,12 +138,16 @@ public class Board {
     }
 
     public void move(final Cell source, final Cell destination) {
-        final Piece piece = source.getPiece();
-        source.removePiece();
-        if (!destination.isEmpty()) {
-            destination.removePiece();
+        final Piece sourcePiece = source.getPiece();
+        final Coord destinationCoord = destination.getCoord();
+        final List<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
+        if (possibleMovements.contains(destinationCoord)) {
+            source.removePiece();
+            if (!destination.isEmpty()) {
+                destination.removePiece();
+            }
+            destination.setPiece(sourcePiece);
         }
-        destination.setPiece(piece);
     }
 
     public Cell getCell(Coord coord) {
