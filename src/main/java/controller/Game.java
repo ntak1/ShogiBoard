@@ -12,7 +12,7 @@ public class Game implements HandleOnClick {
     private PieceColor currentTurn = PieceColor.WHITE;
     private Cell currentlySelectedCell;
     private List<Coord> undoMovements;
-    private State state = State.CHOOSE_PIECE;
+    private State state = State.PIECE_SELECTED;
     private Board board;
 
     public Game() {
@@ -33,27 +33,40 @@ public class Game implements HandleOnClick {
     public void handleOnClick(Cell cell) {
         System.out.println("I was clicked!");
         if (cell.getPiece() != null) {
-            if (state == State.CHOOSE_PIECE) {
-                final Piece piece = cell.getPiece();
-                final List<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
-                board.highlightCells(cordList);
-                if (currentlySelectedCell != null) {
-                    board.removeHighlightOnCells(getCordList(currentlySelectedCell));
-                }
-                currentlySelectedCell = cell;
-                state = State.WAIT_NEW_PLACE;
-            } else if (currentlySelectedCell != null && currentlySelectedCell.getPiece() != null) {
-                board.removeHighlightOnCells(getCordList(currentlySelectedCell));
-                board.move(currentlySelectedCell, cell);
-                currentlySelectedCell = null;
-                state = State.CHOOSE_PIECE;
+            if (state == State.PIECE_SELECTED) {
+                highlightPossibleMovements(cell);
+            } else if (sourceCellContainsPiece()) {
+                movePieceFromCurrentlySelectedToDestionation(cell);
             }
-        } else if (currentlySelectedCell != null && (cell.isEmpty() || isOppositeColor(cell))) {
-            board.removeHighlightOnCells(getCordList(currentlySelectedCell));
-            board.move(currentlySelectedCell, cell);
-            currentlySelectedCell = null;
-            state = State.CHOOSE_PIECE;
+        } else if (isValidDestination(cell)) {
+            movePieceFromCurrentlySelectedToDestionation(cell);
         }
+    }
+
+    private boolean isValidDestination(Cell cell) {
+        return currentlySelectedCell != null && (cell.isEmpty() || isOppositeColor(cell));
+    }
+
+    private void movePieceFromCurrentlySelectedToDestionation(Cell cell) {
+        board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+        board.move(currentlySelectedCell, cell);
+        currentlySelectedCell = null;
+        state = State.PIECE_SELECTED;
+    }
+
+    private boolean sourceCellContainsPiece() {
+        return currentlySelectedCell != null && currentlySelectedCell.getPiece() != null;
+    }
+
+    private void highlightPossibleMovements(Cell cell) {
+        final Piece piece = cell.getPiece();
+        final List<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
+        board.highlightCells(cordList);
+        if (currentlySelectedCell != null) {
+            board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+        }
+        currentlySelectedCell = cell;
+        state = State.WAIT_NEW_PLACEMENT;
     }
 
     private List<Coord> getCordList(Cell cell) {
