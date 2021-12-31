@@ -45,24 +45,10 @@ public class Board {
         }
     }
 
-    public Scene placeInitialSetup() {
-        final Scene scene = new Scene(gridPane, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
-        final File tileFile = new File("shogi-pieces/boards/tile_wood2.png");
-        System.out.println(tileFile.toURI());
-        final Image tileImage = new Image(tileFile.toURI().toString());
-
-        BackgroundImage bImg = new BackgroundImage(tileImage,
-                BackgroundRepeat.REPEAT,
-                BackgroundRepeat.REPEAT,
-                BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
-
-
-        Background bGround = new Background(bImg);
-        gridPane.setBackground(bGround);
+    public Node placeInitialSetup() {
         placePieces();
         bindPiecesToBoard();
-        return scene;
+        return gridPane;
     }
 
     private void placePieces() {

@@ -1,7 +1,13 @@
 package controller;
 
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import model.*;
+import model.module.BoardModule;
 import model.pieces.Piece;
 
 import java.util.Collections;
@@ -18,20 +24,27 @@ public class Game implements HandleOnClick {
     public Game() {
     }
 
-    public Scene start() {
+    public Scene start(Injector injector) {
         System.out.println("Board " + board);
-        Scene scene = board.placeInitialSetup();
+        GridPane boardGridPane = (GridPane) board.placeInitialSetup();
+        VBox vBox = new VBox();
+        // Create areas for captured pieces
+
+        GridPane upper = injector.getInstance(Key.get(GridPane.class, Names.named(BoardModule.CAPTURED_GRID_PANE_NAME)));
+        GridPane lower = injector.getInstance(Key.get(GridPane.class, Names.named(BoardModule.CAPTURED_GRID_PANE_NAME)));
+
+        vBox.getChildren().addAll(lower, boardGridPane, upper);
+
+        final Scene scene = new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
         return scene;
     }
 
     public void setBoard(Board board) {
-        System.out.println("Game starting, turn: " + currentTurn.toString());
         this.board = board;
         this.board.bindHandler(this);
     }
 
     public void handleOnClick(Cell cell) {
-        System.out.println("I was clicked!");
         if (cell.getPiece() != null) {
             if (state == State.PIECE_SELECTED) {
                 highlightPossibleMovements(cell);

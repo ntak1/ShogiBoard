@@ -31,7 +31,7 @@ public class Main extends Application {
         game = new Game();
         board = injector.getInstance(Board.class);
         game.setBoard(board);
-        Scene scene = game.start();
+        Scene scene = game.start(injector);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Shogi Board");
         primaryStage.show();
