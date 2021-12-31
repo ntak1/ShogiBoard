@@ -26,10 +26,12 @@ public class Bishop extends Piece {
         final int[][] directionCombinations = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
 
         for (int[] pair: directionCombinations) {
-            for (int i = 0; i < Board.N_ROWS; i++) {
+            for (int i = 1; i < Board.N_ROWS; i++) {
                 Coord newCoord = new Coord(coord.getHeight() + pair[0]*i, coord.getWidth() - pair[1]*i);
-                if (isValidCoord(newCoord) && isValidMovement(newCoord)) {
-                    possibleMovements.add(newCoord);
+                if (isValidCoord(newCoord)) {
+                    if (isValidMovement(newCoord)) {
+                        possibleMovements.add(newCoord);
+                    }
                     if (shouldStop(newCoord)) {
                         break;
                     }
@@ -40,7 +42,7 @@ public class Bishop extends Piece {
     }
 
     private boolean shouldStop(Coord newCoord) {
-        return !board.getCell(newCoord).isEmpty() && board.getCell(newCoord).getPiece().getColor() != color;
+        return !board.getCell(newCoord).isEmpty();
     }
 
     @Override

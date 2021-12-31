@@ -58,7 +58,7 @@ public class Rook extends Piece {
     }
 
     private boolean shouldStop(Coord newCoord) {
-        return !board.getCell(newCoord).isEmpty() && board.getCell(newCoord).getPiece().getColor() != color;
+        return !board.getCell(newCoord).isEmpty();
     }
 
     @Override
