@@ -5,3 +5,5 @@ https://www.pavel.cool/java/JavaFX8-Guice-Integration/
 
 ## Screen Shots
 ![](BoardImage.png)
+
+![](MovementsHighlight.PNG)
