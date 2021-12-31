@@ -1,5 +1,7 @@
 package model.pieces;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import model.Coord;
@@ -14,11 +16,21 @@ public class Lance extends Piece {
 
     @Override
     public List<Coord> getPossibleMovements(Coord coord) {
-        return null;
+        if (coord == null) {
+            return Collections.emptyList();
+        }
+        return getStandardMovements(coord);
     }
 
-    public List<Coord> getPossibleMovements() {
-        return null;
+    private List<Coord> getStandardMovements(final Coord coord) {
+        final List<Coord> possibleMovements = new ArrayList<>();
+        final int delta = color == PieceColor.WHITE ? 1 : -1;
+        Coord newCoord = new Coord(coord.getHeight() + delta, coord.getWidth());
+        while (isValidMovement(newCoord) && isValidCoord(newCoord.getHeight(), newCoord.getWidth())) {
+            possibleMovements.add(newCoord);
+            newCoord = new Coord(newCoord.getHeight() + delta, newCoord.getWidth());
+        }
+        return possibleMovements;
     }
 
     public Coord getCoord() {

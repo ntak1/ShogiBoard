@@ -46,9 +46,7 @@ public class Board {
     }
 
     public Scene placeInitialSetup() {
-        int HEIGHT = 600;
-        int WIDTH = 600;
-        final Scene scene = new Scene(gridPane, WIDTH, HEIGHT);
+        final Scene scene = new Scene(gridPane, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
         final File tileFile = new File("shogi-pieces/boards/tile_wood2.png");
         System.out.println(tileFile.toURI());
         final Image tileImage = new Image(tileFile.toURI().toString());

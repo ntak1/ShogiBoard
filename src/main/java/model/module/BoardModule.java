@@ -29,8 +29,8 @@ public class BoardModule extends AbstractModule {
             uiBoard.getColumnConstraints().add(new ColumnConstraints(SQUARE_SIZE));
             uiBoard.getRowConstraints().add(new RowConstraints(SQUARE_SIZE));
         }
-        for (int i = 1; i < 10; i++) {
-            for (int j = 1; j < 10; j++) {
+        for (int i = 1; i <= N_COLUMNS; i++) {
+            for (int j = 1; j <= N_ROWS; j++) {
                 Rectangle rect = new Rectangle();
                 rect.setWidth(SQUARE_SIZE);
                 rect.setHeight(SQUARE_SIZE);
