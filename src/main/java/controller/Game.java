@@ -45,6 +45,7 @@ public class Game implements HandleOnClick {
     }
 
     public void handleOnClick(Cell cell) {
+        System.out.println("I was clicked");
         if (cell.getPiece() != null) {
             if (state == State.PIECE_SELECTED) {
                 highlightPossibleMovements(cell);
