@@ -22,7 +22,9 @@ public abstract class Piece {
 
     public abstract List<Coord> getPossibleMovements(Coord coord);
 
-    protected boolean isValidCoord(int newPossibleHeight, int newPossibleWidth) {
+    protected boolean isValidCoord(Coord coord) {
+        int newPossibleHeight = coord.getHeight();
+        int newPossibleWidth = coord.getWidth();
         return !(newPossibleHeight < 0 || newPossibleWidth < 0
                 || newPossibleHeight >= Board.N_ROWS || newPossibleWidth >= Board.N_COLUMNS);
     }

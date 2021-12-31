@@ -26,7 +26,7 @@ public class Lance extends Piece {
         final List<Coord> possibleMovements = new ArrayList<>();
         final int delta = color == PieceColor.WHITE ? 1 : -1;
         Coord newCoord = new Coord(coord.getHeight() + delta, coord.getWidth());
-        while (isValidMovement(newCoord) && isValidCoord(newCoord.getHeight(), newCoord.getWidth())) {
+        while (isValidMovement(newCoord) && isValidCoord(newCoord)) {
             possibleMovements.add(newCoord);
             newCoord = new Coord(newCoord.getHeight() + delta, newCoord.getWidth());
         }

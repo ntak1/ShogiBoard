@@ -31,8 +31,8 @@ public class Gold extends Piece {
                 }
                 int newPossibleHeight = height + i;
                 int newPossibleWidth = width + j;
-                if (isValidCoord(newPossibleHeight, newPossibleWidth)) {
-                    Coord newCoord = new Coord(newPossibleHeight, newPossibleWidth);
+                Coord newCoord = new Coord(newPossibleHeight, newPossibleWidth);
+                if (isValidCoord(newCoord)) {
                     if (isValidMovement(newCoord)) {
                         standardMovements.add(newCoord);
                     }
