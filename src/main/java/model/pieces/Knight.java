@@ -17,10 +17,6 @@ public class Knight extends Piece {
         return null;
     }
 
-    public Coord getCoord() {
-        return null;
-    }
-
     @Override
     public ImagePattern getImage() {
         return pieceImageLoader.getImagePattern(PieceName.KNIGHT, color);

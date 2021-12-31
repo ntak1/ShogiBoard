@@ -15,11 +15,6 @@ public class Bishop extends Piece {
         return null;
     }
 
-
-    public Coord getCoord() {
-        return null;
-    }
-
     @Override
     public ImagePattern getImage() {
         return pieceImageLoader.getImagePattern(PieceName.BISHOP, color);

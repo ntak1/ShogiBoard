@@ -64,10 +64,6 @@ public class Rook extends Piece {
         return false;
     }
 
-    public Coord getCoord() {
-        return null;
-    }
-
     @Override
     public ImagePattern getImage() {
         return pieceImageLoader.getImagePattern(PieceName.ROOK, color);

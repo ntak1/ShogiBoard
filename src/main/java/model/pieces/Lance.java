@@ -33,10 +33,6 @@ public class Lance extends Piece {
         return possibleMovements;
     }
 
-    public Coord getCoord() {
-        return null;
-    }
-
     @Override
     public ImagePattern getImage() {
         return pieceImageLoader.getImagePattern(PieceName.LANCE, color);

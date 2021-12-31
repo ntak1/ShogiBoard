@@ -56,10 +56,6 @@ public class Gold extends Piece {
         }
     }
 
-    public Coord getCoord() {
-        return null;
-    }
-
     @Override
     public ImagePattern getImage() {
         return pieceImageLoader.getImagePattern(PieceName.GOLD, color);

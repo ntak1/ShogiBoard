@@ -1,5 +1,7 @@
 package model.pieces;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import model.Coord;
@@ -16,15 +18,41 @@ public class Silver extends Piece {
 
     @Override
     public List<Coord> getPossibleMovements(Coord coord) {
-        return null;
+        if (coord == null) {
+            return Collections.emptyList();
+        }
+        return getStandardMovements(coord);
     }
 
-    public List<Coord> getPossibleMovements() {
-        return null;
+    private List<Coord> getStandardMovements(final Coord coord) {
+        final List<Coord> standardMovements = new ArrayList<>();
+        final int height = coord.getHeight();
+        final int width = coord.getWidth();
+
+        for (int i = -1; i <= 1 ; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (shouldSkippCoord(i, j)) {
+                    continue;
+                }
+                int newPossibleHeight = height + i;
+                int newPossibleWidth = width + j;
+                Coord newCoord = new Coord(newPossibleHeight, newPossibleWidth);
+                if (isValidCoord(newCoord)) {
+                    if (isValidMovement(newCoord)) {
+                        standardMovements.add(newCoord);
+                    }
+                }
+            }
+        }
+        return standardMovements;
     }
 
-    public Coord getCoord() {
-        return null;
+    private boolean shouldSkippCoord(int verticalStep, int horizontalStep) {
+        if (color == PieceColor.BLACK) {
+            return (verticalStep == 1 && horizontalStep == 0) || (verticalStep == 0);
+        } else {
+            return (verticalStep == -1 && horizontalStep == 0) || (verticalStep == 0);
+        }
     }
 
     @Override

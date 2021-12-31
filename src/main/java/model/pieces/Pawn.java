@@ -23,18 +23,11 @@ public class Pawn extends Piece {
         } else {
             Coord newCoord = getNewCoord(coord);
 
-            if (isValidCell(board.getCell(newCoord))) {
+            if (isValidMovement(newCoord)) {
                 possibleMovements.add(newCoord);
             }
         }
         return possibleMovements;
-    }
-
-    private boolean isValidCell(final Cell cell) {
-        if (cell.isEmpty()) {
-            return true;
-        }
-        return cell.getPiece().getColor() != this.color;
     }
 
     private Coord getNewCoord(Coord coord) {
