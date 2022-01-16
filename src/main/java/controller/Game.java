@@ -21,6 +21,11 @@ public class Game implements HandleOnClick {
     private State state = State.PIECE_SELECTED;
     private Board board;
 
+    private Cell[][] whiteCapturedArea;
+    private Cell[][] blackCapturedArea;
+    private int lastFreeWhiteCapturedCellIndex = 0;
+    private int lastFreeBlackCapturedCellIndex = 0;
+
     public Game() {
     }
 
@@ -28,15 +33,15 @@ public class Game implements HandleOnClick {
         System.out.println("Board " + board);
         GridPane boardGridPane = (GridPane) board.placeInitialSetup();
         VBox vBox = new VBox();
-        // Create areas for captured pieces
 
-        GridPane upper = injector.getInstance(Key.get(GridPane.class, Names.named(BoardModule.CAPTURED_GRID_PANE_NAME)));
-        GridPane lower = injector.getInstance(Key.get(GridPane.class, Names.named(BoardModule.CAPTURED_GRID_PANE_NAME)));
+        // Create areas for captured pieces
+        whiteCapturedArea = injector.getInstance(Key.get(Cell[][].class, Names.named(BoardModule.CAPTURED_CELL_BOARD)));
+        blackCapturedArea = injector.getInstance(Key.get(Cell[][].class, Names.named(BoardModule.CAPTURED_CELL_BOARD)));
+        GridPane upper = whiteCapturedArea[0][0].getGridPane();
+        GridPane lower = blackCapturedArea[0][0].getGridPane();
 
         vBox.getChildren().addAll(lower, boardGridPane, upper);
-
-        final Scene scene = new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
-        return scene;
+        return new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
     }
 
     public void setBoard(Board board) {
@@ -49,11 +54,13 @@ public class Game implements HandleOnClick {
         if (cell.getPiece() != null) {
             if (state == State.PIECE_SELECTED) {
                 highlightPossibleMovements(cell);
-            } else if (sourceCellContainsPiece()) {
-                movePieceFromCurrentlySelectedToDestionation(cell);
+            } else if (validSourcePiece()) {
+                movePieceFromCurrentlySelectedToDestination(cell);
+                nextTurn();
             }
         } else if (isValidDestination(cell)) {
-            movePieceFromCurrentlySelectedToDestionation(cell);
+            movePieceFromCurrentlySelectedToDestination(cell);
+            nextTurn();
         }
     }
 
@@ -61,14 +68,28 @@ public class Game implements HandleOnClick {
         return currentlySelectedCell != null && (cell.isEmpty() || isOppositeColor(cell));
     }
 
-    private void movePieceFromCurrentlySelectedToDestionation(Cell cell) {
+    private void movePieceFromCurrentlySelectedToDestination(Cell cell) {
         board.removeHighlightOnCells(getCordList(currentlySelectedCell));
-        board.move(currentlySelectedCell, cell);
+        Piece capturedPiece = board.move(currentlySelectedCell, cell);
+        if (capturedPiece != null) {
+            System.out.println("Captured Piece!");
+            if (currentTurn == PieceColor.WHITE) {
+                int row = lastFreeWhiteCapturedCellIndex / 2;
+                int col = lastFreeWhiteCapturedCellIndex % 9;
+                whiteCapturedArea[row][col].setPiece(capturedPiece);
+                lastFreeWhiteCapturedCellIndex++;
+            } else {
+                int row = lastFreeBlackCapturedCellIndex / 2;
+                int col = lastFreeBlackCapturedCellIndex % 9;
+                blackCapturedArea[row][col].setPiece(capturedPiece);
+                lastFreeBlackCapturedCellIndex++;
+            }
+        }
         currentlySelectedCell = null;
         state = State.PIECE_SELECTED;
     }
 
-    private boolean sourceCellContainsPiece() {
+    private boolean validSourcePiece() {
         return currentlySelectedCell != null && currentlySelectedCell.getPiece() != null;
     }
 

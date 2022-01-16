@@ -121,17 +121,20 @@ public class Board {
         }
     }
 
-    public void move(final Cell source, final Cell destination) {
+    public Piece move(final Cell source, final Cell destination) {
         final Piece sourcePiece = source.getPiece();
         final Coord destinationCoord = destination.getCoord();
         final List<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
+        Piece capturedPiece = null;
         if (possibleMovements.contains(destinationCoord)) {
             source.removePiece();
             if (!destination.isEmpty()) {
+                capturedPiece = destination.getPiece();
                 destination.removePiece();
             }
             destination.setPiece(sourcePiece);
         }
+        return capturedPiece;
     }
 
     public Cell getCell(Coord coord) {
