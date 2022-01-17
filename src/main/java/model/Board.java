@@ -1,26 +1,14 @@
 package model;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
-import java.io.File;
 import java.util.List;
 
 import controller.Game;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import model.module.PiecesModule;
 import model.pieces.*;
 
 public class Board {
@@ -29,10 +17,8 @@ public class Board {
 
     private final Cell[][] cellBoard;
     private final GridPane gridPane;
-    private final Injector injector;
 
     public Board(GridPane uiBoard, Cell[][] cellBoard) {
-        injector = Guice.createInjector(new PiecesModule());
         this.gridPane = uiBoard;
         this.cellBoard = cellBoard;
     }
@@ -45,13 +31,13 @@ public class Board {
         }
     }
 
-    public Node placeInitialSetup() {
-        placePieces();
+    public Node placeInitialSetup(final Injector injector) {
+        placePieces(injector);
         bindPiecesToBoard();
         return gridPane;
     }
 
-    private void placePieces() {
+    private void placePieces(final Injector injector) {
         // PAWN
         for (int i=0; i < N_COLUMNS; i++) {
             cellBoard[2][i].setPiece(injector.getInstance(Key.get(Pawn.class, Names.named(PieceColor.WHITE.toString()))));

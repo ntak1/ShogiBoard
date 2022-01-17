@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class PieceImageLoader {
-    private Map<ColorPieceCombination, String> colorPieceCombinationStringMap;
+    private final Map<ColorPieceCombination, String> colorPieceCombinationStringMap;
 
     public ImagePattern getImagePattern(PieceName pieceName, PieceColor color) {
         final ColorPieceCombination colorPieceCombination = new ColorPieceCombination(color, pieceName);

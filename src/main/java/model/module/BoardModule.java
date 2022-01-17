@@ -85,8 +85,8 @@ public class BoardModule extends AbstractModule {
     @Named(CAPTURED_CELL_BOARD)
     public Cell[][] providesCapturedAreaCell(@Named(CAPTURED_GRID_PANE_NAME) GridPane uiBoard) {
         Cell[][] cellBoard = new Cell[N_ROWS][N_COLUMNS];
-        for (int i = 0; i < N_ROWS; i++) {
-            for (int j = 0; j < CAPTURED_AREA_N_ROWS; j++) {
+        for (int i = 0; i < CAPTURED_AREA_N_ROWS; i++) {
+            for (int j = 0; j < N_ROWS; j++) {
                 cellBoard[i][j] = new Cell();
                 cellBoard[i][j].setGridPane(uiBoard);
                 cellBoard[i][j].setCoord(new Coord(i, j));

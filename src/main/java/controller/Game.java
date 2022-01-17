@@ -21,8 +21,10 @@ public class Game implements HandleOnClick {
     private State state = State.PIECE_SELECTED;
     private Board board;
 
-    private Cell[][] whiteCapturedArea;
+    private Injector injector;
+
     private Cell[][] blackCapturedArea;
+    private Cell[][] whiteCapturedArea;
     private int lastFreeWhiteCapturedCellIndex = 0;
     private int lastFreeBlackCapturedCellIndex = 0;
 
@@ -30,22 +32,26 @@ public class Game implements HandleOnClick {
     }
 
     public Scene start(Injector injector) {
-        System.out.println("Board " + board);
-        GridPane boardGridPane = (GridPane) board.placeInitialSetup();
+        this.injector  = injector;
+
+        // Setup board
+        setBoard();
+        GridPane boardGridPane = (GridPane) board.placeInitialSetup(injector);
+
         VBox vBox = new VBox();
 
         // Create areas for captured pieces
-        whiteCapturedArea = injector.getInstance(Key.get(Cell[][].class, Names.named(BoardModule.CAPTURED_CELL_BOARD)));
         blackCapturedArea = injector.getInstance(Key.get(Cell[][].class, Names.named(BoardModule.CAPTURED_CELL_BOARD)));
-        GridPane upper = whiteCapturedArea[0][0].getGridPane();
-        GridPane lower = blackCapturedArea[0][0].getGridPane();
+        whiteCapturedArea = injector.getInstance(Key.get(Cell[][].class, Names.named(BoardModule.CAPTURED_CELL_BOARD)));
+        GridPane upper = blackCapturedArea[0][0].getGridPane();
+        GridPane lower = whiteCapturedArea[0][0].getGridPane();
 
         vBox.getChildren().addAll(lower, boardGridPane, upper);
         return new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
+    private void setBoard() {
+        board = injector.getInstance(Board.class);
         this.board.bindHandler(this);
     }
 
@@ -74,14 +80,16 @@ public class Game implements HandleOnClick {
         if (capturedPiece != null) {
             System.out.println("Captured Piece!");
             if (currentTurn == PieceColor.WHITE) {
-                int row = lastFreeWhiteCapturedCellIndex / 2;
+                int row = lastFreeWhiteCapturedCellIndex / 9;
                 int col = lastFreeWhiteCapturedCellIndex % 9;
-                whiteCapturedArea[row][col].setPiece(capturedPiece);
+                final Piece piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.WHITE.toString())));
+                whiteCapturedArea[row][col].setPiece(piece);
                 lastFreeWhiteCapturedCellIndex++;
             } else {
-                int row = lastFreeBlackCapturedCellIndex / 2;
+                int row = lastFreeBlackCapturedCellIndex / 9;
                 int col = lastFreeBlackCapturedCellIndex % 9;
-                blackCapturedArea[row][col].setPiece(capturedPiece);
+                final Piece piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.BLACK.toString())));
+                blackCapturedArea[row][col].setPiece(piece);
                 lastFreeBlackCapturedCellIndex++;
             }
         }
@@ -122,6 +130,7 @@ public class Game implements HandleOnClick {
     }
 
     private void nextTurn() {
-        currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+//        currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+        currentTurn = PieceColor.BLACK;
     }
 }

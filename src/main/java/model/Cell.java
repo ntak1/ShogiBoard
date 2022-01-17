@@ -5,6 +5,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import model.pieces.Piece;
 
@@ -40,7 +41,7 @@ public class Cell {
         addLayer(rect);
     }
 
-    public void addLayer(Rectangle node) {
+    public void addLayer(@NonNull Rectangle node) {
         layers.add(node);
         node.setOnMouseClicked(x -> handler.handleOnClick(this));
         gridPane.add(node, coord.width+1, coord.height+1);
