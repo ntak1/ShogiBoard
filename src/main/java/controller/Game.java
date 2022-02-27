@@ -40,14 +40,17 @@ public class Game implements HandleOnClick {
 
         VBox vBox = new VBox();
 
-        // Create areas for captured pieces
+        createCapturedArea(injector, boardGridPane, vBox);
+        return new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
+    }
+
+    private void createCapturedArea(Injector injector, GridPane boardGridPane, VBox vBox) {
         blackCapturedArea = injector.getInstance(Key.get(Cell[][].class, Names.named(BoardModule.CAPTURED_CELL_BOARD)));
         whiteCapturedArea = injector.getInstance(Key.get(Cell[][].class, Names.named(BoardModule.CAPTURED_CELL_BOARD)));
         GridPane upper = blackCapturedArea[0][0].getGridPane();
         GridPane lower = whiteCapturedArea[0][0].getGridPane();
 
         vBox.getChildren().addAll(lower, boardGridPane, upper);
-        return new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
     }
 
     private void setBoard() {
@@ -60,7 +63,7 @@ public class Game implements HandleOnClick {
         if (cell.getPiece() != null) {
             if (state == State.PIECE_SELECTED) {
                 highlightPossibleMovements(cell);
-            } else if (validSourcePiece()) {
+            } else if (isValidSourcePiece()) {
                 movePieceFromCurrentlySelectedToDestination(cell);
                 nextTurn();
             }
@@ -97,7 +100,7 @@ public class Game implements HandleOnClick {
         state = State.PIECE_SELECTED;
     }
 
-    private boolean validSourcePiece() {
+    private boolean isValidSourcePiece() {
         return currentlySelectedCell != null && currentlySelectedCell.getPiece() != null;
     }
 
