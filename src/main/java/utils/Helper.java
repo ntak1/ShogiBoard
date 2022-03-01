@@ -1,4 +1,4 @@
-package model;
+package utils;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;

@@ -1,13 +1,12 @@
-package model.pieces;
+package pieces;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
-import model.Coord;
-import model.PieceColor;
-import model.PieceImageLoader;
-import model.PieceName;
+import utils.Coord;
+import utils.PieceImageLoader;
+import utils.PieceName;
 
 public class Knight extends Piece {
     public Knight(PieceColor color, PieceImageLoader pieceImageLoader) {

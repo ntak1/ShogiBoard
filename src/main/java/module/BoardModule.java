@@ -1,4 +1,4 @@
-package model.module;
+package module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -8,14 +8,14 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import model.Board;
-import model.Cell;
-import model.Coord;
+import board.MainBoard;
+import utils.Cell;
+import utils.Coord;
 
 import java.io.File;
 
-import static model.UiConfig.PADDING;
-import static model.UiConfig.SQUARE_SIZE;
+import static utils.UiConfig.PADDING;
+import static utils.UiConfig.SQUARE_SIZE;
 
 
 public class BoardModule extends AbstractModule {
@@ -112,20 +112,7 @@ public class BoardModule extends AbstractModule {
     }
 
     @Provides
-    protected Cell[][] providesCellBoard(@Named(BOARD_GRID_PANE_NAME) GridPane uiBoard) {
-        Cell[][] cellBoard = new Cell[N_ROWS][N_COLUMNS];
-        for (int i = 0; i < N_ROWS; i++) {
-            for (int j = 0; j < N_COLUMNS; j++) {
-                cellBoard[i][j] = new Cell();
-                cellBoard[i][j].setGridPane(uiBoard);
-                cellBoard[i][j].setCoord(new Coord(i, j));
-            }
-        }
-        return cellBoard;
-    }
-
-    @Provides
-    public Board providesBoard(@Named(BOARD_GRID_PANE_NAME) GridPane uiBoard, Cell[][] cellBoard) {
-        return new Board(uiBoard, cellBoard);
+    public MainBoard providesBoard(@Named(BOARD_GRID_PANE_NAME) GridPane uiBoard) {
+        return new MainBoard(uiBoard);
     }
 }

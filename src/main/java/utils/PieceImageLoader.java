@@ -1,4 +1,4 @@
-package model;
+package utils;
 
 
 import java.io.File;
@@ -6,6 +6,8 @@ import java.util.Map;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import lombok.AllArgsConstructor;
+import pieces.ColorPieceCombination;
+import pieces.PieceColor;
 
 @AllArgsConstructor
 public class PieceImageLoader {

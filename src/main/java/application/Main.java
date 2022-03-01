@@ -5,18 +5,17 @@ import com.google.inject.Injector;
 import java.util.Collections;
 import java.util.List;
 
-import controller.Game;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Board;
-import model.Coord;
-import model.module.BoardModule;
-import model.module.PiecesModule;
+import board.MainBoard;
+import utils.Coord;
+import module.BoardModule;
+import module.PiecesModule;
 
 
 public class Main extends Application {
-    private Board board;
+    private MainBoard board;
     private Game game;
     private List<Coord> undoMovements = Collections.emptyList();
 

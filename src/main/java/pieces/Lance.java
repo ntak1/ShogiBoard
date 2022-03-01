@@ -1,13 +1,12 @@
-package model.pieces;
+package pieces;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
-import model.Coord;
-import model.PieceColor;
-import model.PieceImageLoader;
-import model.PieceName;
+import utils.Coord;
+import utils.PieceImageLoader;
+import utils.PieceName;
 
 public class Lance extends Piece {
     public Lance(PieceColor color, PieceImageLoader pieceImageLoader) {
@@ -30,6 +29,7 @@ public class Lance extends Piece {
             possibleMovements.add(newCoord);
             newCoord = new Coord(newCoord.getHeight() + delta, newCoord.getWidth());
             if (!board.getCell(newCoord).isEmpty()) {
+                possibleMovements.add(newCoord);
                 break;
             }
         }

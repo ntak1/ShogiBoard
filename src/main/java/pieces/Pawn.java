@@ -1,11 +1,12 @@
-package model.pieces;
+package pieces;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import board.MainBoard;
 import javafx.scene.paint.ImagePattern;
-import model.*;
+import utils.*;
 
 public class Pawn extends Piece {
 
@@ -45,7 +46,7 @@ public class Pawn extends Piece {
         if (coord.height == 0 && color == PieceColor.BLACK) {
             return true;
         }
-        return coord.height == Board.N_ROWS - 1 && color == PieceColor.WHITE;
+        return coord.height == MainBoard.N_ROWS - 1 && color == PieceColor.WHITE;
     }
 
     @Override

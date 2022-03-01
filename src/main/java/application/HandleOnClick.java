@@ -1,6 +1,6 @@
-package controller;
+package application;
 
-import model.Cell;
+import utils.Cell;
 
 public interface HandleOnClick {
     public void handleOnClick(Cell cell);

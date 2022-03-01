@@ -1,11 +1,11 @@
-package model.module;
+package module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-import model.*;
-import model.pieces.*;
+import utils.*;
+import pieces.*;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,14 +1,16 @@
-package controller;
+package application;
 
+import board.MainBoard;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import model.*;
-import model.module.BoardModule;
-import model.pieces.Piece;
+import pieces.PieceColor;
+import utils.*;
+import module.BoardModule;
+import pieces.Piece;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +21,7 @@ public class Game implements HandleOnClick {
     private Cell currentlySelectedCell;
     private List<Coord> undoMovements;
     private State state = State.PIECE_SELECTED;
-    private Board board;
+    private MainBoard board;
 
     private Injector injector;
 
@@ -54,7 +56,7 @@ public class Game implements HandleOnClick {
     }
 
     private void setBoard() {
-        board = injector.getInstance(Board.class);
+        board = injector.getInstance(MainBoard.class);
         this.board.bindHandler(this);
     }
 
@@ -62,6 +64,9 @@ public class Game implements HandleOnClick {
         System.out.println("I was clicked");
         if (cell.getPiece() != null) {
             if (state == State.PIECE_SELECTED) {
+                if (cell.getPiece().getColor() != currentTurn) {
+                    return;
+                }
                 highlightPossibleMovements(cell);
             } else if (isValidSourcePiece()) {
                 movePieceFromCurrentlySelectedToDestination(cell);
@@ -82,17 +87,24 @@ public class Game implements HandleOnClick {
         Piece capturedPiece = board.move(currentlySelectedCell, cell);
         if (capturedPiece != null) {
             System.out.println("Captured Piece!");
+            int row;
+            int col;
+            final Piece piece;
             if (currentTurn == PieceColor.WHITE) {
-                int row = lastFreeWhiteCapturedCellIndex / 9;
-                int col = lastFreeWhiteCapturedCellIndex % 9;
-                final Piece piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.WHITE.toString())));
+                row = lastFreeWhiteCapturedCellIndex / 9;
+                col = lastFreeWhiteCapturedCellIndex % 9;
+                piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.WHITE.toString())));
                 whiteCapturedArea[row][col].setPiece(piece);
+                piece.setCaptured(true);
+                whiteCapturedArea[row][col].setOnClickHandler(this);
                 lastFreeWhiteCapturedCellIndex++;
             } else {
-                int row = lastFreeBlackCapturedCellIndex / 9;
-                int col = lastFreeBlackCapturedCellIndex % 9;
-                final Piece piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.BLACK.toString())));
+                row = lastFreeBlackCapturedCellIndex / 9;
+                col = lastFreeBlackCapturedCellIndex % 9;
+                piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.BLACK.toString())));
                 blackCapturedArea[row][col].setPiece(piece);
+                piece.setCaptured(true);
+                blackCapturedArea[row][col].setOnClickHandler(this);
                 lastFreeBlackCapturedCellIndex++;
             }
         }
@@ -101,7 +113,8 @@ public class Game implements HandleOnClick {
     }
 
     private boolean isValidSourcePiece() {
-        return currentlySelectedCell != null && currentlySelectedCell.getPiece() != null;
+        return currentlySelectedCell != null && currentlySelectedCell.getPiece() != null
+                && currentlySelectedCell.getPiece().getColor() == currentTurn;
     }
 
     private void highlightPossibleMovements(Cell cell) {
@@ -127,13 +140,15 @@ public class Game implements HandleOnClick {
             return true;
         }
         if (currentlySelectedCell.getPiece() != null && cell.getPiece() != null) {
-            return currentlySelectedCell.getPiece().getColor() != cell.getPiece().getColor();
+            return currentTurn != cell.getPiece().getColor();
         }
         return true;
     }
 
     private void nextTurn() {
-//        currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
-        currentTurn = PieceColor.BLACK;
+        PieceColor previousPieceColor = currentTurn;
+        currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+        PieceColor currentTurnPieceColor = currentTurn;
+        System.out.printf("%s -> %s\n", previousPieceColor, currentTurnPieceColor);
     }
 }

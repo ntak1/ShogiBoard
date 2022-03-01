@@ -1,13 +1,13 @@
-package model;
+package utils;
 
-import controller.HandleOnClick;
+import application.HandleOnClick;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import model.pieces.Piece;
+import pieces.Piece;
 
 import java.util.Stack;
 

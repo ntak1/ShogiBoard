@@ -1,11 +1,10 @@
-package model.pieces;
+package pieces;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
-import model.*;
-import model.pieces.Piece;
+import utils.*;
 
 public class Rook extends Piece {
 

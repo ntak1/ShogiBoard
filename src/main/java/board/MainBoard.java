@@ -1,26 +1,26 @@
-package model;
+package board;
 
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import java.util.List;
 
-import controller.Game;
+import application.Game;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
-import model.pieces.*;
+import pieces.*;
+import utils.Cell;
+import utils.Coord;
+import pieces.PieceColor;
 
-public class Board {
+
+public class MainBoard extends Board {
     public static final int N_COLUMNS = 9;
     public static final int N_ROWS = 9;
 
-    private final Cell[][] cellBoard;
-    private final GridPane gridPane;
-
-    public Board(GridPane uiBoard, Cell[][] cellBoard) {
+    public MainBoard(GridPane uiBoard) {
         this.gridPane = uiBoard;
-        this.cellBoard = cellBoard;
+        this.cellBoard = initializeCellBoard(uiBoard);
     }
 
     public void bindHandler(Game game) {
@@ -35,6 +35,23 @@ public class Board {
         placePieces(injector);
         bindPiecesToBoard();
         return gridPane;
+    }
+
+    @Override
+    public Piece move(final Cell source, final Cell destination) {
+        final Piece sourcePiece = source.getPiece();
+        final Coord destinationCord = destination.getCoord();
+        final List<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
+        Piece capturedPiece = null;
+        if (possibleMovements.contains(destinationCord)) {
+            source.removePiece();
+            if (!destination.isEmpty()) {
+                capturedPiece = destination.getPiece();
+                destination.removePiece();
+            }
+            destination.setPiece(sourcePiece);
+        }
+        return capturedPiece;
     }
 
     private void placePieces(final Injector injector) {
@@ -91,39 +108,15 @@ public class Board {
         }
     }
 
-    public void highlightCells(List<Coord> cordList) {
-        for(Coord coord: cordList) {
-            Rectangle cell = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
-            Rectangle rectangle = new Rectangle(cell.getHeight(), cell.getWidth());
-            rectangle.setStroke(javafx.scene.paint.Color.BLACK);
-            rectangle.setFill(new javafx.scene.paint.Color(0.1, 0.1, 1, 0.25));
-            cellBoard[coord.height][coord.width].addLayer(rectangle);
-        }
-    }
-
-    public void removeHighlightOnCells(List<Coord> cordList) {
-        for(Coord coord: cordList) {
-            cellBoard[coord.height][coord.width].popLayer();
-        }
-    }
-
-    public Piece move(final Cell source, final Cell destination) {
-        final Piece sourcePiece = source.getPiece();
-        final Coord destinationCoord = destination.getCoord();
-        final List<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
-        Piece capturedPiece = null;
-        if (possibleMovements.contains(destinationCoord)) {
-            source.removePiece();
-            if (!destination.isEmpty()) {
-                capturedPiece = destination.getPiece();
-                destination.removePiece();
+    private Cell[][] initializeCellBoard(GridPane uiBoard) {
+        Cell[][] cellBoard = new Cell[N_ROWS][N_COLUMNS];
+        for (int i = 0; i < N_ROWS; i++) {
+            for (int j = 0; j < N_COLUMNS; j++) {
+                cellBoard[i][j] = new Cell();
+                cellBoard[i][j].setGridPane(uiBoard);
+                cellBoard[i][j].setCoord(new Coord(i, j));
             }
-            destination.setPiece(sourcePiece);
         }
-        return capturedPiece;
-    }
-
-    public Cell getCell(Coord coord) {
-        return cellBoard[coord.height][coord.width];
+        return cellBoard;
     }
 }

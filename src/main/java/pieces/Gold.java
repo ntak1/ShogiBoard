@@ -1,10 +1,10 @@
-package model.pieces;
+package pieces;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
-import model.*;
+import utils.*;
 
 public class Gold extends Piece {
     public Gold(PieceColor color, PieceImageLoader pieceImageLoader) {
