@@ -4,6 +4,7 @@ import board.MainBoard;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
+import exception.InvalidPositionException;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -68,13 +69,11 @@ public class Game implements HandleOnClick {
                     return;
                 }
                 highlightPossibleMovements(cell);
-            } else if (isValidSourcePiece()) {
+            } else if (isValidSourcePiece() && isValidDestination(cell)) { // The cell clicked is the destination
                 movePieceFromCurrentlySelectedToDestination(cell);
-                nextTurn();
             }
-        } else if (isValidDestination(cell)) {
+        } else if (isValidDestination(cell)) { // The cell clicked is the destination
             movePieceFromCurrentlySelectedToDestination(cell);
-            nextTurn();
         }
     }
 
@@ -84,7 +83,15 @@ public class Game implements HandleOnClick {
 
     private void movePieceFromCurrentlySelectedToDestination(Cell cell) {
         board.removeHighlightOnCells(getCordList(currentlySelectedCell));
-        Piece capturedPiece = board.move(currentlySelectedCell, cell);
+        Piece capturedPiece = null;
+        try {
+            capturedPiece = board.move(currentlySelectedCell, cell);
+        } catch (InvalidPositionException e) {
+            System.out.println("Invalid Position, skipping");
+            currentlySelectedCell = null;
+            state = State.PIECE_SELECTED;
+            return;
+        }
         if (capturedPiece != null) {
             System.out.println("Captured Piece!");
             int row;
@@ -110,6 +117,7 @@ public class Game implements HandleOnClick {
         }
         currentlySelectedCell = null;
         state = State.PIECE_SELECTED;
+        nextTurn();
     }
 
     private boolean isValidSourcePiece() {

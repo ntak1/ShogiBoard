@@ -6,6 +6,7 @@ import com.google.inject.name.Names;
 import java.util.List;
 
 import application.Game;
+import exception.InvalidPositionException;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import pieces.*;
@@ -38,7 +39,7 @@ public class MainBoard extends Board {
     }
 
     @Override
-    public Piece move(final Cell source, final Cell destination) {
+    public Piece move(final Cell source, final Cell destination) throws InvalidPositionException {
         final Piece sourcePiece = source.getPiece();
         final Coord destinationCord = destination.getCoord();
         final List<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
@@ -50,6 +51,8 @@ public class MainBoard extends Board {
                 destination.removePiece();
             }
             destination.setPiece(sourcePiece);
+        } else {
+            throw new InvalidPositionException();
         }
         return capturedPiece;
     }

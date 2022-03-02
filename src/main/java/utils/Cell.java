@@ -48,9 +48,13 @@ public class Cell {
     }
 
     public Rectangle popLayer() {
-        Rectangle peek = layers.peek();
-        gridPane.getChildren().remove(peek);
-        layers.pop();
+        int size = layers.size();
+        Rectangle peek = null;
+        if (size > 0) {
+            peek = layers.peek();
+            gridPane.getChildren().remove(peek);
+            layers.pop();
+        }
         return peek;
     }
 

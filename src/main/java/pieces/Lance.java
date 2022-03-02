@@ -29,7 +29,9 @@ public class Lance extends Piece {
             possibleMovements.add(newCoord);
             newCoord = new Coord(newCoord.getHeight() + delta, newCoord.getWidth());
             if (!board.getCell(newCoord).isEmpty()) {
-                possibleMovements.add(newCoord);
+                if (isValidMovement(newCoord)) {
+                    possibleMovements.add(newCoord);
+                }
                 break;
             }
         }

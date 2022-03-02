@@ -1,5 +1,6 @@
 package board;
 
+import exception.InvalidPositionException;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import pieces.Piece;
@@ -29,7 +30,7 @@ public abstract class Board {
         }
     }
 
-    public abstract Piece move(final Cell source, final Cell destination);
+    public abstract Piece move(final Cell source, final Cell destination) throws InvalidPositionException;
 
     public Cell getCell(Coord coord) {
         return cellBoard[coord.height][coord.width];
