@@ -1,5 +1,6 @@
 package module;
 
+import board.CapturedPiecesBoard;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -19,11 +20,10 @@ import static utils.UiConfig.SQUARE_SIZE;
 
 
 public class BoardModule extends AbstractModule {
-    private static final int N_COLUMNS = 9;
-    private static final int N_ROWS = 9;
+    public static final int N_COLUMNS = 9;
+    public static final int N_ROWS = 9;
     public static final String BOARD_GRID_PANE_NAME = "BoardGridPane";
     public static final String CAPTURED_GRID_PANE_NAME = "CapturedGridPane";
-    public static final String CAPTURED_CELL_BOARD = "CapturedCellBoard";
     public static final int CAPTURED_AREA_N_ROWS = 2;
 
     @Provides
@@ -82,20 +82,6 @@ public class BoardModule extends AbstractModule {
     }
 
     @Provides
-    @Named(CAPTURED_CELL_BOARD)
-    public Cell[][] providesCapturedAreaCell(@Named(CAPTURED_GRID_PANE_NAME) GridPane uiBoard) {
-        Cell[][] cellBoard = new Cell[N_ROWS][N_COLUMNS];
-        for (int i = 0; i < CAPTURED_AREA_N_ROWS; i++) {
-            for (int j = 0; j < N_ROWS; j++) {
-                cellBoard[i][j] = new Cell();
-                cellBoard[i][j].setGridPane(uiBoard);
-                cellBoard[i][j].setCoord(new Coord(i, j));
-            }
-        }
-        return cellBoard;
-    }
-
-    @Provides
     @Singleton
     protected Background providesBackground() {
 
@@ -114,5 +100,10 @@ public class BoardModule extends AbstractModule {
     @Provides
     public MainBoard providesBoard(@Named(BOARD_GRID_PANE_NAME) GridPane uiBoard) {
         return new MainBoard(uiBoard);
+    }
+
+    @Provides
+    public CapturedPiecesBoard providesCapturedBoard(@Named(CAPTURED_GRID_PANE_NAME) GridPane gridPane) {
+        return new CapturedPiecesBoard(gridPane);
     }
 }

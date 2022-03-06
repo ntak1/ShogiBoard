@@ -1,5 +1,6 @@
 package application;
 
+import board.CapturedPiecesBoard;
 import board.MainBoard;
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -10,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import pieces.PieceColor;
 import utils.*;
-import module.BoardModule;
 import pieces.Piece;
 
 import java.util.Collections;
@@ -20,7 +20,6 @@ import java.util.List;
 public class Game implements HandleOnClick {
     private PieceColor currentTurn = PieceColor.WHITE;
     private Cell currentlySelectedCell;
-    private List<Coord> undoMovements;
     private State state = State.WAITING_SOURCE_PIECE_SELECTION;
     private MainBoard board;
 
@@ -48,10 +47,12 @@ public class Game implements HandleOnClick {
     }
 
     private void createCapturedArea(Injector injector, GridPane boardGridPane, VBox vBox) {
-        blackCapturedArea = injector.getInstance(Key.get(Cell[][].class, Names.named(BoardModule.CAPTURED_CELL_BOARD)));
-        whiteCapturedArea = injector.getInstance(Key.get(Cell[][].class, Names.named(BoardModule.CAPTURED_CELL_BOARD)));
-        GridPane upper = blackCapturedArea[0][0].getGridPane();
-        GridPane lower = whiteCapturedArea[0][0].getGridPane();
+        CapturedPiecesBoard upperCaptured = injector.getInstance(CapturedPiecesBoard.class);
+        CapturedPiecesBoard lowerCaptured = injector.getInstance(CapturedPiecesBoard.class);
+        blackCapturedArea = upperCaptured.getCellBoard();
+        whiteCapturedArea = lowerCaptured.getCellBoard();
+        GridPane upper = upperCaptured.getUiBoard();
+        GridPane lower = lowerCaptured.getUiBoard();
 
         vBox.getChildren().addAll(lower, boardGridPane, upper);
     }

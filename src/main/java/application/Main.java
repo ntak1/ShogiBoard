@@ -15,9 +15,7 @@ import module.PiecesModule;
 
 
 public class Main extends Application {
-    private MainBoard board;
     private Game game;
-    private List<Coord> undoMovements = Collections.emptyList();
 
     public static void main(String[] args) {
         launch(args);
