@@ -21,7 +21,7 @@ public class Game implements HandleOnClick {
     private PieceColor currentTurn = PieceColor.WHITE;
     private Cell currentlySelectedCell;
     private List<Coord> undoMovements;
-    private State state = State.PIECE_SELECTED;
+    private State state = State.WAITING_SOURCE_PIECE_SELECTION;
     private MainBoard board;
 
     private Injector injector;
@@ -63,17 +63,22 @@ public class Game implements HandleOnClick {
 
     public void handleOnClick(Cell cell) {
         System.out.println("I was clicked");
-        if (cell.getPiece() != null) {
-            if (state == State.PIECE_SELECTED) {
-                if (cell.getPiece().getColor() != currentTurn) {
-                    return;
-                }
-                highlightPossibleMovements(cell);
-            } else if (isValidSourcePiece() && isValidDestination(cell)) { // The cell clicked is the destination
+        if (state == State.WAITING_SOURCE_PIECE_SELECTION) {
+            final Piece sourcePiece = cell.getPiece();
+            if (sourcePiece == null || sourcePiece.getColor() != currentTurn) {
+                return;
+            }
+            highlightPossibleMovements(cell);
+            state = State.PIECE_SELECTED;
+            currentlySelectedCell = cell;
+        }
+        else if (state == State.PIECE_SELECTED) {
+            board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+            if (isValidSourcePiece() && isValidDestination(cell)) {
                 movePieceFromCurrentlySelectedToDestination(cell);
             }
-        } else if (isValidDestination(cell)) { // The cell clicked is the destination
-            movePieceFromCurrentlySelectedToDestination(cell);
+            state = State.WAITING_SOURCE_PIECE_SELECTION;
+            currentlySelectedCell = null;
         }
     }
 
@@ -82,14 +87,11 @@ public class Game implements HandleOnClick {
     }
 
     private void movePieceFromCurrentlySelectedToDestination(Cell cell) {
-        board.removeHighlightOnCells(getCordList(currentlySelectedCell));
-        Piece capturedPiece = null;
+        Piece capturedPiece;
         try {
             capturedPiece = board.move(currentlySelectedCell, cell);
         } catch (InvalidPositionException e) {
             System.out.println("Invalid Position, skipping");
-            currentlySelectedCell = null;
-            state = State.PIECE_SELECTED;
             return;
         }
         if (capturedPiece != null) {
@@ -115,8 +117,6 @@ public class Game implements HandleOnClick {
                 lastFreeBlackCapturedCellIndex++;
             }
         }
-        currentlySelectedCell = null;
-        state = State.PIECE_SELECTED;
         nextTurn();
     }
 
@@ -126,6 +126,9 @@ public class Game implements HandleOnClick {
     }
 
     private void highlightPossibleMovements(Cell cell) {
+        if (cell.getPiece().getColor() != currentTurn) {
+            return;
+        }
         final Piece piece = cell.getPiece();
         final List<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
         board.highlightCells(cordList);
@@ -133,7 +136,7 @@ public class Game implements HandleOnClick {
             board.removeHighlightOnCells(getCordList(currentlySelectedCell));
         }
         currentlySelectedCell = cell;
-        state = State.WAIT_NEW_PLACEMENT;
+        state = State.WAITING_SOURCE_PIECE_SELECTION;
     }
 
     private List<Coord> getCordList(Cell cell) {

@@ -1,5 +1,5 @@
 package application;
 
 public enum State {
-    WAIT_NEW_PLACEMENT, PIECE_SELECTED, END_GAME;
+    WAITING_SOURCE_PIECE_SELECTION, PIECE_SELECTED, END_GAME;
 }
