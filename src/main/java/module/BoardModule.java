@@ -1,27 +1,30 @@
 package module;
 
 import board.CapturedPiecesBoard;
+import board.MainBoard;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import java.io.File;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import board.MainBoard;
-import utils.Cell;
-import utils.Coord;
-
-import java.io.File;
-
+import static pieces.BoardConstants.N_COLUMNS;
+import static pieces.BoardConstants.N_ROWS;
 import static utils.UiConfig.PADDING;
 import static utils.UiConfig.SQUARE_SIZE;
 
 
 public class BoardModule extends AbstractModule {
-    public static final int N_COLUMNS = 9;
-    public static final int N_ROWS = 9;
     public static final String BOARD_GRID_PANE_NAME = "BoardGridPane";
     public static final String CAPTURED_GRID_PANE_NAME = "CapturedGridPane";
     public static final int CAPTURED_AREA_N_ROWS = 2;
@@ -94,7 +97,7 @@ public class BoardModule extends AbstractModule {
                 BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
 
-        return  new Background(bImg);
+        return new Background(bImg);
     }
 
     @Provides

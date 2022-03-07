@@ -4,15 +4,24 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-import utils.*;
-import pieces.*;
-
 import java.util.HashMap;
 import java.util.Map;
+import pieces.Bishop;
+import pieces.ColorPieceCombination;
+import pieces.Gold;
+import pieces.King;
+import pieces.Knight;
+import pieces.Lance;
+import pieces.Pawn;
+import pieces.PieceColor;
+import pieces.Rook;
+import pieces.Silver;
+import utils.PieceImageLoader;
+import utils.PieceName;
 
 
 public class PiecesModule extends AbstractModule {
-    private Map<ColorPieceCombination, String> colorPieceCombinationStringMap = new HashMap<>();
+    private final Map<ColorPieceCombination, String> colorPieceCombinationStringMap = new HashMap<>();
 
 
     @Override

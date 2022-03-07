@@ -2,14 +2,9 @@ package application;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import java.util.Collections;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import board.MainBoard;
-import utils.Coord;
 import module.BoardModule;
 import module.PiecesModule;
 

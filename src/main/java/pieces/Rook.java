@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
-import utils.*;
+import utils.Coord;
+import utils.PieceImageLoader;
+import utils.PieceName;
 
 public class Rook extends Piece {
 
@@ -23,34 +25,42 @@ public class Rook extends Piece {
     private List<Coord> getStandardMovements(Coord coord) {
         final List<Coord> possibleMovements = new ArrayList<>();
         // Rows upward
-        Coord newCoord = new Coord(coord.getHeight() -1, coord.getWidth());
+        Coord newCoord = new Coord(coord.getHeight() - 1, coord.getWidth());
 
         while (isValidCoord(newCoord) && isValidMovement(newCoord)) {
             possibleMovements.add(newCoord);
-            if (shouldStop(newCoord)) break;
-            newCoord = new Coord(newCoord.getHeight() -1, coord.getWidth());
+            if (shouldStop(newCoord)) {
+                break;
+            }
+            newCoord = new Coord(newCoord.getHeight() - 1, coord.getWidth());
         }
         // Rows downward
         newCoord = new Coord(coord.getHeight() + 1, coord.getWidth());
         while (isValidCoord(newCoord) && isValidMovement(newCoord)) {
             possibleMovements.add(newCoord);
-            if (shouldStop(newCoord)) break;
+            if (shouldStop(newCoord)) {
+                break;
+            }
             newCoord = new Coord(newCoord.getHeight() + 1, coord.getWidth());
         }
 
         // Columns left
-        newCoord = new Coord(coord.getHeight(), coord.getWidth() -1);
+        newCoord = new Coord(coord.getHeight(), coord.getWidth() - 1);
         while (isValidCoord(newCoord) && isValidMovement(newCoord)) {
             possibleMovements.add(newCoord);
-            if (shouldStop(newCoord)) break;
-            newCoord = new Coord(coord.getHeight(), newCoord.getWidth() -1);
+            if (shouldStop(newCoord)) {
+                break;
+            }
+            newCoord = new Coord(coord.getHeight(), newCoord.getWidth() - 1);
         }
 
         // Columns right
         newCoord = new Coord(coord.getHeight(), coord.getWidth() + 1);
         while (isValidCoord(newCoord) && isValidMovement(newCoord)) {
             possibleMovements.add(newCoord);
-            if (shouldStop(newCoord)) break;
+            if (shouldStop(newCoord)) {
+                break;
+            }
             newCoord = new Coord(coord.getHeight(), newCoord.getWidth() + 1);
         }
         return possibleMovements;

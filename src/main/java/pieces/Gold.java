@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
-import utils.*;
+import utils.Coord;
+import utils.PieceImageLoader;
+import utils.PieceName;
 
 public class Gold extends Piece {
     public Gold(PieceColor color, PieceImageLoader pieceImageLoader) {
@@ -24,7 +26,7 @@ public class Gold extends Piece {
         final int height = coord.getHeight();
         final int width = coord.getWidth();
 
-        for (int i = -1; i <= 1 ; i++) {
+        for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (shouldSkippCoord(i, j)) {
                     continue;

@@ -24,11 +24,11 @@ public class Knight extends Piece {
     private List<Coord> getStandardMovements(final Coord coord) {
         List<Coord> possibleMovements = new ArrayList<>();
         final int delta = color == PieceColor.WHITE ? 2 : -2;
-        Coord newCoord = new Coord(coord.getHeight() + delta,  coord.getWidth() - 1);
+        Coord newCoord = new Coord(coord.getHeight() + delta, coord.getWidth() - 1);
         if (isValidCoord(newCoord) && isValidMovement(newCoord)) {
             possibleMovements.add(newCoord);
         }
-        newCoord = new Coord(coord.getHeight() + delta,  coord.getWidth() + 1);
+        newCoord = new Coord(coord.getHeight() + delta, coord.getWidth() + 1);
         if (isValidCoord(newCoord) && isValidMovement(newCoord)) {
             possibleMovements.add(newCoord);
         }

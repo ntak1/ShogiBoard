@@ -1,15 +1,14 @@
 package board;
 
+import java.util.List;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
 import pieces.Piece;
 import utils.Cell;
 import utils.Coord;
-
-import java.util.List;
 import static module.BoardModule.CAPTURED_AREA_N_ROWS;
-import static module.BoardModule.N_COLUMNS;
-import static module.BoardModule.N_ROWS;
+import static pieces.BoardConstants.N_COLUMNS;
+import static pieces.BoardConstants.N_ROWS;
 
 public class CapturedPiecesBoard extends Board {
     @Getter

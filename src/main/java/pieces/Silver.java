@@ -27,7 +27,7 @@ public class Silver extends Piece {
         final int height = coord.getHeight();
         final int width = coord.getWidth();
 
-        for (int i = -1; i <= 1 ; i++) {
+        for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (shouldSkippCoord(i, j)) {
                     continue;

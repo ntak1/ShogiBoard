@@ -2,10 +2,12 @@ package pieces;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import board.MainBoard;
 import javafx.scene.paint.ImagePattern;
-import utils.*;
+import utils.Coord;
+import utils.PieceImageLoader;
+import utils.PieceName;
+import static pieces.BoardConstants.N_COLUMNS;
+import static pieces.BoardConstants.N_ROWS;
 
 public class Bishop extends Piece {
 
@@ -15,7 +17,7 @@ public class Bishop extends Piece {
 
     @Override
     public List<Coord> getPossibleMovements(Coord coord) {
-        if (coord!= null && captured) {
+        if (coord != null && captured) {
             return getDropMovements();
         }
         return getStandardMovements(coord);
@@ -23,8 +25,8 @@ public class Bishop extends Piece {
 
     private List<Coord> getDropMovements() {
         List<Coord> possibleMovements = new ArrayList<>();
-        for (int i = 0; i < MainBoard.N_ROWS; i++) {
-            for (int j = 0; j < MainBoard.N_COLUMNS; j++) {
+        for (int i = 0; i < N_ROWS; i++) {
+            for (int j = 0; j < N_COLUMNS; j++) {
                 Coord newCoord = new Coord(i, j);
                 if (board.getCell(newCoord).isEmpty()) {
                     possibleMovements.add(newCoord);
@@ -38,9 +40,9 @@ public class Bishop extends Piece {
         final List<Coord> possibleMovements = new ArrayList<>();
         final int[][] directionCombinations = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
 
-        for (int[] pair: directionCombinations) {
-            for (int i = 1; i < MainBoard.N_ROWS; i++) {
-                Coord newCoord = new Coord(coord.getHeight() + pair[0]*i, coord.getWidth() - pair[1]*i);
+        for (int[] pair : directionCombinations) {
+            for (int i = 1; i < N_ROWS; i++) {
+                Coord newCoord = new Coord(coord.getHeight() + pair[0] * i, coord.getWidth() - pair[1] * i);
                 if (isValidCoord(newCoord)) {
                     if (isValidMovement(newCoord)) {
                         possibleMovements.add(newCoord);

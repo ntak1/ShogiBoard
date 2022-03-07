@@ -6,15 +6,16 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import exception.InvalidPositionException;
+import java.util.Collections;
+import java.util.List;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import pieces.PieceColor;
-import utils.*;
 import pieces.Piece;
-
-import java.util.Collections;
-import java.util.List;
+import pieces.PieceColor;
+import utils.Cell;
+import utils.Coord;
+import utils.UiConfig;
 
 
 public class Game implements HandleOnClick {
@@ -34,7 +35,7 @@ public class Game implements HandleOnClick {
     }
 
     public Scene start(Injector injector) {
-        this.injector  = injector;
+        this.injector = injector;
 
         // Setup board
         setBoard();
@@ -72,8 +73,7 @@ public class Game implements HandleOnClick {
             highlightPossibleMovements(cell);
             state = State.PIECE_SELECTED;
             currentlySelectedCell = cell;
-        }
-        else if (state == State.PIECE_SELECTED) {
+        } else if (state == State.PIECE_SELECTED) {
             board.removeHighlightOnCells(getCordList(currentlySelectedCell));
             if (isValidSourcePiece() && isValidDestination(cell)) {
                 movePieceFromCurrentlySelectedToDestination(cell);

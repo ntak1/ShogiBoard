@@ -3,10 +3,12 @@ package pieces;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import board.MainBoard;
 import javafx.scene.paint.ImagePattern;
-import utils.*;
+import utils.Coord;
+import utils.PieceImageLoader;
+import utils.PieceName;
+import static pieces.BoardConstants.N_COLUMNS;
+import static pieces.BoardConstants.N_ROWS;
 
 public class Pawn extends Piece {
 
@@ -17,13 +19,12 @@ public class Pawn extends Piece {
 
     public List<Coord> getPossibleMovements(Coord coord) {
         List<Coord> possibleMovements = new ArrayList<>();
-        if (coord == null) { // TODO: case when the pawn is outside the board
-
+        if (captured) { // TODO: case when the pawn is outside the board
+            return getPossibleDropMovements();
         } else if (isInTheEdgeOfBoard(coord)) {
             return Collections.emptyList();
         } else {
             Coord newCoord = getNewCoord(coord);
-
             if (isValidMovement(newCoord)) {
                 possibleMovements.add(newCoord);
             }
@@ -35,18 +36,31 @@ public class Pawn extends Piece {
         final Coord newCoord;
         final int direction = color == PieceColor.WHITE ? 1 : -1;
         newCoord = Coord.builder()
-                              .height(coord.height + direction)
-                              .width(coord.width)
-                              .build();
+                        .height(coord.height + direction)
+                        .width(coord.width)
+                        .build();
         return newCoord;
     }
 
     private boolean isInTheEdgeOfBoard(final Coord coord) {
-        System.out.println("coord.height = "  + coord.height);
+        System.out.println("coord.height = " + coord.height);
         if (coord.height == 0 && color == PieceColor.BLACK) {
             return true;
         }
-        return coord.height == MainBoard.N_ROWS - 1 && color == PieceColor.WHITE;
+        return coord.height == N_ROWS - 1 && color == PieceColor.WHITE;
+    }
+
+    private List<Coord> getPossibleDropMovements() {
+        final List<Coord> possibleMovements = new ArrayList<>();
+        for (int i = 0; i < N_ROWS; i++) {
+            for (int j = 0; j < N_COLUMNS; j++) {
+                Coord newCoord = new Coord(i, j);
+                if (isValidCoord(newCoord) && board.getCell(newCoord).isEmpty()) {
+                    possibleMovements.add(newCoord);
+                }
+            }
+        }
+        return possibleMovements;
     }
 
     @Override

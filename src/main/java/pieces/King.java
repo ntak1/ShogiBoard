@@ -25,7 +25,7 @@ public class King extends Piece {
     private List<Coord> getStandardMovements(Coord coord) {
         final List<Coord> possibleMovements = new ArrayList<>();
         for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <=1 ; j++) {
+            for (int j = -1; j <= 1; j++) {
                 final Coord newCoord = new Coord(coord.height + i, coord.width + j);
                 if (isValidCoord(newCoord)) {
                     if (isValidMovement(newCoord)) {

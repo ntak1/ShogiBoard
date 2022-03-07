@@ -1,23 +1,30 @@
 package board;
 
+import application.Game;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
-import java.util.List;
-
-import application.Game;
 import exception.InvalidPositionException;
+import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import pieces.*;
+import pieces.Bishop;
+import pieces.Gold;
+import pieces.King;
+import pieces.Knight;
+import pieces.Lance;
+import pieces.Pawn;
+import pieces.Piece;
+import pieces.PieceColor;
+import pieces.Rook;
+import pieces.Silver;
 import utils.Cell;
 import utils.Coord;
-import pieces.PieceColor;
+import static pieces.BoardConstants.N_COLUMNS;
+import static pieces.BoardConstants.N_ROWS;
 
 
 public class MainBoard extends Board {
-    public static final int N_COLUMNS = 9;
-    public static final int N_ROWS = 9;
 
     public MainBoard(GridPane uiBoard) {
         this.gridPane = uiBoard;
@@ -59,7 +66,7 @@ public class MainBoard extends Board {
 
     private void placePieces(final Injector injector) {
         // PAWN
-        for (int i=0; i < N_COLUMNS; i++) {
+        for (int i = 0; i < N_COLUMNS; i++) {
             cellBoard[2][i].setPiece(injector.getInstance(Key.get(Pawn.class, Names.named(PieceColor.WHITE.toString()))));
             cellBoard[6][i].setPiece(injector.getInstance(Key.get(Pawn.class, Names.named(PieceColor.BLACK.toString()))));
         }
@@ -104,7 +111,7 @@ public class MainBoard extends Board {
     private void bindPiecesToBoard() {
         for (int i = 0; i < N_ROWS; i++) {
             for (int j = 0; j < N_COLUMNS; j++) {
-                if(cellBoard[i][j].getPiece() != null) {
+                if (cellBoard[i][j].getPiece() != null) {
                     cellBoard[i][j].getPiece().setBoard(this);
                 }
             }

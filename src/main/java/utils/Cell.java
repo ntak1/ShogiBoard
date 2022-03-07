@@ -1,6 +1,7 @@
 package utils;
 
 import application.HandleOnClick;
+import java.util.Stack;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -8,8 +9,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import pieces.Piece;
-
-import java.util.Stack;
 
 public class Cell {
 
@@ -28,7 +27,7 @@ public class Cell {
     @Setter
     private HandleOnClick handler;
 
-    private Stack<Rectangle> layers = new Stack<>();
+    private final Stack<Rectangle> layers = new Stack<>();
 
     public void setPiece(Piece piece) {
         this.piece = piece;
@@ -44,7 +43,7 @@ public class Cell {
     public void addLayer(@NonNull Rectangle node) {
         layers.add(node);
         node.setOnMouseClicked(x -> handler.handleOnClick(this));
-        gridPane.add(node, coord.width+1, coord.height+1);
+        gridPane.add(node, coord.width + 1, coord.height + 1);
     }
 
     public Rectangle popLayer() {
