@@ -3,11 +3,9 @@ package board;
 import exception.InvalidPositionException;
 import java.util.List;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
 import pieces.Piece;
 import utils.Cell;
 import utils.Coord;
-import utils.Helper;
 
 public abstract class Board {
     protected Cell[][] cellBoard;
@@ -15,17 +13,13 @@ public abstract class Board {
 
     public void highlightCells(List<Coord> cordList) {
         for (Coord coord : cordList) {
-            Rectangle cell = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
-            Rectangle rectangle = new Rectangle(cell.getHeight(), cell.getWidth());
-            rectangle.setStroke(javafx.scene.paint.Color.BLACK);
-            rectangle.setFill(new javafx.scene.paint.Color(0.1, 0.1, 1, 0.25));
-            cellBoard[coord.height][coord.width].addLayer(rectangle);
+            cellBoard[coord.height][coord.width].highlightCell();
         }
     }
 
     public void removeHighlightOnCells(List<Coord> cordList) {
         for (Coord coord : cordList) {
-            cellBoard[coord.height][coord.width].popLayer();
+            cellBoard[coord.height][coord.width].removeAllHighlights();
         }
     }
 

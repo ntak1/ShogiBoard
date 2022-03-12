@@ -75,6 +75,7 @@ public class Game implements HandleOnClick {
             currentlySelectedCell = cell;
         } else if (state == State.PIECE_SELECTED) {
             board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+            currentlySelectedCell.removeAllHighlights();
             if (isValidSourcePiece() && isValidDestination(cell)) {
                 movePieceFromCurrentlySelectedToDestination(cell);
             }
@@ -132,9 +133,11 @@ public class Game implements HandleOnClick {
         }
         final Piece piece = cell.getPiece();
         final List<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
+        cell.highlightCellBorder();
         board.highlightCells(cordList);
         if (currentlySelectedCell != null) {
             board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+            cell.removeAllHighlights();
         }
         currentlySelectedCell = cell;
         state = State.WAITING_SOURCE_PIECE_SELECTION;

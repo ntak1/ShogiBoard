@@ -12,6 +12,7 @@ import pieces.Piece;
 
 public class Cell {
 
+    public static final int STROKE_WIDTH = 3;
     @Setter
     @Getter
     private GridPane gridPane;
@@ -35,18 +36,26 @@ public class Cell {
         rect.setWidth(UiConfig.SQUARE_SIZE);
         rect.setHeight(UiConfig.SQUARE_SIZE);
         rect.setStroke(javafx.scene.paint.Color.BLACK);
-        rect.setStrokeWidth(3);
+        rect.setStrokeWidth(STROKE_WIDTH);
         rect.setFill(piece.getImage());
         addLayer(rect);
     }
 
-    public void addLayer(@NonNull Rectangle node) {
+    public void highlightCell() {
+        Rectangle cell = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
+        Rectangle rectangle = new Rectangle(cell.getHeight(), cell.getWidth());
+        rectangle.setStroke(javafx.scene.paint.Color.BLACK);
+        rectangle.setFill(new javafx.scene.paint.Color(0.1, 0.1, 1, 0.25));
+        this.addLayer(rectangle);
+    }
+
+    private void addLayer(@NonNull Rectangle node) {
         layers.add(node);
         node.setOnMouseClicked(x -> handler.handleOnClick(this));
         gridPane.add(node, coord.width + 1, coord.height + 1);
     }
 
-    public Rectangle popLayer() {
+    public Rectangle removeAllHighlights() {
         int size = layers.size();
         Rectangle peek = null;
         if (size > 0) {
@@ -55,6 +64,15 @@ public class Cell {
             layers.pop();
         }
         return peek;
+    }
+
+    public void highlightCellBorder() {
+        final Rectangle oldCellUi = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
+        final Rectangle newCellUi = new Rectangle(oldCellUi.getHeight(), oldCellUi.getWidth());
+        newCellUi.setFill(Color.TRANSPARENT);
+        newCellUi.setStroke(Color.RED);
+        newCellUi.setStrokeWidth(STROKE_WIDTH);
+        this.addLayer(newCellUi);
     }
 
     public void setOnClickHandler(HandleOnClick handler) {
