@@ -16,6 +16,8 @@ import pieces.PieceColor;
 import utils.Cell;
 import utils.Coord;
 import utils.UiConfig;
+import static board.BoardConstants.CAPTURED_AREA_N_ROWS;
+import static board.BoardConstants.N_COLUMNS;
 
 
 public class Game implements HandleOnClick {
@@ -28,8 +30,6 @@ public class Game implements HandleOnClick {
 
     private Cell[][] blackCapturedArea;
     private Cell[][] whiteCapturedArea;
-    private int lastFreeWhiteCapturedCellIndex = 0;
-    private int lastFreeBlackCapturedCellIndex = 0;
 
     public Game() {
     }
@@ -98,23 +98,17 @@ public class Game implements HandleOnClick {
             return;
         }
         if (capturedPiece != null) {
-            int row;
-            int col;
             final Piece piece;
             if (currentTurn == PieceColor.WHITE) {
-                row = lastFreeWhiteCapturedCellIndex / 9;
-                col = lastFreeWhiteCapturedCellIndex % 9;
+                final Coord capturedAreaCoord = positionPieceInCapturedArea(whiteCapturedArea);
                 piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.WHITE.toString())));
-                whiteCapturedArea[row][col].setPiece(piece);
-                whiteCapturedArea[row][col].setOnClickHandler(this);
-                lastFreeWhiteCapturedCellIndex++;
+                whiteCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setPiece(piece);
+                whiteCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setOnClickHandler(this);
             } else {
-                row = lastFreeBlackCapturedCellIndex / 9;
-                col = lastFreeBlackCapturedCellIndex % 9;
+                final Coord capturedAreaCoord = positionPieceInCapturedArea(blackCapturedArea);
                 piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.BLACK.toString())));
-                blackCapturedArea[row][col].setPiece(piece);
-                blackCapturedArea[row][col].setOnClickHandler(this);
-                lastFreeBlackCapturedCellIndex++;
+                blackCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setPiece(piece);
+                blackCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setOnClickHandler(this);
             }
             piece.setCaptured(true);
             piece.setBoard(board);
@@ -122,6 +116,18 @@ public class Game implements HandleOnClick {
         nextTurn();
     }
 
+    private Coord positionPieceInCapturedArea(Cell[][] capturedArea) {
+        for (int i = 0; i < CAPTURED_AREA_N_ROWS; i++) {
+            for (int j = 0; j < N_COLUMNS; j++) {
+                final Coord newCoord = new Coord(i, j);
+                if (capturedArea[i][j].isEmpty()) {
+                    System.out.println(newCoord);
+                    return newCoord;
+                }
+            }
+        }
+        return new Coord(0,0); // Overflow
+    }
 
     private boolean isValidSourcePiece() {
         return currentlySelectedCell != null && currentlySelectedCell.getPiece() != null
