@@ -74,7 +74,7 @@ public class Game implements HandleOnClick {
             state = State.PIECE_SELECTED;
             currentlySelectedCell = cell;
         } else if (state == State.PIECE_SELECTED) {
-            board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+            board.removeHighlightOnCells(getCellPossibleMovements(currentlySelectedCell));
             currentlySelectedCell.removeAllHighlights();
             if (isValidSourcePiece() && isValidDestination(cell)) {
                 movePieceFromCurrentlySelectedToDestination(cell);
@@ -92,12 +92,12 @@ public class Game implements HandleOnClick {
         Piece capturedPiece;
         try {
             capturedPiece = board.move(currentlySelectedCell, cell);
+            cell.getPiece().setCaptured(false);
         } catch (InvalidPositionException e) {
             System.out.println("Invalid Position, skipping");
             return;
         }
         if (capturedPiece != null) {
-            System.out.println("Captured Piece!");
             int row;
             int col;
             final Piece piece;
@@ -106,7 +106,6 @@ public class Game implements HandleOnClick {
                 col = lastFreeWhiteCapturedCellIndex % 9;
                 piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.WHITE.toString())));
                 whiteCapturedArea[row][col].setPiece(piece);
-                piece.setCaptured(true);
                 whiteCapturedArea[row][col].setOnClickHandler(this);
                 lastFreeWhiteCapturedCellIndex++;
             } else {
@@ -114,13 +113,15 @@ public class Game implements HandleOnClick {
                 col = lastFreeBlackCapturedCellIndex % 9;
                 piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.BLACK.toString())));
                 blackCapturedArea[row][col].setPiece(piece);
-                piece.setCaptured(true);
                 blackCapturedArea[row][col].setOnClickHandler(this);
                 lastFreeBlackCapturedCellIndex++;
             }
+            piece.setCaptured(true);
+            piece.setBoard(board);
         }
         nextTurn();
     }
+
 
     private boolean isValidSourcePiece() {
         return currentlySelectedCell != null && currentlySelectedCell.getPiece() != null
@@ -136,14 +137,14 @@ public class Game implements HandleOnClick {
         cell.highlightCellBorder();
         board.highlightCells(cordList);
         if (currentlySelectedCell != null) {
-            board.removeHighlightOnCells(getCordList(currentlySelectedCell));
+            board.removeHighlightOnCells(getCellPossibleMovements(currentlySelectedCell));
             cell.removeAllHighlights();
         }
         currentlySelectedCell = cell;
         state = State.WAITING_SOURCE_PIECE_SELECTION;
     }
 
-    private List<Coord> getCordList(Cell cell) {
+    private List<Coord> getCellPossibleMovements(Cell cell) {
         if (currentlySelectedCell == null) {
             return Collections.emptyList();
         }
@@ -161,9 +162,6 @@ public class Game implements HandleOnClick {
     }
 
     private void nextTurn() {
-        PieceColor previousPieceColor = currentTurn;
         currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
-        PieceColor currentTurnPieceColor = currentTurn;
-        System.out.printf("%s -> %s\n", previousPieceColor, currentTurnPieceColor);
     }
 }

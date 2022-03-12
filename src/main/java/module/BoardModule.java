@@ -18,8 +18,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import static pieces.BoardConstants.N_COLUMNS;
-import static pieces.BoardConstants.N_ROWS;
+import static board.BoardConstants.CAPTURED_AREA_N_ROWS;
+import static board.BoardConstants.N_COLUMNS;
+import static board.BoardConstants.N_ROWS;
 import static utils.UiConfig.PADDING;
 import static utils.UiConfig.SQUARE_SIZE;
 
@@ -27,7 +28,6 @@ import static utils.UiConfig.SQUARE_SIZE;
 public class BoardModule extends AbstractModule {
     public static final String BOARD_GRID_PANE_NAME = "BoardGridPane";
     public static final String CAPTURED_GRID_PANE_NAME = "CapturedGridPane";
-    public static final int CAPTURED_AREA_N_ROWS = 2;
 
     @Provides
     @Singleton

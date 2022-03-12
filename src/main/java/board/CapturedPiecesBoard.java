@@ -6,9 +6,9 @@ import lombok.Getter;
 import pieces.Piece;
 import utils.Cell;
 import utils.Coord;
-import static module.BoardModule.CAPTURED_AREA_N_ROWS;
-import static pieces.BoardConstants.N_COLUMNS;
-import static pieces.BoardConstants.N_ROWS;
+import static board.BoardConstants.CAPTURED_AREA_N_ROWS;
+import static board.BoardConstants.N_COLUMNS;
+import static board.BoardConstants.N_ROWS;
 
 public class CapturedPiecesBoard extends Board {
     @Getter

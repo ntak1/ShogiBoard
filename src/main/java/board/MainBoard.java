@@ -20,8 +20,8 @@ import pieces.Rook;
 import pieces.Silver;
 import utils.Cell;
 import utils.Coord;
-import static pieces.BoardConstants.N_COLUMNS;
-import static pieces.BoardConstants.N_ROWS;
+import static board.BoardConstants.N_COLUMNS;
+import static board.BoardConstants.N_ROWS;
 
 
 public class MainBoard extends Board {

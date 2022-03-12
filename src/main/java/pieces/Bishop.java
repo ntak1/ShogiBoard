@@ -6,8 +6,8 @@ import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceImageLoader;
 import utils.PieceName;
-import static pieces.BoardConstants.N_COLUMNS;
-import static pieces.BoardConstants.N_ROWS;
+import static board.BoardConstants.N_COLUMNS;
+import static board.BoardConstants.N_ROWS;
 
 public class Bishop extends Piece {
 

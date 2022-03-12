@@ -7,8 +7,8 @@ import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceImageLoader;
 import utils.PieceName;
-import static pieces.BoardConstants.N_COLUMNS;
-import static pieces.BoardConstants.N_ROWS;
+import static board.BoardConstants.N_COLUMNS;
+import static board.BoardConstants.N_ROWS;
 
 public class Pawn extends Piece {
 
@@ -19,7 +19,7 @@ public class Pawn extends Piece {
 
     public List<Coord> getPossibleMovements(Coord coord) {
         List<Coord> possibleMovements = new ArrayList<>();
-        if (captured) { // TODO: case when the pawn is outside the board
+        if (captured) {
             return getPossibleDropMovements();
         } else if (isInTheEdgeOfBoard(coord)) {
             return Collections.emptyList();
@@ -52,15 +52,38 @@ public class Pawn extends Piece {
 
     private List<Coord> getPossibleDropMovements() {
         final List<Coord> possibleMovements = new ArrayList<>();
-        for (int i = 0; i < N_ROWS; i++) {
-            for (int j = 0; j < N_COLUMNS; j++) {
-                Coord newCoord = new Coord(i, j);
+        final List<Integer> possibleDropColumns = new ArrayList<>();
+
+        getValidColumnDrops(possibleDropColumns);
+
+        for (Integer column: possibleDropColumns) {
+            for (int i = 0; i < N_ROWS; i++) {
+                Coord newCoord = new Coord(i, column);
                 if (isValidCoord(newCoord) && board.getCell(newCoord).isEmpty()) {
-                    possibleMovements.add(newCoord);
+                    if (!isInTheEdgeOfBoard(newCoord)) {
+                        possibleMovements.add(newCoord);
+                    }
                 }
+
             }
         }
         return possibleMovements;
+    }
+
+    private void getValidColumnDrops(List<Integer> possibleDropColumns) {
+        for (int i = 0; i < N_COLUMNS; i++) {
+            boolean validColumn = true;
+            for (int j = 0; j < N_ROWS; j++) {
+                Coord newCoord = new Coord(j, i);
+                final Piece piece = board.getCell(newCoord).getPiece();
+                if (isValidCoord(newCoord) && piece instanceof Pawn && piece.getColor() == color) {
+                    validColumn = false;
+                }
+            }
+            if (validColumn) {
+                possibleDropColumns.add(i);
+            }
+        }
     }
 
     @Override

@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import utils.Coord;
 import utils.PieceImageLoader;
-import static pieces.BoardConstants.N_COLUMNS;
-import static pieces.BoardConstants.N_ROWS;
+import static board.BoardConstants.N_COLUMNS;
+import static board.BoardConstants.N_ROWS;
 
 @Getter
 @Setter
@@ -30,10 +30,8 @@ public abstract class Piece {
 
 
     protected boolean isValidCoord(Coord coord) {
-        int newPossibleHeight = coord.getHeight();
-        int newPossibleWidth = coord.getWidth();
-        return !(newPossibleHeight < 0 || newPossibleWidth < 0
-                || newPossibleHeight >= N_ROWS || newPossibleWidth >= N_COLUMNS);
+        return !(coord.getHeight() < 0 || coord.getWidth() < 0
+                || coord.getHeight() >= N_ROWS || coord.getWidth() >= N_COLUMNS);
     }
 
     protected boolean isValidMovement(Coord newCoord) {
