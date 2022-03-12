@@ -7,6 +7,8 @@ import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceImageLoader;
 import utils.PieceName;
+import static board.BoardConstants.N_COLUMNS;
+import static board.BoardConstants.N_ROWS;
 
 public class Knight extends Piece {
     public Knight(PieceColor color, PieceImageLoader pieceImageLoader) {
@@ -15,8 +17,8 @@ public class Knight extends Piece {
 
     @Override
     public List<Coord> getPossibleMovements(Coord coord) {
-        if (coord == null) {
-            return Collections.emptyList();
+        if (captured) {
+            return getDropMovements(coord);
         }
         return getStandardMovements(coord);
     }
@@ -33,6 +35,22 @@ public class Knight extends Piece {
             possibleMovements.add(newCoord);
         }
 
+        return possibleMovements;
+    }
+
+    private List<Coord> getDropMovements(final Coord coord) {
+        int upperRowLimit = color == PieceColor.BLACK ? N_ROWS: N_ROWS -2;
+        int lowerRowLimit = color == PieceColor.BLACK ? 2 : 0;
+        System.out.println(color);
+        List<Coord> possibleMovements = new ArrayList<>();
+        for (int i = lowerRowLimit; i < upperRowLimit; i++) {
+            for (int j = 0; j < N_COLUMNS; j++) {
+                final Coord newCoord = new Coord(i, j);
+                if (isValidCoord(coord) && board.getCell(newCoord).isEmpty()) {
+                    possibleMovements.add(newCoord);
+                }
+            }
+        }
         return possibleMovements;
     }
 

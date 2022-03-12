@@ -18,28 +18,24 @@ public class Pawn extends Piece {
 
 
     public List<Coord> getPossibleMovements(Coord coord) {
-        List<Coord> possibleMovements = new ArrayList<>();
         if (captured) {
             return getPossibleDropMovements();
-        } else if (isInTheEdgeOfBoard(coord)) {
-            return Collections.emptyList();
-        } else {
-            Coord newCoord = getNewCoord(coord);
-            if (isValidMovement(newCoord)) {
-                possibleMovements.add(newCoord);
-            }
         }
-        return possibleMovements;
+        return getStandardMovements(coord);
     }
 
-    private Coord getNewCoord(Coord coord) {
+    private List<Coord> getStandardMovements(Coord coord) {
+        List<Coord> possibleMovements = new ArrayList<>();
         final Coord newCoord;
         final int direction = color == PieceColor.WHITE ? 1 : -1;
         newCoord = Coord.builder()
                         .height(coord.height + direction)
                         .width(coord.width)
                         .build();
-        return newCoord;
+        if (isValidMovement(newCoord)) {
+            possibleMovements.add(newCoord);
+        }
+        return possibleMovements;
     }
 
     private boolean isInTheEdgeOfBoard(final Coord coord) {
