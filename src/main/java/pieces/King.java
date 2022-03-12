@@ -1,7 +1,6 @@
 package pieces;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
@@ -15,14 +14,7 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Coord> getPossibleMovements(Coord coord) {
-        if (coord == null) {
-            return Collections.emptyList();
-        }
-        return getStandardMovements(coord);
-    }
-
-    private List<Coord> getStandardMovements(Coord coord) {
+    protected List<Coord> getStandardMovements(Coord coord) {
         final List<Coord> possibleMovements = new ArrayList<>();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {

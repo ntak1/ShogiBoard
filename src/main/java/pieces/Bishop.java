@@ -6,7 +6,6 @@ import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceImageLoader;
 import utils.PieceName;
-import static board.BoardConstants.N_COLUMNS;
 import static board.BoardConstants.N_ROWS;
 
 public class Bishop extends Piece {
@@ -15,28 +14,9 @@ public class Bishop extends Piece {
         super(color, pieceImageLoader);
     }
 
+
     @Override
-    public List<Coord> getPossibleMovements(Coord coord) {
-        if (coord != null && captured) {
-            return getDropMovements();
-        }
-        return getStandardMovements(coord);
-    }
-
-    private List<Coord> getDropMovements() {
-        List<Coord> possibleMovements = new ArrayList<>();
-        for (int i = 0; i < N_ROWS; i++) {
-            for (int j = 0; j < N_COLUMNS; j++) {
-                Coord newCoord = new Coord(i, j);
-                if (board.getCell(newCoord).isEmpty()) {
-                    possibleMovements.add(newCoord);
-                }
-            }
-        }
-        return possibleMovements;
-    }
-
-    private List<Coord> getStandardMovements(final Coord coord) {
+    protected List<Coord> getStandardMovements(final Coord coord) {
         final List<Coord> possibleMovements = new ArrayList<>();
         final int[][] directionCombinations = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
 

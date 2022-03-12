@@ -16,15 +16,8 @@ public class Pawn extends Piece {
         super(color, pieceImageLoader);
     }
 
-
-    public List<Coord> getPossibleMovements(Coord coord) {
-        if (captured) {
-            return getPossibleDropMovements();
-        }
-        return getStandardMovements(coord);
-    }
-
-    private List<Coord> getStandardMovements(Coord coord) {
+    @Override
+    protected List<Coord> getStandardMovements(Coord coord) {
         List<Coord> possibleMovements = new ArrayList<>();
         final Coord newCoord;
         final int direction = color == PieceColor.WHITE ? 1 : -1;
@@ -46,7 +39,8 @@ public class Pawn extends Piece {
         return coord.height == N_ROWS - 1 && color == PieceColor.WHITE;
     }
 
-    private List<Coord> getPossibleDropMovements() {
+    @Override
+    protected List<Coord> getPossibleDropMovements() {
         final List<Coord> possibleMovements = new ArrayList<>();
         final List<Integer> possibleDropColumns = new ArrayList<>();
 

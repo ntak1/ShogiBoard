@@ -2,6 +2,7 @@ package pieces;
 
 
 import board.MainBoard;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
@@ -26,7 +27,12 @@ public abstract class Piece {
         this.captured = false;
     }
 
-    public abstract List<Coord> getPossibleMovements(Coord coord);
+    public List<Coord> getPossibleMovements(Coord coord) {
+        if (captured) {
+            return getPossibleDropMovements();
+        }
+        return getStandardMovements(coord);
+    }
 
 
     protected boolean isValidCoord(Coord coord) {
@@ -35,11 +41,23 @@ public abstract class Piece {
     }
 
     protected boolean isValidMovement(Coord newCoord) {
-        if (!board.getCell(newCoord).isEmpty()) {
-            System.out.printf("positionColor %s, pieceColor = %s\n", board.getCell(newCoord).getPiece().getColor(), color);
-        }
         return board.getCell(newCoord).isEmpty() ||
                 board.getCell(newCoord).getPiece().getColor() != color;
+    }
+
+    protected abstract List<Coord> getStandardMovements(Coord coord);
+
+    protected List<Coord> getPossibleDropMovements() {
+        List<Coord> possibleMovements = new ArrayList<>();
+        for (int i = 0; i < N_ROWS; i++) {
+            for (int j = 0; j < N_COLUMNS; j++) {
+                final Coord newCoord = new Coord(i, j);
+                if(isValidCoord(newCoord) && board.getCell(newCoord).isEmpty()) {
+                    possibleMovements.add(newCoord);
+                }
+            }
+        }
+        return possibleMovements;
     }
 
     public abstract ImagePattern getImage();

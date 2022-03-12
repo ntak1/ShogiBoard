@@ -14,14 +14,7 @@ public class Lance extends Piece {
     }
 
     @Override
-    public List<Coord> getPossibleMovements(Coord coord) {
-        if (coord == null) {
-            return Collections.emptyList();
-        }
-        return getStandardMovements(coord);
-    }
-
-    private List<Coord> getStandardMovements(final Coord coord) {
+    protected List<Coord> getStandardMovements(final Coord coord) {
         final List<Coord> possibleMovements = new ArrayList<>();
         final int delta = color == PieceColor.WHITE ? 1 : -1;
         Coord newCoord = new Coord(coord.getHeight() + delta, coord.getWidth());

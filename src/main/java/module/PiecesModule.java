@@ -7,7 +7,7 @@ import com.google.inject.name.Names;
 import java.util.HashMap;
 import java.util.Map;
 import pieces.Bishop;
-import pieces.ColorPieceCombination;
+import utils.ColorPieceCombination;
 import pieces.Gold;
 import pieces.King;
 import pieces.Knight;

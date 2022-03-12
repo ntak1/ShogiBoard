@@ -15,15 +15,8 @@ public class Knight extends Piece {
         super(color, pieceImageLoader);
     }
 
-    @Override
-    public List<Coord> getPossibleMovements(Coord coord) {
-        if (captured) {
-            return getDropMovements(coord);
-        }
-        return getStandardMovements(coord);
-    }
 
-    private List<Coord> getStandardMovements(final Coord coord) {
+    protected List<Coord> getStandardMovements(final Coord coord) {
         List<Coord> possibleMovements = new ArrayList<>();
         final int delta = color == PieceColor.WHITE ? 2 : -2;
         Coord newCoord = new Coord(coord.getHeight() + delta, coord.getWidth() - 1);
@@ -38,7 +31,8 @@ public class Knight extends Piece {
         return possibleMovements;
     }
 
-    private List<Coord> getDropMovements(final Coord coord) {
+    @Override
+    protected List<Coord> getPossibleDropMovements() {
         int upperRowLimit = color == PieceColor.BLACK ? N_ROWS: N_ROWS -2;
         int lowerRowLimit = color == PieceColor.BLACK ? 2 : 0;
         System.out.println(color);
@@ -46,7 +40,7 @@ public class Knight extends Piece {
         for (int i = lowerRowLimit; i < upperRowLimit; i++) {
             for (int j = 0; j < N_COLUMNS; j++) {
                 final Coord newCoord = new Coord(i, j);
-                if (isValidCoord(coord) && board.getCell(newCoord).isEmpty()) {
+                if (isValidCoord(newCoord) && board.getCell(newCoord).isEmpty()) {
                     possibleMovements.add(newCoord);
                 }
             }

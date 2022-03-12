@@ -15,14 +15,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<Coord> getPossibleMovements(Coord coord) {
-        if (coord == null) {
-            return Collections.emptyList();
-        }
-        return getStandardMovements(coord);
-    }
-
-    private List<Coord> getStandardMovements(Coord coord) {
+    protected List<Coord> getStandardMovements(Coord coord) {
         final List<Coord> possibleMovements = new ArrayList<>();
         // Rows upward
         Coord newCoord = new Coord(coord.getHeight() - 1, coord.getWidth());

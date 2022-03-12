@@ -14,14 +14,7 @@ public class Gold extends Piece {
     }
 
     @Override
-    public List<Coord> getPossibleMovements(Coord coord) {
-        if (coord == null) { // TODO treat when the piece is out of the board
-            return Collections.emptyList();
-        }
-        return getStandardMovements(coord);
-    }
-
-    private List<Coord> getStandardMovements(final Coord coord) {
+    protected List<Coord> getStandardMovements(final Coord coord) {
         final List<Coord> standardMovements = new ArrayList<>();
         final int height = coord.getHeight();
         final int width = coord.getWidth();
