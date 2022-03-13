@@ -24,6 +24,9 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Shogi Board");
         primaryStage.show();
+
+        game.setPrimaryStage(primaryStage);
+        game.openPromotionModal();
     }
 
 }

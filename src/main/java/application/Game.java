@@ -8,9 +8,17 @@ import com.google.inject.name.Names;
 import exception.InvalidPositionException;
 import java.util.Collections;
 import java.util.List;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import pieces.Piece;
 import pieces.PieceColor;
 import utils.Cell;
@@ -30,6 +38,10 @@ public class Game implements HandleOnClick {
 
     private Cell[][] blackCapturedArea;
     private Cell[][] whiteCapturedArea;
+
+    @Getter
+    @Setter
+    private Stage primaryStage;
 
     public Game() {
     }
@@ -169,5 +181,30 @@ public class Game implements HandleOnClick {
 
     private void nextTurn() {
         currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+    }
+
+
+    // TODO make this private after tests
+    public void openPromotionModal() {
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(primaryStage);
+        VBox dialogVbox = new VBox(20);
+
+        HBox hButtonBox = new HBox(20);
+        Button yesButton = new Button();
+        yesButton.setText("Yes");
+        Button noButton = new Button();
+        noButton.setText("No");
+        hButtonBox.getChildren().addAll(yesButton, noButton);
+        hButtonBox.setAlignment(Pos.CENTER);
+
+        dialogVbox.getChildren().add(new Text("This is a Dialog"));
+        dialogVbox.getChildren().addAll(hButtonBox);
+        dialogVbox.setAlignment(Pos.CENTER);
+        Scene dialogScene = new Scene(dialogVbox, UiConfig.PROMOTION_WINDOW_WIDTH, UiConfig.PROMOTION_WINDOW_HEIGHT);
+
+        dialog.setScene(dialogScene);
+        dialog.show();
     }
 }
