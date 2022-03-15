@@ -9,12 +9,12 @@ import utils.PieceName;
 public class Gold extends Piece {
     private Piece promotedFrom;
 
-    public Gold(PieceColor color, PieceImageLoader pieceImageLoader) {
-        super(color, pieceImageLoader);
+    public Gold(PieceColor color) {
+        super(color);
     }
 
-    public Gold(PieceColor color, PieceImageLoader pieceImageLoader, Piece promotedFrom) {
-        super(color, pieceImageLoader);
+    public Gold(PieceColor color, Piece promotedFrom) {
+        super(color);
         this.promotedFrom = promotedFrom;
     }
 

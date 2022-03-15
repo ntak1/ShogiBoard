@@ -10,8 +10,8 @@ import static board.BoardConstants.N_ROWS;
 
 public class Pawn extends Piece {
 
-    public Pawn(PieceColor color, PieceImageLoader pieceImageLoader) {
-        super(color, pieceImageLoader);
+    public Pawn(PieceColor color) {
+        super(color);
     }
 
     @Override

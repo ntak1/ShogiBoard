@@ -5,8 +5,8 @@ import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 
 public class DragonHorse extends Piece {
-    public DragonHorse(PieceColor color, PieceImageLoader pieceImageLoader) {
-        super(color, pieceImageLoader);
+    public DragonHorse(PieceColor color) {
+        super(color);
     }
 
     @Override

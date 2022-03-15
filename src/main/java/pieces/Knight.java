@@ -9,8 +9,8 @@ import static board.BoardConstants.N_COLUMNS;
 import static board.BoardConstants.N_ROWS;
 
 public class Knight extends Piece {
-    public Knight(PieceColor color, PieceImageLoader pieceImageLoader) {
-        super(color, pieceImageLoader);
+    public Knight(PieceColor color) {
+        super(color);
     }
 
 

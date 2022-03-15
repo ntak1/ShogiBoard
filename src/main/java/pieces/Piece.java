@@ -17,12 +17,10 @@ public abstract class Piece {
 
     protected MainBoard board;
     protected PieceColor color;
-    protected PieceImageLoader pieceImageLoader;
     protected boolean captured;
 
-    public Piece(PieceColor color, PieceImageLoader pieceImageLoader) {
+    public Piece(PieceColor color) {
         this.color = color;
-        this.pieceImageLoader = pieceImageLoader;
         this.captured = false;
     }
 

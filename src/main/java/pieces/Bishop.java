@@ -9,8 +9,8 @@ import static board.BoardConstants.N_ROWS;
 
 public class Bishop extends Piece {
 
-    public Bishop(PieceColor color, PieceImageLoader pieceImageLoader) {
-        super(color, pieceImageLoader);
+    public Bishop(PieceColor color) {
+        super(color);
     }
 
 

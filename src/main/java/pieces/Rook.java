@@ -8,8 +8,8 @@ import utils.PieceName;
 
 public class Rook extends Piece {
 
-    public Rook(PieceColor color, PieceImageLoader pieceImageLoader) {
-        super(color, pieceImageLoader);
+    public Rook(PieceColor color) {
+        super(color);
     }
 
     @Override

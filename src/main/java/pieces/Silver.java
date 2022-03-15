@@ -8,8 +8,8 @@ import utils.PieceName;
 
 public class Silver extends Piece {
 
-    public Silver(PieceColor color, PieceImageLoader pieceImageLoader) {
-        super(color, pieceImageLoader);
+    public Silver(PieceColor color) {
+        super(color);
     }
 
     @Override

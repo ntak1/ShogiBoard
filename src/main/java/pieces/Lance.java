@@ -7,8 +7,8 @@ import utils.Coord;
 import utils.PieceName;
 
 public class Lance extends Piece {
-    public Lance(PieceColor color, PieceImageLoader pieceImageLoader) {
-        super(color, pieceImageLoader);
+    public Lance(PieceColor color) {
+        super(color);
     }
 
     @Override
