@@ -1,11 +1,9 @@
 package pieces;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
-import utils.PieceImageLoader;
 import utils.PieceName;
 import static board.BoardConstants.N_COLUMNS;
 import static board.BoardConstants.N_ROWS;
@@ -32,7 +30,6 @@ public class Pawn extends Piece {
     }
 
     private boolean isInTheEdgeOfBoard(final Coord coord) {
-        System.out.println("coord.height = " + coord.height);
         if (coord.height == 0 && color == PieceColor.BLACK) {
             return true;
         }
@@ -46,7 +43,7 @@ public class Pawn extends Piece {
 
         getValidColumnDrops(possibleDropColumns);
 
-        for (Integer column: possibleDropColumns) {
+        for (Integer column : possibleDropColumns) {
             for (int i = 0; i < N_ROWS; i++) {
                 Coord newCoord = new Coord(i, column);
                 if (isValidCoord(newCoord) && board.getCell(newCoord).isEmpty()) {
@@ -78,7 +75,7 @@ public class Pawn extends Piece {
 
     @Override
     public ImagePattern getImage() {
-        return pieceImageLoader.getImagePattern(PieceName.PAWN, color);
+        return PieceImageLoader.getImagePattern(PieceName.PAWN, color);
     }
 
 }

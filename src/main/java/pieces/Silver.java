@@ -1,11 +1,9 @@
 package pieces;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
-import utils.PieceImageLoader;
 import utils.PieceName;
 
 public class Silver extends Piece {
@@ -48,6 +46,6 @@ public class Silver extends Piece {
 
     @Override
     public ImagePattern getImage() {
-        return pieceImageLoader.getImagePattern(PieceName.SILVER, color);
+        return PieceImageLoader.getImagePattern(PieceName.SILVER, color);
     }
 }

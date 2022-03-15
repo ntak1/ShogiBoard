@@ -7,6 +7,7 @@ import pieces.Piece;
 import utils.Cell;
 import utils.Coord;
 
+
 public abstract class Board {
     protected Cell[][] cellBoard;
     protected GridPane gridPane;

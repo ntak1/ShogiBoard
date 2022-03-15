@@ -1,16 +1,21 @@
 package pieces;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
-import utils.PieceImageLoader;
 import utils.PieceName;
 
 public class Gold extends Piece {
+    private Piece promotedFrom;
+
     public Gold(PieceColor color, PieceImageLoader pieceImageLoader) {
         super(color, pieceImageLoader);
+    }
+
+    public Gold(PieceColor color, PieceImageLoader pieceImageLoader, Piece promotedFrom) {
+        super(color, pieceImageLoader);
+        this.promotedFrom = promotedFrom;
     }
 
     @Override
@@ -53,6 +58,6 @@ public class Gold extends Piece {
 
     @Override
     public ImagePattern getImage() {
-        return pieceImageLoader.getImagePattern(PieceName.GOLD, color);
+        return PieceImageLoader.getImagePattern(PieceName.GOLD, color);
     }
 }

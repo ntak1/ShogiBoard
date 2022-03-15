@@ -1,11 +1,9 @@
 package pieces;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
-import utils.PieceImageLoader;
 import utils.PieceName;
 import static board.BoardConstants.N_COLUMNS;
 import static board.BoardConstants.N_ROWS;
@@ -33,7 +31,7 @@ public class Knight extends Piece {
 
     @Override
     protected List<Coord> getPossibleDropMovements() {
-        int upperRowLimit = color == PieceColor.BLACK ? N_ROWS: N_ROWS -2;
+        int upperRowLimit = color == PieceColor.BLACK ? N_ROWS : N_ROWS - 2;
         int lowerRowLimit = color == PieceColor.BLACK ? 2 : 0;
         System.out.println(color);
         List<Coord> possibleMovements = new ArrayList<>();
@@ -50,6 +48,6 @@ public class Knight extends Piece {
 
     @Override
     public ImagePattern getImage() {
-        return pieceImageLoader.getImagePattern(PieceName.KNIGHT, color);
+        return PieceImageLoader.getImagePattern(PieceName.KNIGHT, color);
     }
 }

@@ -8,7 +8,6 @@ import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
 import utils.Coord;
-import utils.PieceImageLoader;
 import static board.BoardConstants.N_COLUMNS;
 import static board.BoardConstants.N_ROWS;
 
@@ -52,7 +51,7 @@ public abstract class Piece {
         for (int i = 0; i < N_ROWS; i++) {
             for (int j = 0; j < N_COLUMNS; j++) {
                 final Coord newCoord = new Coord(i, j);
-                if(isValidCoord(newCoord) && board.getCell(newCoord).isEmpty()) {
+                if (isValidCoord(newCoord) && board.getCell(newCoord).isEmpty()) {
                     possibleMovements.add(newCoord);
                 }
             }

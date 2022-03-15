@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import pieces.PieceColor;
-import utils.PieceName;
 
 @Data
 @Builder

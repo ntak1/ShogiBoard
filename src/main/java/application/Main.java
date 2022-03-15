@@ -19,8 +19,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         Injector injector = Guice.createInjector(new PiecesModule(), new BoardModule());
-        game = new Game();
-        Scene scene = game.start(injector);
+        game = injector.getInstance(Game.class);
+        Scene scene = game.start();
         primaryStage.setScene(scene);
         primaryStage.setTitle("Shogi Board");
         primaryStage.show();

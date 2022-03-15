@@ -1,7 +1,6 @@
 package module;
 
 import board.CapturedPiecesBoard;
-import board.MainBoard;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -98,11 +97,6 @@ public class BoardModule extends AbstractModule {
                 BackgroundSize.DEFAULT);
 
         return new Background(bImg);
-    }
-
-    @Provides
-    public MainBoard providesBoard(@Named(BOARD_GRID_PANE_NAME) GridPane uiBoard) {
-        return new MainBoard(uiBoard);
     }
 
     @Provides

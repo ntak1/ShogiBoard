@@ -2,9 +2,7 @@ package application;
 
 import board.CapturedPiecesBoard;
 import board.MainBoard;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.name.Names;
+import com.google.inject.Inject;
 import exception.InvalidPositionException;
 import java.util.Collections;
 import java.util.List;
@@ -18,23 +16,28 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import pieces.Piece;
 import pieces.PieceColor;
+import pieces.PieceFactory;
 import utils.Cell;
 import utils.Coord;
 import utils.UiConfig;
 import static board.BoardConstants.CAPTURED_AREA_N_ROWS;
 import static board.BoardConstants.N_COLUMNS;
 
-
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class Game implements HandleOnClick {
+    private final MainBoard board;
+    private final PieceFactory pieceFactory;
+
+    private final CapturedPiecesBoard upperCaptured;
+    private final CapturedPiecesBoard lowerCaptured;
+
     private PieceColor currentTurn = PieceColor.WHITE;
     private Cell currentlySelectedCell;
     private State state = State.WAITING_SOURCE_PIECE_SELECTION;
-    private MainBoard board;
-
-    private Injector injector;
 
     private Cell[][] blackCapturedArea;
     private Cell[][] whiteCapturedArea;
@@ -43,36 +46,25 @@ public class Game implements HandleOnClick {
     @Setter
     private Stage primaryStage;
 
-    public Game() {
-    }
-
-    public Scene start(Injector injector) {
-        this.injector = injector;
-
+    public Scene start() {
         // Setup board
-        setBoard();
-        GridPane boardGridPane = (GridPane) board.placeInitialSetup(injector);
+        System.out.println("The board is null + " + board == null);
+        board.bindHandler(this);
+        GridPane boardGridPane = (GridPane) board.placeInitialSetup();
 
         VBox vBox = new VBox();
 
-        createCapturedArea(injector, boardGridPane, vBox);
+        createCapturedArea(boardGridPane, vBox);
         return new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
     }
 
-    private void createCapturedArea(Injector injector, GridPane boardGridPane, VBox vBox) {
-        CapturedPiecesBoard upperCaptured = injector.getInstance(CapturedPiecesBoard.class);
-        CapturedPiecesBoard lowerCaptured = injector.getInstance(CapturedPiecesBoard.class);
+    private void createCapturedArea(GridPane boardGridPane, VBox vBox) {
         blackCapturedArea = upperCaptured.getCellBoard();
         whiteCapturedArea = lowerCaptured.getCellBoard();
         GridPane upper = upperCaptured.getUiBoard();
         GridPane lower = lowerCaptured.getUiBoard();
 
         vBox.getChildren().addAll(lower, boardGridPane, upper);
-    }
-
-    private void setBoard() {
-        board = injector.getInstance(MainBoard.class);
-        this.board.bindHandler(this);
     }
 
     public void handleOnClick(Cell cell) {
@@ -113,12 +105,12 @@ public class Game implements HandleOnClick {
             final Piece piece;
             if (currentTurn == PieceColor.WHITE) {
                 final Coord capturedAreaCoord = positionPieceInCapturedArea(whiteCapturedArea);
-                piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.WHITE.toString())));
+                piece = pieceFactory.getPiece(capturedPiece, PieceColor.WHITE);
                 whiteCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setPiece(piece);
                 whiteCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setOnClickHandler(this);
             } else {
                 final Coord capturedAreaCoord = positionPieceInCapturedArea(blackCapturedArea);
-                piece = injector.getInstance(Key.get(capturedPiece.getClass(), Names.named(PieceColor.BLACK.toString())));
+                piece = pieceFactory.getPiece(capturedPiece, PieceColor.BLACK);
                 blackCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setPiece(piece);
                 blackCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setOnClickHandler(this);
             }
@@ -138,7 +130,7 @@ public class Game implements HandleOnClick {
                 }
             }
         }
-        return new Coord(0,0); // Overflow
+        return new Coord(0, 0); // Overflow
     }
 
     private boolean isValidSourcePiece() {
@@ -199,7 +191,7 @@ public class Game implements HandleOnClick {
         hButtonBox.getChildren().addAll(yesButton, noButton);
         hButtonBox.setAlignment(Pos.CENTER);
 
-        dialogVbox.getChildren().add(new Text("This is a Dialog"));
+        dialogVbox.getChildren().add(new Text("Do you wish to promote?"));
         dialogVbox.getChildren().addAll(hButtonBox);
         dialogVbox.setAlignment(Pos.CENTER);
         Scene dialogScene = new Scene(dialogVbox, UiConfig.PROMOTION_WINDOW_WIDTH, UiConfig.PROMOTION_WINDOW_HEIGHT);
