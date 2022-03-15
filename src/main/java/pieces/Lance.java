@@ -5,6 +5,8 @@ import java.util.List;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceName;
+import static board.BoardConstants.N_COLUMNS;
+import static board.BoardConstants.N_ROWS;
 
 public class Lance extends Piece {
     public Lance(PieceColor color) {
@@ -24,6 +26,23 @@ public class Lance extends Piece {
                     possibleMovements.add(newCoord);
                 }
                 break;
+            }
+        }
+        return possibleMovements;
+    }
+
+    @Override
+    protected List<Coord> getPossibleDropMovements() {
+        List<Coord> possibleMovements = new ArrayList<>();
+        int startRow = color == PieceColor.WHITE ? 0 : 1;
+        int endRow = color == PieceColor.WHITE ? N_ROWS -1 : N_ROWS;
+
+        for (int i = startRow; i < endRow; i++) {
+            for (int j = 0; j < N_COLUMNS; j++) {
+                final Coord newCoord = new Coord(i, j);
+                if (isValidCoord(newCoord) && board.getCell(newCoord).isEmpty()) {
+                    possibleMovements.add(newCoord);
+                }
             }
         }
         return possibleMovements;
