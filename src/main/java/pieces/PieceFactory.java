@@ -54,8 +54,6 @@ public class PieceFactory {
             return new Pawn(pieceColor);
         } else if (piece instanceof King) {
             return new King(pieceColor);
-        } else if (piece instanceof Gold) {
-            return new Gold(pieceColor);
         } else if (piece instanceof Silver) {
             return new Silver(pieceColor);
         } else if (piece instanceof DragonKing) {
@@ -63,7 +61,15 @@ public class PieceFactory {
         } else if (piece instanceof DragonHorse) {
             return new DragonHorse(pieceColor);
         } else if (piece instanceof PromotedPawn) {
-            return new PromotedPawn(pieceColor);
+            return new Pawn(pieceColor);
+        } else if (piece instanceof PromotedKnight) {
+            return new Knight(pieceColor);
+        } else if (piece instanceof PromotedLance) {
+            return new Lance(pieceColor);
+        } else if (piece instanceof PromotedSilver) {
+            return new Silver(pieceColor);
+        } else if (piece instanceof Gold) {
+            return new Gold(pieceColor);
         }
         return null;
     }

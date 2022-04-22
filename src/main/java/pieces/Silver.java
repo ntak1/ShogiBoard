@@ -1,5 +1,6 @@
 package pieces;
 
+import board.BoardConstants;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
@@ -47,5 +48,15 @@ public class Silver extends Piece {
     @Override
     public ImagePattern getImage() {
         return PieceImageLoader.getImagePattern(PieceName.SILVER, color);
+    }
+
+    @Override
+    public boolean canPromote(Coord source, Coord destination) {
+        return BoardConstants.isPromotableArea(destination, color);
+    }
+
+    @Override
+    public boolean shouldPromote(Coord source, Coord destination) {
+        return BoardConstants.isLastLine(destination, color);
     }
 }

@@ -20,12 +20,18 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import pieces.Knight;
+import pieces.Lance;
 import pieces.Pawn;
 import pieces.Piece;
 import pieces.PieceColor;
 import pieces.PieceFactory;
 import pieces.Promotable;
+import pieces.PromotedKnight;
+import pieces.PromotedLance;
 import pieces.PromotedPawn;
+import pieces.PromotedSilver;
+import pieces.Silver;
 import utils.Cell;
 import utils.Coord;
 import utils.UiConfig;
@@ -198,8 +204,15 @@ public class Game implements HandleOnClick, HandlePromotion {
             final Cell destinationCell = board.getCell(destination);
             final PieceColor color = destinationCell.getPiece().getColor();
             destinationCell.removePiece();
+            // TODO factory?
             if (promotablePiece instanceof Pawn) {
                 destinationCell.setPiece(new PromotedPawn(color));
+            } else if (promotablePiece instanceof Lance) {
+                destinationCell.setPiece(new PromotedLance(color));
+            } else if (promotablePiece instanceof Silver ) {
+                destinationCell.setPiece(new PromotedSilver(color));
+            } else if (promotablePiece instanceof Knight) {
+                destinationCell.setPiece(new PromotedKnight(color));
             }
         } else if (promotablePiece.canPromote(source, destination)) {
             openOptionalPromotionModal();

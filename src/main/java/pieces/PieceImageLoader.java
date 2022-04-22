@@ -39,6 +39,9 @@ public class PieceImageLoader {
         pieceNameStringMap.put(PieceName.PROMOTED_PAWN, "TO");
         pieceNameStringMap.put(PieceName.DRAGON_HORSE, "UM");
         pieceNameStringMap.put(PieceName.DRAGON_KING, "RY");
+        pieceNameStringMap.put(PieceName.PROMOTED_KNIGHT, "NG");
+        pieceNameStringMap.put(PieceName.PROMOTED_LANCE, "NG");
+        pieceNameStringMap.put(PieceName.PROMOTED_SILVER, "NG");
         return pieceNameStringMap;
     }
 

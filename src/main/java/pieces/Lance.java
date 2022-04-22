@@ -1,5 +1,6 @@
 package pieces;
 
+import board.BoardConstants;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
@@ -21,7 +22,7 @@ public class Lance extends Piece {
         while (isValidCoord(newCoord) && isValidMovement(newCoord)) {
             possibleMovements.add(newCoord);
             newCoord = new Coord(newCoord.getHeight() + delta, newCoord.getWidth());
-            if (!board.getCell(newCoord).isEmpty()) {
+            if (isValidCoord(newCoord) && !board.getCell(newCoord).isEmpty()) {
                 if (isValidMovement(newCoord)) {
                     possibleMovements.add(newCoord);
                 }
@@ -51,5 +52,15 @@ public class Lance extends Piece {
     @Override
     public ImagePattern getImage() {
         return PieceImageLoader.getImagePattern(PieceName.LANCE, color);
+    }
+
+    @Override
+    public boolean canPromote(Coord source, Coord destination) {
+        return BoardConstants.isPromotableArea(destination, color);
+    }
+
+    @Override
+    public boolean shouldPromote(Coord source, Coord destination) {
+        return BoardConstants.isLastLine(destination, color);
     }
 }
