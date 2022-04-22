@@ -1,6 +1,6 @@
 package utils;
 
-import application.HandleOnClick;
+import handlers.HandleOnClick;
 import java.util.Stack;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -42,7 +42,7 @@ public class Cell {
     }
 
     public void highlightCell() {
-        Rectangle cell = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
+        Rectangle cell = (Rectangle) GridHelper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
         Rectangle rectangle = new Rectangle(cell.getHeight(), cell.getWidth());
         rectangle.setStroke(javafx.scene.paint.Color.BLACK);
         rectangle.setFill(new javafx.scene.paint.Color(0.1, 0.1, 1, 0.25));
@@ -67,7 +67,7 @@ public class Cell {
     }
 
     public void highlightCellBorder() {
-        final Rectangle oldCellUi = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
+        final Rectangle oldCellUi = (Rectangle) GridHelper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
         final Rectangle newCellUi = new Rectangle(oldCellUi.getHeight(), oldCellUi.getWidth());
         newCellUi.setFill(Color.TRANSPARENT);
         newCellUi.setStroke(Color.RED);
@@ -77,15 +77,15 @@ public class Cell {
 
     public void setOnClickHandler(HandleOnClick handler) {
         this.handler = handler;
-        Rectangle uiNode = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
+        Rectangle uiNode = (Rectangle) GridHelper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
         uiNode.setOnMouseClicked(x -> handler.handleOnClick(this));
     }
 
     public void removePiece() {
         this.piece = null;
-        Rectangle uiNode = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
+        Rectangle uiNode = (Rectangle) GridHelper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
         gridPane.getChildren().remove(uiNode);
-        Rectangle uiNodeOld = (Rectangle) Helper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
+        Rectangle uiNodeOld = (Rectangle) GridHelper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
         uiNodeOld.setFill(Color.TRANSPARENT);
     }
 

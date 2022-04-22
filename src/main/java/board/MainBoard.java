@@ -4,9 +4,11 @@ import application.Game;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import exception.InvalidPositionException;
+import handlers.HandlePromotion;
 import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import lombok.Getter;
 import pieces.Piece;
 import pieces.PieceColor;
 import pieces.PieceFactory;
@@ -20,6 +22,9 @@ import static module.BoardModule.BOARD_GRID_PANE_NAME;
 public class MainBoard extends Board {
     private final PieceFactory pieceFactory;
 
+    @Getter
+    private HandlePromotion promotionHandler;
+
     @Inject
     public MainBoard(@Named(BOARD_GRID_PANE_NAME) GridPane uiBoard, PieceFactory pieceFactory) {
         this.gridPane = uiBoard;
@@ -28,6 +33,7 @@ public class MainBoard extends Board {
     }
 
     public void bindHandler(Game game) {
+        promotionHandler = game;
         for (int i = 0; i < N_ROWS; i++) {
             for (int j = 0; j < N_COLUMNS; j++) {
                 cellBoard[i][j].setOnClickHandler(game);

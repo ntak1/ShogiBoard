@@ -1,5 +1,6 @@
 package pieces;
 
+import board.BoardConstants;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.ImagePattern;
@@ -78,4 +79,13 @@ public class Pawn extends Piece {
         return PieceImageLoader.getImagePattern(PieceName.PAWN, color);
     }
 
+    @Override
+    public boolean canPromote(Coord source, Coord destination) {
+        return BoardConstants.isPromotableArea(destination, color);
+    }
+
+    @Override
+    public boolean shouldPromote(Coord source, Coord destination) {
+        return BoardConstants.isLastLine(destination, color);
+    }
 }

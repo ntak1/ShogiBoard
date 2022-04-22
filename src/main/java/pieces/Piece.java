@@ -13,10 +13,13 @@ import static board.BoardConstants.N_ROWS;
 
 @Getter
 @Setter
-public abstract class Piece {
+public abstract class Piece implements Promotable {
 
     protected MainBoard board;
     protected PieceColor color;
+
+    @Getter
+    @Setter
     protected boolean captured;
 
     public Piece(PieceColor color) {
@@ -31,6 +34,10 @@ public abstract class Piece {
         return getStandardMovements(coord);
     }
 
+    @Override
+    public boolean canPromote(Coord source, Coord destination) {
+        return false;
+    }
 
     protected boolean isValidCoord(Coord coord) {
         return !(coord.getHeight() < 0 || coord.getWidth() < 0
@@ -58,5 +65,10 @@ public abstract class Piece {
     }
 
     public abstract ImagePattern getImage();
+
+    @Override
+    public boolean shouldPromote(Coord source, Coord destination) {
+        return false;
+    }
 
 }

@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
-public class Helper {
+public class GridHelper {
 
     public static Node getNodeByRowColumnIndex(int row, int column, GridPane gridPane) {
         row = row + 1;

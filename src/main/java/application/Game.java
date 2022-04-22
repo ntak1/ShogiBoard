@@ -4,6 +4,8 @@ import board.CapturedPiecesBoard;
 import board.MainBoard;
 import com.google.inject.Inject;
 import exception.InvalidPositionException;
+import handlers.HandleOnClick;
+import handlers.HandlePromotion;
 import java.util.Collections;
 import java.util.List;
 import javafx.geometry.Pos;
@@ -18,9 +20,12 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import pieces.Pawn;
 import pieces.Piece;
 import pieces.PieceColor;
 import pieces.PieceFactory;
+import pieces.Promotable;
+import pieces.PromotedPawn;
 import utils.Cell;
 import utils.Coord;
 import utils.UiConfig;
@@ -28,7 +33,7 @@ import static board.BoardConstants.CAPTURED_AREA_N_ROWS;
 import static board.BoardConstants.N_COLUMNS;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class Game implements HandleOnClick {
+public class Game implements HandleOnClick, HandlePromotion {
     private final MainBoard board;
     private final PieceFactory pieceFactory;
 
@@ -48,7 +53,6 @@ public class Game implements HandleOnClick {
 
     public Scene start() {
         // Setup board
-        System.out.println("The board is null + " + board == null);
         board.bindHandler(this);
         GridPane boardGridPane = (GridPane) board.placeInitialSetup();
 
@@ -67,6 +71,7 @@ public class Game implements HandleOnClick {
         vBox.getChildren().addAll(lower, boardGridPane, upper);
     }
 
+    @Override
     public void handleOnClick(Cell cell) {
         System.out.println("I was clicked");
         if (state == State.WAITING_SOURCE_PIECE_SELECTION) {
@@ -92,32 +97,43 @@ public class Game implements HandleOnClick {
         return currentlySelectedCell != null && (cell.isEmpty() || isOppositeColor(cell));
     }
 
-    private void movePieceFromCurrentlySelectedToDestination(Cell cell) {
+    private void movePieceFromCurrentlySelectedToDestination(Cell destinationCell) {
         Piece capturedPiece;
+        Piece sourcePiece = currentlySelectedCell.getPiece();
+        Coord source = currentlySelectedCell.getCoord();
+        Coord destination = destinationCell.getCoord();
+        boolean sourceWasCaptured = currentlySelectedCell.getPiece().isCaptured();
+
         try {
-            capturedPiece = board.move(currentlySelectedCell, cell);
-            cell.getPiece().setCaptured(false);
+            capturedPiece = board.move(currentlySelectedCell, destinationCell);
+            destinationCell.getPiece().setCaptured(false);
         } catch (InvalidPositionException e) {
             System.out.println("Invalid Position, skipping");
             return;
         }
-        if (capturedPiece != null) {
-            final Piece piece;
-            if (currentTurn == PieceColor.WHITE) {
-                final Coord capturedAreaCoord = positionPieceInCapturedArea(whiteCapturedArea);
-                piece = pieceFactory.getPiece(capturedPiece, PieceColor.WHITE);
-                whiteCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setPiece(piece);
-                whiteCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setOnClickHandler(this);
-            } else {
-                final Coord capturedAreaCoord = positionPieceInCapturedArea(blackCapturedArea);
-                piece = pieceFactory.getPiece(capturedPiece, PieceColor.BLACK);
-                blackCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setPiece(piece);
-                blackCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setOnClickHandler(this);
-            }
-            piece.setCaptured(true);
-            piece.setBoard(board);
-        }
+        handleCapturedPiece(capturedPiece);
         nextTurn();
+        if (sourcePiece != null && !sourceWasCaptured) {
+            handlePromotion(sourcePiece, source, destination);
+        }
+    }
+
+    private void handleCapturedPiece(Piece capturedPiece) {
+        if (capturedPiece == null) return;
+        final Piece piece;
+        if (currentTurn == PieceColor.WHITE) {
+            final Coord capturedAreaCoord = positionPieceInCapturedArea(whiteCapturedArea);
+            piece = pieceFactory.getPiece(capturedPiece, PieceColor.WHITE);
+            whiteCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setPiece(piece);
+            whiteCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setOnClickHandler(this);
+        } else {
+            final Coord capturedAreaCoord = positionPieceInCapturedArea(blackCapturedArea);
+            piece = pieceFactory.getPiece(capturedPiece, PieceColor.BLACK);
+            blackCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setPiece(piece);
+            blackCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setOnClickHandler(this);
+        }
+        piece.setCaptured(true);
+        piece.setBoard(board);
     }
 
     private Coord positionPieceInCapturedArea(Cell[][] capturedArea) {
@@ -175,9 +191,23 @@ public class Game implements HandleOnClick {
         currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
     }
 
+    @Override
+    public void handlePromotion(Promotable promotablePiece, Coord source, Coord destination) {
+        if(promotablePiece.shouldPromote(source, destination)) {
+            openRequiredPromotionModal();
+            final Cell destinationCell = board.getCell(destination);
+            final PieceColor color = destinationCell.getPiece().getColor();
+            destinationCell.removePiece();
+            if (promotablePiece instanceof Pawn) {
+                destinationCell.setPiece(new PromotedPawn(color));
+            }
+        } else if (promotablePiece.canPromote(source, destination)) {
+            openOptionalPromotionModal();
+        }
+    }
 
     // TODO make this private after tests
-    public void openPromotionModal() {
+    private void openOptionalPromotionModal() {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(primaryStage);
@@ -193,6 +223,20 @@ public class Game implements HandleOnClick {
 
         dialogVbox.getChildren().add(new Text("Do you wish to promote?"));
         dialogVbox.getChildren().addAll(hButtonBox);
+        dialogVbox.setAlignment(Pos.CENTER);
+        Scene dialogScene = new Scene(dialogVbox, UiConfig.PROMOTION_WINDOW_WIDTH, UiConfig.PROMOTION_WINDOW_HEIGHT);
+
+        dialog.setScene(dialogScene);
+        dialog.show();
+    }
+
+    private void openRequiredPromotionModal() {
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(primaryStage);
+        VBox dialogVbox = new VBox(20);
+
+        dialogVbox.getChildren().add(new Text("The piece was promoted"));
         dialogVbox.setAlignment(Pos.CENTER);
         Scene dialogScene = new Scene(dialogVbox, UiConfig.PROMOTION_WINDOW_WIDTH, UiConfig.PROMOTION_WINDOW_HEIGHT);
 

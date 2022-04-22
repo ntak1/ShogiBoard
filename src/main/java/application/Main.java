@@ -26,7 +26,6 @@ public class Main extends Application {
         primaryStage.show();
 
         game.setPrimaryStage(primaryStage);
-        game.openPromotionModal();
     }
 
 }
