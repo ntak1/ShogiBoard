@@ -2,6 +2,7 @@ package pieces;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import exception.InvalidPieceException;
 import lombok.RequiredArgsConstructor;
 import utils.PieceName;
 
@@ -72,6 +73,20 @@ public class PieceFactory {
             return new Gold(pieceColor);
         }
         return null;
+    }
+
+    public Piece promotePiece(Piece piece) throws InvalidPieceException {
+        PieceColor colorPiece = piece.color;
+        if (piece instanceof Pawn) {
+            return new PromotedPawn(colorPiece);
+        } else if (piece instanceof Silver) {
+            return new PromotedSilver(colorPiece);
+        } else if (piece instanceof Lance) {
+            return new PromotedLance(colorPiece);
+        } else if (piece instanceof Knight) {
+            return new PromotedKnight(colorPiece);
+        }
+        throw new InvalidPieceException();
     }
 
 }

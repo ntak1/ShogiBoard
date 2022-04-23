@@ -3,6 +3,7 @@ package application;
 import board.CapturedPiecesBoard;
 import board.MainBoard;
 import com.google.inject.Inject;
+import exception.InvalidPieceException;
 import exception.InvalidPositionException;
 import handlers.HandleOnClick;
 import handlers.HandlePromotion;
@@ -48,6 +49,7 @@ public class Game implements HandleOnClick, HandlePromotion {
 
     private PieceColor currentTurn = PieceColor.WHITE;
     private Cell currentlySelectedCell;
+    private Cell lastSelectedCell;
     private State state = State.WAITING_SOURCE_PIECE_SELECTION;
 
     private Cell[][] blackCapturedArea;
@@ -96,6 +98,9 @@ public class Game implements HandleOnClick, HandlePromotion {
             }
             state = State.WAITING_SOURCE_PIECE_SELECTION;
             currentlySelectedCell = null;
+        }
+        if (currentlySelectedCell != null) {
+            lastSelectedCell = currentlySelectedCell;
         }
     }
 
@@ -177,7 +182,7 @@ public class Game implements HandleOnClick, HandlePromotion {
     }
 
     private List<Coord> getCellPossibleMovements(Cell cell) {
-        if (currentlySelectedCell == null) {
+        if (cell == null) {
             return Collections.emptyList();
         }
         return cell.getPiece().getPossibleMovements(cell.getCoord());
@@ -215,12 +220,12 @@ public class Game implements HandleOnClick, HandlePromotion {
                 destinationCell.setPiece(new PromotedKnight(color));
             }
         } else if (promotablePiece.canPromote(source, destination)) {
-            openOptionalPromotionModal();
+            openOptionalPromotionModal(destination);
         }
     }
 
     // TODO make this private after tests
-    private void openOptionalPromotionModal() {
+    private void openOptionalPromotionModal(Coord destination) {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(primaryStage);
@@ -229,10 +234,21 @@ public class Game implements HandleOnClick, HandlePromotion {
         HBox hButtonBox = new HBox(20);
         Button yesButton = new Button();
         yesButton.setText("Yes");
+        yesButton.setOnAction(event -> {
+            try {
+                promoteCurrentlySelectedPiece(destination);
+                ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+            } catch (InvalidPieceException e) {
+                e.printStackTrace();
+            }
+        });
+
         Button noButton = new Button();
         noButton.setText("No");
         hButtonBox.getChildren().addAll(yesButton, noButton);
         hButtonBox.setAlignment(Pos.CENTER);
+        noButton.setOnAction(event -> ((Stage)(((Button)event.getSource()).getScene().getWindow())).close());
+
 
         dialogVbox.getChildren().add(new Text("Do you wish to promote?"));
         dialogVbox.getChildren().addAll(hButtonBox);
@@ -241,6 +257,12 @@ public class Game implements HandleOnClick, HandlePromotion {
 
         dialog.setScene(dialogScene);
         dialog.show();
+    }
+
+    private void promoteCurrentlySelectedPiece(Coord destination) throws InvalidPieceException {
+        Cell destinationCell = board.getCell(destination);
+        Piece currPiece = destinationCell.getPiece();
+        destinationCell.setPiece(pieceFactory.promotePiece(currPiece));
     }
 
     private void openRequiredPromotionModal() {
