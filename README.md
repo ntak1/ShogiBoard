@@ -22,6 +22,4 @@ https://github.com/ntak1/ShogiBoard/projects/1
 * How to decouple Game logic from JavaFX?
 
 ## Screen Shots
-![](BoardImage.png)
-
-![](MovementsHighlight.PNG)
+![](Promotion.png)
