@@ -1,7 +1,5 @@
 # Shogi Board
-A simple board for moving shogi utils. Implemented with Java 8, using Java FX.
-
-https://www.pavel.cool/java/JavaFX8-Guice-Integration/
+A simple board for moving shogi pieces according to the game rules. Implemented with Java 8, using Java FX for the graphic interface.
 
 ## Project Board
 https://github.com/ntak1/ShogiBoard/projects/1
@@ -23,3 +21,6 @@ https://github.com/ntak1/ShogiBoard/projects/1
 
 ## Screen Shots
 ![](Promotion.png)
+
+## Resources
+https://www.pavel.cool/java/JavaFX8-Guice-Integration/
