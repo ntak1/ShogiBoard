@@ -21,18 +21,10 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import pieces.Knight;
-import pieces.Lance;
-import pieces.Pawn;
 import pieces.Piece;
 import pieces.PieceColor;
 import pieces.PieceFactory;
 import pieces.Promotable;
-import pieces.PromotedKnight;
-import pieces.PromotedLance;
-import pieces.PromotedPawn;
-import pieces.PromotedSilver;
-import pieces.Silver;
 import utils.Cell;
 import utils.Coord;
 import utils.UiConfig;
@@ -121,7 +113,11 @@ public class Game implements HandleOnClick, HandlePromotion {
         handleCapturedPiece(capturedPiece);
         nextTurn();
         if (sourcePiece != null && !sourceWasCaptured) {
-            handlePromotion(sourcePiece, source, destination);
+            try {
+                handlePromotion(sourcePiece, source, destination);
+            } catch (InvalidPieceException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -199,30 +195,16 @@ public class Game implements HandleOnClick, HandlePromotion {
     }
 
     @Override
-    public void handlePromotion(Promotable promotablePiece, Coord source, Coord destination) {
+    public void handlePromotion(Promotable promotablePiece, Coord source, Coord destination) throws InvalidPieceException {
         if(promotablePiece.shouldPromote(source, destination)) {
             openRequiredPromotionModal();
             final Cell destinationCell = board.getCell(destination);
-            final PieceColor color = destinationCell.getPiece().getColor();
             if (!destinationCell.isEmpty()) {
                 destinationCell.removePiece();
             }
-            // TODO factory?
-            Piece promotedPiece = null;
-            if (promotablePiece instanceof Pawn) {
-                promotedPiece = new PromotedPawn(color);
-                destinationCell.setPiece(promotedPiece);
-            } else if (promotablePiece instanceof Lance) {
-                promotedPiece = new PromotedLance(color);
-                destinationCell.setPiece(promotedPiece);
-            } else if (promotablePiece instanceof Silver ) {
-                promotedPiece = new PromotedSilver(color);
-                destinationCell.setPiece(promotedPiece);
-            } else if (promotablePiece instanceof Knight) {
-                promotedPiece = new PromotedKnight(color);
-                destinationCell.setPiece(promotedPiece);
-            }
+            Piece promotedPiece = pieceFactory.promotePiece((Piece)promotablePiece);
             if (promotedPiece != null) {
+                destinationCell.setPiece(promotedPiece);
                 promotedPiece.setBoard(this.board);
             }
         } else if (promotablePiece.canPromote(source, destination)) {
@@ -230,7 +212,6 @@ public class Game implements HandleOnClick, HandlePromotion {
         }
     }
 
-    // TODO make this private after tests
     private void openOptionalPromotionModal(Coord destination) {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
