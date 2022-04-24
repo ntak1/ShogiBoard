@@ -49,7 +49,6 @@ public class Game implements HandleOnClick, HandlePromotion {
 
     private PieceColor currentTurn = PieceColor.WHITE;
     private Cell currentlySelectedCell;
-    private Cell lastSelectedCell;
     private State state = State.WAITING_SOURCE_PIECE_SELECTION;
 
     private Cell[][] blackCapturedArea;
@@ -98,9 +97,6 @@ public class Game implements HandleOnClick, HandlePromotion {
             }
             state = State.WAITING_SOURCE_PIECE_SELECTION;
             currentlySelectedCell = null;
-        }
-        if (currentlySelectedCell != null) {
-            lastSelectedCell = currentlySelectedCell;
         }
     }
 
@@ -208,16 +204,26 @@ public class Game implements HandleOnClick, HandlePromotion {
             openRequiredPromotionModal();
             final Cell destinationCell = board.getCell(destination);
             final PieceColor color = destinationCell.getPiece().getColor();
-            destinationCell.removePiece();
+            if (!destinationCell.isEmpty()) {
+                destinationCell.removePiece();
+            }
             // TODO factory?
+            Piece promotedPiece = null;
             if (promotablePiece instanceof Pawn) {
-                destinationCell.setPiece(new PromotedPawn(color));
+                promotedPiece = new PromotedPawn(color);
+                destinationCell.setPiece(promotedPiece);
             } else if (promotablePiece instanceof Lance) {
-                destinationCell.setPiece(new PromotedLance(color));
+                promotedPiece = new PromotedLance(color);
+                destinationCell.setPiece(promotedPiece);
             } else if (promotablePiece instanceof Silver ) {
-                destinationCell.setPiece(new PromotedSilver(color));
+                promotedPiece = new PromotedSilver(color);
+                destinationCell.setPiece(promotedPiece);
             } else if (promotablePiece instanceof Knight) {
-                destinationCell.setPiece(new PromotedKnight(color));
+                promotedPiece = new PromotedKnight(color);
+                destinationCell.setPiece(promotedPiece);
+            }
+            if (promotedPiece != null) {
+                promotedPiece.setBoard(this.board);
             }
         } else if (promotablePiece.canPromote(source, destination)) {
             openOptionalPromotionModal(destination);
@@ -262,7 +268,12 @@ public class Game implements HandleOnClick, HandlePromotion {
     private void promoteCurrentlySelectedPiece(Coord destination) throws InvalidPieceException {
         Cell destinationCell = board.getCell(destination);
         Piece currPiece = destinationCell.getPiece();
-        destinationCell.setPiece(pieceFactory.promotePiece(currPiece));
+        Piece promotedPiece = pieceFactory.promotePiece(currPiece);
+        if(!destinationCell.isEmpty()) {
+            destinationCell.removePiece();
+        }
+        promotedPiece.setBoard(this.board);
+        destinationCell.setPiece(promotedPiece);
     }
 
     private void openRequiredPromotionModal() {

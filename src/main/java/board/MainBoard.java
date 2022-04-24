@@ -54,6 +54,7 @@ public class MainBoard extends Board {
         final List<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
         Piece capturedPiece = null;
         if (possibleMovements.contains(destinationCord)) {
+            System.out.println("Removing " + source.getPiece().getClass().getName());
             source.removePiece();
             if (!destination.isEmpty()) {
                 capturedPiece = destination.getPiece();
