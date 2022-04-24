@@ -2,8 +2,8 @@ package pieces;
 
 
 import board.MainBoard;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javafx.scene.paint.ImagePattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +27,7 @@ public abstract class Piece implements Promotable {
         this.captured = false;
     }
 
-    public List<Coord> getPossibleMovements(Coord coord) {
+    public Set<Coord> getPossibleMovements(Coord coord) {
         if (captured) {
             return getPossibleDropMovements();
         }
@@ -49,10 +49,10 @@ public abstract class Piece implements Promotable {
                 board.getCell(newCoord).getPiece().getColor() != color;
     }
 
-    protected abstract List<Coord> getStandardMovements(Coord coord);
+    protected abstract Set<Coord> getStandardMovements(Coord coord);
 
-    protected List<Coord> getPossibleDropMovements() {
-        List<Coord> possibleMovements = new ArrayList<>();
+    protected Set<Coord> getPossibleDropMovements() {
+        Set<Coord> possibleMovements = new HashSet<>();
         for (int i = 0; i < N_ROWS; i++) {
             for (int j = 0; j < N_COLUMNS; j++) {
                 final Coord newCoord = new Coord(i, j);

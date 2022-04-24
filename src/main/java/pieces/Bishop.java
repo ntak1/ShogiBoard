@@ -1,7 +1,8 @@
 package pieces;
 
-import java.util.ArrayList;
-import java.util.List;
+import board.BoardConstants;
+import java.util.HashSet;
+import java.util.Set;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceName;
@@ -15,8 +16,8 @@ public class Bishop extends Piece {
 
 
     @Override
-    protected List<Coord> getStandardMovements(final Coord coord) {
-        final List<Coord> possibleMovements = new ArrayList<>();
+    protected Set<Coord> getStandardMovements(final Coord coord) {
+        final Set<Coord> possibleMovements = new HashSet<>();
         final int[][] directionCombinations = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
 
         for (int[] pair : directionCombinations) {
@@ -42,5 +43,15 @@ public class Bishop extends Piece {
     @Override
     public ImagePattern getImage() {
         return PieceImageLoader.getImagePattern(PieceName.BISHOP, color);
+    }
+
+    @Override
+    public boolean canPromote(Coord source, Coord destination) {
+        return BoardConstants.isPromotableArea(destination, color);
+    }
+
+    @Override
+    public boolean shouldPromote(Coord source, Coord destination) {
+        return BoardConstants.isLastLine(destination, color);
     }
 }

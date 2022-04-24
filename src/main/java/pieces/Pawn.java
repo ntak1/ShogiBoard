@@ -1,8 +1,8 @@
 package pieces;
 
 import board.BoardConstants;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceName;
@@ -16,8 +16,8 @@ public class Pawn extends Piece {
     }
 
     @Override
-    protected List<Coord> getStandardMovements(Coord coord) {
-        List<Coord> possibleMovements = new ArrayList<>();
+    protected Set<Coord> getStandardMovements(Coord coord) {
+        Set<Coord> possibleMovements = new HashSet<>();
         final Coord newCoord;
         final int direction = color == PieceColor.WHITE ? 1 : -1;
         newCoord = Coord.builder()
@@ -38,9 +38,9 @@ public class Pawn extends Piece {
     }
 
     @Override
-    protected List<Coord> getPossibleDropMovements() {
-        final List<Coord> possibleMovements = new ArrayList<>();
-        final List<Integer> possibleDropColumns = new ArrayList<>();
+    protected Set<Coord> getPossibleDropMovements() {
+        final Set<Coord> possibleMovements = new HashSet<>();
+        final Set<Integer> possibleDropColumns = new HashSet<>();
 
         getValidColumnDrops(possibleDropColumns);
 
@@ -58,7 +58,7 @@ public class Pawn extends Piece {
         return possibleMovements;
     }
 
-    private void getValidColumnDrops(List<Integer> possibleDropColumns) {
+    private void getValidColumnDrops(Set<Integer> possibleDropColumns) {
         for (int i = 0; i < N_COLUMNS; i++) {
             boolean validColumn = true;
             for (int j = 0; j < N_ROWS; j++) {

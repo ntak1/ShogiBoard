@@ -2,7 +2,9 @@ package pieces;
 
 import board.BoardConstants;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceName;
@@ -14,8 +16,8 @@ public class Silver extends Piece {
     }
 
     @Override
-    protected List<Coord> getStandardMovements(final Coord coord) {
-        final List<Coord> standardMovements = new ArrayList<>();
+    protected Set<Coord> getStandardMovements(final Coord coord) {
+        final Set<Coord> standardMovements = new HashSet<>();
         final int height = coord.getHeight();
         final int width = coord.getWidth();
 

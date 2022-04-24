@@ -2,7 +2,9 @@ package pieces;
 
 import board.BoardConstants;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceName;
@@ -15,8 +17,8 @@ public class Knight extends Piece {
     }
 
 
-    protected List<Coord> getStandardMovements(final Coord coord) {
-        List<Coord> possibleMovements = new ArrayList<>();
+    protected Set<Coord> getStandardMovements(final Coord coord) {
+        Set<Coord> possibleMovements = new HashSet<>();
         final int delta = color == PieceColor.WHITE ? 2 : -2;
         Coord newCoord = new Coord(coord.getHeight() + delta, coord.getWidth() - 1);
         if (isValidCoord(newCoord) && isValidMovement(newCoord)) {
@@ -31,11 +33,11 @@ public class Knight extends Piece {
     }
 
     @Override
-    protected List<Coord> getPossibleDropMovements() {
+    protected Set<Coord> getPossibleDropMovements() {
         int upperRowLimit = color == PieceColor.BLACK ? N_ROWS : N_ROWS - 2;
         int lowerRowLimit = color == PieceColor.BLACK ? 2 : 0;
         System.out.println(color);
-        List<Coord> possibleMovements = new ArrayList<>();
+        Set<Coord> possibleMovements = new HashSet<>();
         for (int i = lowerRowLimit; i < upperRowLimit; i++) {
             for (int j = 0; j < N_COLUMNS; j++) {
                 final Coord newCoord = new Coord(i, j);

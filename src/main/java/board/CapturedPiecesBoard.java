@@ -1,6 +1,7 @@
 package board;
 
 import java.util.List;
+import java.util.Set;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
 import pieces.Piece;
@@ -26,7 +27,7 @@ public class CapturedPiecesBoard extends Board {
     public Piece move(Cell source, Cell destination) {
         final Piece sourcePiece = source.getPiece();
         final Coord destinationCord = destination.getCoord();
-        final List<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
+        final Set<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
         if (possibleMovements.contains(destinationCord)) {
             source.removePiece();
             destination.setPiece(sourcePiece);

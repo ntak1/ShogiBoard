@@ -6,6 +6,7 @@ import com.google.inject.name.Named;
 import exception.InvalidPositionException;
 import handlers.HandlePromotion;
 import java.util.List;
+import java.util.Set;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
@@ -51,7 +52,7 @@ public class MainBoard extends Board {
     public Piece move(final Cell source, final Cell destination) throws InvalidPositionException {
         final Piece sourcePiece = source.getPiece();
         final Coord destinationCord = destination.getCoord();
-        final List<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
+        final Set<Coord> possibleMovements = sourcePiece.getPossibleMovements(source.getCoord());
         Piece capturedPiece = null;
         if (possibleMovements.contains(destinationCord)) {
             System.out.println("Removing " + source.getPiece().getClass().getName());
@@ -86,17 +87,17 @@ public class MainBoard extends Board {
         cellBoard[8][1].setPiece(pieceFactory.getPiece(PieceName.KNIGHT, PieceColor.BLACK));
         cellBoard[8][7].setPiece(pieceFactory.getPiece(PieceName.KNIGHT, PieceColor.BLACK));
 
-        // SILVER
-        cellBoard[0][2].setPiece(pieceFactory.getPiece(PieceName.SILVER, PieceColor.WHITE));
-        cellBoard[0][6].setPiece(pieceFactory.getPiece(PieceName.SILVER, PieceColor.WHITE));
-        cellBoard[8][2].setPiece(pieceFactory.getPiece(PieceName.SILVER, PieceColor.BLACK));
-        cellBoard[8][6].setPiece(pieceFactory.getPiece(PieceName.SILVER, PieceColor.BLACK));
-
         // GOLD
-        cellBoard[0][3].setPiece(pieceFactory.getPiece(PieceName.GOLD, PieceColor.WHITE));
-        cellBoard[0][5].setPiece(pieceFactory.getPiece(PieceName.GOLD, PieceColor.WHITE));
-        cellBoard[8][3].setPiece(pieceFactory.getPiece(PieceName.GOLD, PieceColor.BLACK));
-        cellBoard[8][5].setPiece(pieceFactory.getPiece(PieceName.GOLD, PieceColor.BLACK));
+        cellBoard[0][2].setPiece(pieceFactory.getPiece(PieceName.GOLD, PieceColor.WHITE));
+        cellBoard[0][6].setPiece(pieceFactory.getPiece(PieceName.GOLD, PieceColor.WHITE));
+        cellBoard[8][2].setPiece(pieceFactory.getPiece(PieceName.GOLD, PieceColor.BLACK));
+        cellBoard[8][6].setPiece(pieceFactory.getPiece(PieceName.GOLD, PieceColor.BLACK));
+
+        // SILVER
+        cellBoard[0][3].setPiece(pieceFactory.getPiece(PieceName.SILVER, PieceColor.WHITE));
+        cellBoard[0][5].setPiece(pieceFactory.getPiece(PieceName.SILVER, PieceColor.WHITE));
+        cellBoard[8][3].setPiece(pieceFactory.getPiece(PieceName.SILVER, PieceColor.BLACK));
+        cellBoard[8][5].setPiece(pieceFactory.getPiece(PieceName.SILVER, PieceColor.BLACK));
 
         // KING
         cellBoard[0][4].setPiece(pieceFactory.getPiece(PieceName.KING, PieceColor.WHITE));

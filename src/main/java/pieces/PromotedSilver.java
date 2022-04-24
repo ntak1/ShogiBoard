@@ -1,6 +1,6 @@
 package pieces;
 
-import java.util.List;
+import java.util.Set;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceName;
@@ -11,7 +11,7 @@ public class PromotedSilver extends Gold {
     }
 
     @Override
-    protected List<Coord> getStandardMovements(Coord coord) {
+    protected Set<Coord> getStandardMovements(Coord coord) {
         return super.getStandardMovements(coord);
     }
 

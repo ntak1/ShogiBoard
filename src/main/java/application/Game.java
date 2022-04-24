@@ -9,6 +9,7 @@ import handlers.HandleOnClick;
 import handlers.HandlePromotion;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -162,7 +163,7 @@ public class Game implements HandleOnClick, HandlePromotion {
             return;
         }
         final Piece piece = cell.getPiece();
-        final List<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
+        final Set<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
         cell.highlightCellBorder();
         board.highlightCells(cordList);
         if (currentlySelectedCell != null) {
@@ -173,9 +174,9 @@ public class Game implements HandleOnClick, HandlePromotion {
         state = State.WAITING_SOURCE_PIECE_SELECTION;
     }
 
-    private List<Coord> getCellPossibleMovements(Cell cell) {
+    private Set<Coord> getCellPossibleMovements(Cell cell) {
         if (cell == null) {
-            return Collections.emptyList();
+            return Collections.EMPTY_SET;
         }
         return cell.getPiece().getPossibleMovements(cell.getCoord());
     }

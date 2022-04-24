@@ -1,7 +1,10 @@
 package pieces;
 
+import board.BoardConstants;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceName;
@@ -13,8 +16,8 @@ public class Rook extends Piece {
     }
 
     @Override
-    protected List<Coord> getStandardMovements(Coord coord) {
-        final List<Coord> possibleMovements = new ArrayList<>();
+    protected Set<Coord> getStandardMovements(Coord coord) {
+        final Set<Coord> possibleMovements = new HashSet<>();
         // Rows upward
         Coord newCoord = new Coord(coord.getHeight() - 1, coord.getWidth());
 
@@ -64,5 +67,15 @@ public class Rook extends Piece {
     @Override
     public ImagePattern getImage() {
         return PieceImageLoader.getImagePattern(PieceName.ROOK, color);
+    }
+
+    @Override
+    public boolean canPromote(Coord source, Coord destination) {
+        return BoardConstants.isPromotableArea(destination, color);
+    }
+
+    @Override
+    public boolean shouldPromote(Coord source, Coord destination) {
+        return BoardConstants.isLastLine(destination, color);
     }
 }

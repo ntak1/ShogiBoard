@@ -2,7 +2,9 @@ package pieces;
 
 import board.BoardConstants;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.scene.paint.ImagePattern;
 import utils.Coord;
 import utils.PieceName;
@@ -15,8 +17,8 @@ public class Lance extends Piece {
     }
 
     @Override
-    protected List<Coord> getStandardMovements(final Coord coord) {
-        final List<Coord> possibleMovements = new ArrayList<>();
+    protected Set<Coord> getStandardMovements(final Coord coord) {
+        final Set<Coord> possibleMovements = new HashSet<>();
         final int delta = color == PieceColor.WHITE ? 1 : -1;
         Coord newCoord = new Coord(coord.getHeight() + delta, coord.getWidth());
         while (isValidCoord(newCoord) && isValidMovement(newCoord)) {
@@ -33,8 +35,8 @@ public class Lance extends Piece {
     }
 
     @Override
-    protected List<Coord> getPossibleDropMovements() {
-        List<Coord> possibleMovements = new ArrayList<>();
+    protected Set<Coord> getPossibleDropMovements() {
+        Set<Coord> possibleMovements = new HashSet<>();
         int startRow = color == PieceColor.WHITE ? 0 : 1;
         int endRow = color == PieceColor.WHITE ? N_ROWS -1 : N_ROWS;
 
