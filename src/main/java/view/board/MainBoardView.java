@@ -1,11 +1,12 @@
 package view.board;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import controller.Game;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import model.exception.InvalidPositionException;
 import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
 import model.Coord;
 import model.PieceName;
 import model.pieces.PieceColor;
@@ -13,20 +14,22 @@ import model.pieces.PieceFactory;
 import view.Cell;
 import view.PieceView;
 
+import java.io.File;
 import java.util.Set;
 
 import static model.board.BoardConstants.N_COLUMNS;
 import static model.board.BoardConstants.N_ROWS;
-import static view.board.module.BoardModule.BOARD_GRID_PANE_NAME;
+import static view.UiConfig.PADDING;
+import static view.UiConfig.SQUARE_SIZE;
 
 public class MainBoardView extends BoardView {
     private final PieceFactory pieceFactory;
 
     @Inject
-    public MainBoardView(@Named(BOARD_GRID_PANE_NAME) GridPane uiBoard, PieceFactory pieceFactory) {
-        this.gridPane = uiBoard;
+    public MainBoardView( PieceFactory pieceFactory) {
+        this.gridPane = getMainBoardUi();
         this.pieceFactory = pieceFactory;
-        this.cellBoard = initializeCellBoard(uiBoard);
+        this.cellBoard = initializeCellBoard(this.gridPane);
     }
 
     public void bindHandler(Game game) {
@@ -127,5 +130,31 @@ public class MainBoardView extends BoardView {
             }
         }
         return cellBoard;
+    }
+
+
+    private GridPane getMainBoardUi() {
+        GridPane uiBoard = new GridPane();
+        uiBoard.getRowConstraints().add(new RowConstraints(PADDING));
+        uiBoard.getColumnConstraints().add(new ColumnConstraints(PADDING));
+        for (int i = 0; i < 9; i++) {
+            uiBoard.getColumnConstraints().add(new ColumnConstraints(SQUARE_SIZE));
+            uiBoard.getRowConstraints().add(new RowConstraints(SQUARE_SIZE));
+        }
+        for (int i = 1; i <= N_COLUMNS; i++) {
+            for (int j = 1; j <= N_ROWS; j++) {
+                Rectangle rect = new Rectangle();
+                rect.setWidth(SQUARE_SIZE);
+                rect.setHeight(SQUARE_SIZE);
+                rect.setStroke(javafx.scene.paint.Color.BLACK);
+                rect.setStrokeWidth(3);
+                rect.setFill(javafx.scene.paint.Color.TRANSPARENT);
+                uiBoard.add(rect, i, j);
+            }
+        }
+        uiBoard.getRowConstraints().add(new RowConstraints(PADDING));
+
+        uiBoard.setBackground(loadBackgroundImage());
+        return uiBoard;
     }
 }

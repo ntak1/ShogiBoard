@@ -36,9 +36,6 @@ public class Game implements HandleOnClick {
     private final MainBoardView board;
     private final PieceFactory pieceFactory;
 
-    private final CapturedPiecesBoardView upperCaptured;
-    private final CapturedPiecesBoardView lowerCaptured;
-
     private PieceColor currentTurn = PieceColor.WHITE;
     private Cell currentlySelectedCell;
     private State state = State.WAITING_SOURCE_PIECE_SELECTION;
@@ -50,7 +47,7 @@ public class Game implements HandleOnClick {
     @Setter
     private Stage primaryStage;
 
-
+    // TODO: move this to Main
     public Scene createGameScene() {
         // Setup model.board
         board.bindHandler(this);
@@ -58,17 +55,16 @@ public class Game implements HandleOnClick {
 
         VBox vBox = new VBox();
 
-        createCapturedArea(boardGridPane, vBox);
-        return new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
-    }
+        CapturedPiecesBoardView upperCaptured = new CapturedPiecesBoardView();
+        CapturedPiecesBoardView lowerCaptured = new CapturedPiecesBoardView();
 
-    private void createCapturedArea(GridPane boardGridPane, VBox vBox) {
         blackCapturedArea = upperCaptured.getCellBoard();
         whiteCapturedArea = lowerCaptured.getCellBoard();
         GridPane upper = upperCaptured.getUiBoard();
         GridPane lower = lowerCaptured.getUiBoard();
 
         vBox.getChildren().addAll(lower, boardGridPane, upper);
+        return new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
     }
 
     @Override

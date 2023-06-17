@@ -8,7 +8,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import view.board.module.BoardModule;
 
 
 public class Main extends Application {
@@ -20,7 +19,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Injector injector = Guice.createInjector(new BoardModule());
+        Injector injector = Guice.createInjector();
         game = injector.getInstance(Game.class);
         Scene scene = game.createGameScene();
         game.setPrimaryStage(primaryStage);
@@ -32,7 +31,6 @@ public class Main extends Application {
         primaryStage.setTitle("Shogi Board");
         primaryStage.show();
     }
-
 
     public static MenuBar getMenuBar() {
 
