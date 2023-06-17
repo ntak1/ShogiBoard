@@ -50,7 +50,8 @@ public class Game implements HandleOnClick {
     @Setter
     private Stage primaryStage;
 
-    public Scene start() {
+
+    public Scene createGameScene() {
         // Setup model.board
         board.bindHandler(this);
         GridPane boardGridPane = (GridPane) board.placeInitialSetup();
