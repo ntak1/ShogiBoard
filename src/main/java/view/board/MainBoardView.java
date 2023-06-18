@@ -64,6 +64,19 @@ public class MainBoardView extends BoardView {
         return capturedPiece;
     }
 
+    public PieceView moveUnconditionally(final Cell source, final Cell destination) {
+        final PieceView sourcePiece = source.getPiece();
+        PieceView capturedPiece = null;
+        System.out.println("Removing " + source.getPiece().getClass().getName());
+        source.removePiece();
+        if (!destination.isEmpty()) {
+            capturedPiece = destination.getPiece();
+            destination.removePiece();
+        }
+        destination.setPiece(sourcePiece);
+        return capturedPiece;
+    }
+
     private void placePiecesDefaultMode() {
         // PAWN
         for (int i = 0; i < N_COLUMNS; i++) {

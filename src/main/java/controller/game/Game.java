@@ -5,6 +5,7 @@ import controller.State;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -66,7 +67,7 @@ public abstract class Game implements HandleOnClick {
 
 
     protected Set getCellPossibleMovements(Cell cell) {
-        if (cell == null) {
+        if (cell == null || cell.getPiece() == null) {
             return Collections.EMPTY_SET;
         }
         return cell.getPiece().getPossibleMovements(cell.getCoord());

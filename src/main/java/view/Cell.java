@@ -52,7 +52,7 @@ public class Cell {
 
     private void addLayer(@NonNull Rectangle node) {
         layers.add(node);
-        node.setOnMouseClicked(x -> handler.handleOnClick(this, null));
+        node.setOnMouseClicked(x -> handler.handleOnClick(this, x));
         gridPane.add(node, coord.width + 1, coord.height + 1);
     }
 
@@ -87,6 +87,9 @@ public class Cell {
         Rectangle uiNode = (Rectangle) GridHelper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
         gridPane.getChildren().remove(uiNode);
         Rectangle uiNodeOld = (Rectangle) GridHelper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
+        if (uiNodeOld == null) {
+            return;
+        }
         uiNodeOld.setFill(Color.TRANSPARENT);
     }
 

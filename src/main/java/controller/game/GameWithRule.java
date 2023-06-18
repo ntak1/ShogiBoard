@@ -2,7 +2,7 @@ package controller.game;
 
 import com.google.inject.Inject;
 import controller.State;
-import javafx.event.Event;
+import javafx.scene.input.MouseEvent;
 import model.exception.InvalidPieceException;
 import model.exception.InvalidPositionException;
 import javafx.stage.Stage;
@@ -31,7 +31,7 @@ public class GameWithRule extends Game {
     }
 
     @Override
-    public void handleOnClick(Cell cell, Event event) {
+    public void handleOnClick(Cell cell, MouseEvent event) {
         System.out.println("I was clicked");
         if (state == State.WAITING_SOURCE_PIECE_SELECTION) {
             final PieceView sourcePiece = cell.getPiece();
