@@ -1,6 +1,6 @@
 package view;
 
-import controller.handlers.HandleOnClick;
+import controller.game.HandleOnClick;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -52,7 +52,7 @@ public class Cell {
 
     private void addLayer(@NonNull Rectangle node) {
         layers.add(node);
-        node.setOnMouseClicked(x -> handler.handleOnClick(this));
+        node.setOnMouseClicked(x -> handler.handleOnClick(this, null));
         gridPane.add(node, coord.width + 1, coord.height + 1);
     }
 
@@ -79,7 +79,7 @@ public class Cell {
     public void setOnClickHandler(HandleOnClick handler) {
         this.handler = handler;
         Rectangle uiNode = (Rectangle) GridHelper.getNodeByRowColumnIndex(coord.height, coord.width, gridPane);
-        uiNode.setOnMouseClicked(x -> handler.handleOnClick(this));
+        uiNode.setOnMouseClicked(event -> handler.handleOnClick(this, event));
     }
 
     public void removePiece() {

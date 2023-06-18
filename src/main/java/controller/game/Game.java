@@ -1,9 +1,7 @@
-package controller;
+package controller.game;
 
 import com.google.inject.Inject;
-import controller.handlers.HandleOnClick;
-import model.exception.InvalidPieceException;
-import model.exception.InvalidPositionException;
+import controller.State;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,6 +15,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import model.Coord;
+import model.exception.InvalidPieceException;
 import model.pieces.PieceColor;
 import model.pieces.PieceFactory;
 import view.Cell;
@@ -32,22 +31,20 @@ import static model.board.BoardConstants.CAPTURED_AREA_N_ROWS;
 import static model.board.BoardConstants.N_COLUMNS;
 
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class Game implements HandleOnClick {
-    private final MainBoardView board;
-    private final PieceFactory pieceFactory;
+public abstract class Game implements HandleOnClick {
+    protected final MainBoardView board;
+    protected final PieceFactory pieceFactory;
 
-    private PieceColor currentTurn = PieceColor.WHITE;
-    private Cell currentlySelectedCell;
-    private State state = State.WAITING_SOURCE_PIECE_SELECTION;
+    protected State state = State.WAITING_SOURCE_PIECE_SELECTION;
 
-    private Cell[][] blackCapturedArea;
-    private Cell[][] whiteCapturedArea;
+    protected Cell[][] blackCapturedArea;
+    protected Cell[][] whiteCapturedArea;
+    protected Cell currentlySelectedCell;
 
     @Getter
     @Setter
     private Stage primaryStage;
 
-    // TODO: move this to Main
     public Scene createGameScene() {
         // Setup model.board
         board.bindHandler(this);
@@ -67,61 +64,18 @@ public class Game implements HandleOnClick {
         return new Scene(vBox, UiConfig.WINDOW_WIDTH, UiConfig.WINDOW_HEIGHT);
     }
 
-    @Override
-    public void handleOnClick(Cell cell) {
-        System.out.println("I was clicked");
-        if (state == State.WAITING_SOURCE_PIECE_SELECTION) {
-            final PieceView sourcePiece = cell.getPiece();
-            if (sourcePiece == null || sourcePiece.getColor() != currentTurn) {
-                return;
-            }
-            highlightPossibleMovements(cell);
-            state = State.PIECE_SELECTED;
-            currentlySelectedCell = cell;
-        } else if (state == State.PIECE_SELECTED) {
-            board.removeHighlightOnCells(getCellPossibleMovements(currentlySelectedCell));
-            currentlySelectedCell.removeAllHighlights();
-            if (isValidSourcePiece() && isValidDestination(cell)) {
-                movePieceFromCurrentlySelectedToDestination(cell);
-            }
-            state = State.WAITING_SOURCE_PIECE_SELECTION;
-            currentlySelectedCell = null;
+
+    protected Set getCellPossibleMovements(Cell cell) {
+        if (cell == null) {
+            return Collections.EMPTY_SET;
         }
+        return cell.getPiece().getPossibleMovements(cell.getCoord());
     }
 
-    private boolean isValidDestination(Cell cell) {
-        return currentlySelectedCell != null && (cell.isEmpty() || isOppositeColor(cell));
-    }
-
-    private void movePieceFromCurrentlySelectedToDestination(Cell destinationCell) {
-        PieceView capturedPiece;
-        PieceView sourcePiece = currentlySelectedCell.getPiece();
-        Coord source = currentlySelectedCell.getCoord();
-        Coord destination = destinationCell.getCoord();
-        boolean sourceWasCaptured = currentlySelectedCell.getPiece().isCaptured();
-
-        try {
-            capturedPiece = board.move(currentlySelectedCell, destinationCell);
-            destinationCell.getPiece().setCaptured(false);
-        } catch (InvalidPositionException e) {
-            System.out.println("Invalid Position, skipping");
-            return;
-        }
-        handleCapturedPiece(capturedPiece);
-        nextTurn();
-        if (sourcePiece != null && !sourceWasCaptured) {
-            try {
-                handlePromotion(sourcePiece, source, destination);
-            } catch (InvalidPieceException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void handleCapturedPiece(PieceView capturedPiece) {
+    protected void handleCapturedPiece(PieceView capturedPiece) {
         if (capturedPiece == null) return;
         final PieceView piece;
-        if (currentTurn == PieceColor.WHITE) {
+        if (capturedPiece.getColor() == PieceColor.BLACK) {
             final Coord capturedAreaCoord = positionPieceInCapturedArea(whiteCapturedArea);
             piece = pieceFactory.getPiece(capturedPiece, PieceColor.WHITE);
             whiteCapturedArea[capturedAreaCoord.getHeight()][capturedAreaCoord.getWidth()].setPiece(piece);
@@ -136,6 +90,7 @@ public class Game implements HandleOnClick {
         piece.setBoard(board);
     }
 
+
     private Coord positionPieceInCapturedArea(Cell[][] capturedArea) {
         for (int i = 0; i < CAPTURED_AREA_N_ROWS; i++) {
             for (int j = 0; j < N_COLUMNS; j++) {
@@ -149,49 +104,13 @@ public class Game implements HandleOnClick {
         return new Coord(0, 0); // Overflow
     }
 
-    private boolean isValidSourcePiece() {
-        return currentlySelectedCell != null && currentlySelectedCell.getPiece() != null
-                && currentlySelectedCell.getPiece().getColor() == currentTurn;
+    protected abstract boolean isOppositeColor(Cell cell);
+
+    protected boolean isValidDestination(Cell cell) {
+        return currentlySelectedCell != null && (cell.isEmpty() || isOppositeColor(cell));
     }
 
-    private void highlightPossibleMovements(Cell cell) {
-        if (cell.getPiece().getColor() != currentTurn) {
-            return;
-        }
-        final PieceView piece = cell.getPiece();
-        final Set<Coord> cordList = piece.getPossibleMovements(cell.getCoord());
-        cell.highlightCellBorder();
-        board.highlightCells(cordList);
-        if (currentlySelectedCell != null) {
-            board.removeHighlightOnCells(getCellPossibleMovements(currentlySelectedCell));
-            cell.removeAllHighlights();
-        }
-        currentlySelectedCell = cell;
-        state = State.WAITING_SOURCE_PIECE_SELECTION;
-    }
-
-    private Set<Coord> getCellPossibleMovements(Cell cell) {
-        if (cell == null) {
-            return Collections.EMPTY_SET;
-        }
-        return cell.getPiece().getPossibleMovements(cell.getCoord());
-    }
-
-    private boolean isOppositeColor(final Cell cell) {
-        if (currentlySelectedCell == null) {
-            return true;
-        }
-        if (currentlySelectedCell.getPiece() != null && cell.getPiece() != null) {
-            return currentTurn != cell.getPiece().getColor();
-        }
-        return true;
-    }
-
-    private void nextTurn() {
-        currentTurn = currentTurn == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
-    }
-
-    public void handlePromotion(PieceView promotablePiece, Coord source, Coord destination) throws InvalidPieceException {
+    protected void handlePromotion(PieceView promotablePiece, Coord source, Coord destination) throws InvalidPieceException {
         if (promotablePiece.getPiece().shouldPromote(source, destination)) {
             openRequiredPromotionModal();
             final Cell destinationCell = board.getCell(destination);
@@ -208,7 +127,7 @@ public class Game implements HandleOnClick {
         }
     }
 
-    private void openOptionalPromotionModal(Coord destination) {
+    protected void openOptionalPromotionModal(Coord destination) {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(primaryStage);
@@ -242,18 +161,7 @@ public class Game implements HandleOnClick {
         dialog.show();
     }
 
-    private void promoteCurrentlySelectedPiece(Coord destination) throws InvalidPieceException {
-        Cell destinationCell = board.getCell(destination);
-        PieceView currPiece = destinationCell.getPiece();
-        PieceView promotedPiece = pieceFactory.promotePiece(currPiece);
-        if (!destinationCell.isEmpty()) {
-            destinationCell.removePiece();
-        }
-        promotedPiece.setBoard(this.board);
-        destinationCell.setPiece(promotedPiece);
-    }
-
-    private void openRequiredPromotionModal() {
+    protected void openRequiredPromotionModal() {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(primaryStage);
@@ -265,5 +173,16 @@ public class Game implements HandleOnClick {
 
         dialog.setScene(dialogScene);
         dialog.show();
+    }
+
+    protected void promoteCurrentlySelectedPiece(Coord destination) throws InvalidPieceException {
+        Cell destinationCell = board.getCell(destination);
+        PieceView currPiece = destinationCell.getPiece();
+        PieceView promotedPiece = pieceFactory.promotePiece(currPiece);
+        if (!destinationCell.isEmpty()) {
+            destinationCell.removePiece();
+        }
+        promotedPiece.setBoard(this.board);
+        destinationCell.setPiece(promotedPiece);
     }
 }

@@ -1,8 +1,7 @@
 package view.board;
 
 import com.google.inject.Inject;
-import controller.Game;
-import javafx.scene.image.Image;
+import controller.game.HandleOnClick;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import model.exception.InvalidPositionException;
@@ -14,7 +13,6 @@ import model.pieces.PieceFactory;
 import view.Cell;
 import view.PieceView;
 
-import java.io.File;
 import java.util.Set;
 
 import static model.board.BoardConstants.N_COLUMNS;
@@ -26,13 +24,13 @@ public class MainBoardView extends BoardView {
     private final PieceFactory pieceFactory;
 
     @Inject
-    public MainBoardView( PieceFactory pieceFactory) {
+    public MainBoardView(PieceFactory pieceFactory) {
         this.gridPane = getMainBoardUi();
         this.pieceFactory = pieceFactory;
         this.cellBoard = initializeCellBoard(this.gridPane);
     }
 
-    public void bindHandler(Game game) {
+    public void bindHandler(HandleOnClick game) {
         for (int i = 0; i < N_ROWS; i++) {
             for (int j = 0; j < N_COLUMNS; j++) {
                 cellBoard[i][j].setOnClickHandler(game);

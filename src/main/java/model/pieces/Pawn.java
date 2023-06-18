@@ -67,7 +67,7 @@ public class Pawn extends Piece {
             for (int j = 0; j < N_ROWS; j++) {
                 Coord newCoord = new Coord(j, i);
                 final PieceView piece = board.getCell(newCoord).getPiece();
-                if (isValidCoord(newCoord) && piece.getPiece() instanceof Pawn && piece.getColor() == color) {
+                if (isValidCoord(newCoord) && piece != null && piece.getPiece() instanceof Pawn && piece.getColor() == color) {
                     validColumn = false;
                 }
             }
